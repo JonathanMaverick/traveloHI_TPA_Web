@@ -1,0 +1,15 @@
+.text-field{
+
+    input{
+        padding: 10px;
+        &:focus{
+            outline: none;
+        }
+    }
+    
+    label{
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+}
