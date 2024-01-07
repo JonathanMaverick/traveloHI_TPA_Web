@@ -1,0 +1,6 @@
+@import "../mixins.scss";
+
+.main{
+    @include centered;
+    width: 100%;
+}

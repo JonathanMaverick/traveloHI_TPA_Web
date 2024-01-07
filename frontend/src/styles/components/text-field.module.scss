@@ -1,6 +1,9 @@
+@import "../mixins.scss";
+
 .text-field{
 
     input{
+        @include border-radius;
         padding: 10px;
         &:focus{
             outline: none;
@@ -11,5 +14,6 @@
         font-size: 14px;
         font-weight: 500;
         margin-bottom: 5px;
+        display: block;
     }
 }

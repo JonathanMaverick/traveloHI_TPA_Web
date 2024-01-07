@@ -1,0 +1,18 @@
+@import "../mixins.scss";
+
+button{
+    @include border-radius;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    margin: 20px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    &:hover{
+        background-color: #fff;
+        color: #000;
+    }
+}
