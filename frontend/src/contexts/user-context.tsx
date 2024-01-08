@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { IChildren } from "../interfaces/children-interface";
 import { IUser } from "../interfaces/user-interface";
+import jwt from 'jsonwebtoken';
 
 interface IUserContext{
     user : IUser | null;
@@ -24,7 +25,8 @@ export function UserProvider({children} : IChildren){
                 ID : '',
             }
             setUser(user);
-            localStorage.setItem('USER_KEY', JSON.stringify(user));
+            const token = jwt.sign({name}, 'secret-key')
+            localStorage.setItem('token', token);
             return true;
         }
         return false;

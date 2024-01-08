@@ -6,6 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
+
 func migrate(db *gorm.DB){
 	db.AutoMigrate(&model.User{})
 }
@@ -19,6 +21,8 @@ func Connect ()*gorm.DB{
 	}
 
 	migrate(db);
+
+	DB = db
 
 	return db;
 }

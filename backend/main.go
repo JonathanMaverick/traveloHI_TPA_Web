@@ -1,10 +1,11 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/JonathanMaverickTPA_Web/config"
-	"github.com/JonathanMaverickTPA_Web/model"
+	"github.com/gin-gonic/gin"
+	"github.com/JonathanMaverickTPA_Web/controller"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 )
 
 // @title           Swagger Example API
@@ -25,21 +26,35 @@ import (
 // @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
 	// Connect to the database
-	db := config.Connect()
+	// db := config.Connect()
 
-	// Create a new user
-	newUser := model.User{
-		Name : "Jonathan Maverick",
-		Email : "jonathan@gmail.com",
-	}
+	// // Create a new user
+	// newUser := model.User{
+	// 	Name : "Jonathan Maverick",
+	// 	Email : "jonathan@gmail.com",
+	// }
 
-	// Insert the user into the database
-	result := db.Create(&newUser)
+	// // Insert the user into the database
+	// result := db.Create(&newUser)
 
 	// Check for errors during the insertion
-	if result.Error != nil {
-		fmt.Println("Error inserting user:", result.Error)
-	} else {
-		fmt.Println("User inserted successfully!")
-	}
+	// if result.Error != nil {
+	// 	fmt.Println("Error inserting user:", result.Error)
+	// } else {
+	// 	fmt.Println("User inserted successfully!")
+	// }
+	r := gin.Default()
+
+	// Serve Swagger UI
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	// Your other routes
+	r.GET("/users", controller.getUsers)
+
+	// Connect to the database
+	db := config.Connect()
+	defer db.Close()
+
+	// Run the Gin server
+	r.Run(":8080")
 }
