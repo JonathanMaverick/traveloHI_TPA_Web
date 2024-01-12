@@ -1,4 +1,3 @@
-basePath: /api/v1
 definitions:
   model.PostUser:
     properties:
@@ -28,7 +27,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: get users
+      description: Get a list of users
       produces:
       - application/json
       responses:
@@ -39,6 +38,27 @@ paths:
               $ref: '#/definitions/model.PostUser'
             type: array
       summary: List users
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Create user
       tags:
       - User
 swagger: "2.0"

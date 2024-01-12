@@ -26,7 +26,7 @@ const docTemplate = `{
     "paths": {
         "/user": {
             "get": {
-                "description": "get users",
+                "description": "Get a list of users",
                 "consumes": [
                     "application/json"
                 ],
@@ -45,6 +45,38 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/model.PostUser"
                             }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create user",
+                "parameters": [
+                    {
+                        "description": "User",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -74,7 +106,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
-	BasePath:         "/api/v1",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "TPA-Website",
 	Description:      "VK TPA Website API Documentation",
