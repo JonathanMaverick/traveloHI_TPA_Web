@@ -1,18 +1,22 @@
 @import "../mixins.scss";
+@import "../variables.scss";
 
-button{
+button {
     @include border-radius;
-    background-color: #000;
-    color: #fff;
+    background-color: #FF5E1F; 
+    color: $white;
     border: none;
-    margin: 20px;
-    padding: 10px;
+    margin: 20px 0;
+    padding: 14px 20px;
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
+    font-weight: 400;
+    letter-spacing: 0.5px; 
     transition: all 0.3s ease-in-out;
-    &:hover{
-        background-color: #fff;
-        color: #000;
+    width: 100%;
+
+    &:hover {
+      background-color: darken(#FF5E1F, 10%);
+      color: $white;
     }
-}
+  }
+  

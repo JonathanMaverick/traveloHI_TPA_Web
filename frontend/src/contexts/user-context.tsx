@@ -1,7 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { IChildren } from "../interfaces/children-interface";
 import { IUser } from "../interfaces/user-interface";
-import jwt from 'jsonwebtoken';
 
 interface IUserContext{
     user : IUser | null;
@@ -18,17 +17,15 @@ export function UserProvider({children} : IChildren){
     : null);
 
     function login(name : string, password : string) : boolean{
-        if(name === 'admin' && password === 'admin'){
-            const user : IUser = {
-                Name : name,
-                Email : '',
-                ID : '',
-            }
-            setUser(user);
-            const token = jwt.sign({name}, 'secret-key')
-            localStorage.setItem('token', token);
-            return true;
-        }
+        // if(name === 'admin' && password === 'admin'){
+        //     const user : IUser = {
+        //         Name : name,
+        //         Email : '',
+        //         ID : '',
+        //     }
+        //     setUser(user);
+        //     return true;
+        // }
         return false;
     }
 

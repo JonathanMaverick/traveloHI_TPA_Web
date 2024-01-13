@@ -9,11 +9,20 @@ import (
 var DB *gorm.DB
 
 func migrate(db *gorm.DB){
+
+	// db.Migrator().DropTable(&model.Hotel{})
+	// db.Migrator().DropTable(&model.BedType{})
+	// db.Migrator().DropTable(&model.Room{})
+	// db.Migrator().DropTable(&model.User{})
+
 	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Hotel{})
+	db.AutoMigrate(&model.BedType{})
+	db.AutoMigrate(&model.Room{})
 }
 
-func Connect ()*gorm.DB{
-	dsn := "host=localhost user=jonathanmaverick password=postgres dbname=testing port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+func Connect (){
+	dsn := "host=localhost user=jonathanmaverick password=postgres dbname=TraveloHI port=5432 sslmode=disable TimeZone=Asia/Shanghai"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil{
@@ -23,7 +32,5 @@ func Connect ()*gorm.DB{
 	migrate(db);
 
 	DB = db
-
-	return db;
 }
   

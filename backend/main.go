@@ -1,10 +1,13 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/JonathanMaverickTPA_Web/config"
-	"github.com/JonathanMaverickTPA_Web/controller"
 	_ "github.com/JonathanMaverickTPA_Web/docs"
+	"github.com/JonathanMaverickTPA_Web/route"
 	"github.com/gin-gonic/gin"
+	"github.com/rs/cors"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -26,20 +29,23 @@ import (
 // @externalDocs.description  OpenAPI
 // @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
-
 	r := gin.Default()
-	db := config.Connect()
-	
-	user := r.Group("/user")
-	{
-		user.GET("/", func(c *gin.Context) {
-			controller.GetUsers(db, c)
-		})
-		user.POST("/", func(c *gin.Context) {
-			controller.PostUser(db, c)
-		})
+	config.Connect()
+	// Seeding Backup >//<
+	// seed.Seed() 
+
+	opts := cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowCredentials: true,
 	}
-	
+
+	handler := cors.New(opts).Handler(r)
+
+	route.UserRoute(r)
+	route.HotelRoute(r)
+	route.RoomRoute(r)
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	r.Run(":8080")
+	http.ListenAndServe(":8080", handler)
 }

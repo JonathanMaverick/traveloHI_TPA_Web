@@ -1,0 +1,85 @@
+@import "../mixins.scss";
+@import "../variables.scss";
+
+.register {
+    max-width: 400px;
+    margin: 5rem auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: $white;
+    color: $font-color;
+    font-size: .8rem;
+
+    h1 {
+      text-align: center;
+    }
+  
+    .name-container {
+      display: flex;
+      justify-content: space-between;
+      color: $font-color;
+      input,
+      select {
+        margin-top: 8px;
+        width: 100%;
+        padding: 6px;
+        margin-bottom: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      
+      div {
+        flex: 1;
+        margin-right: 10px;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .profile-picture{
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 16px;
+      input{
+        padding: 6px 0px;
+      }
+    }
+
+    .gender-container{
+      @include centered;
+      display: flex;
+      color: $font-color;
+      margin-bottom: 16px;
+      .gender-option{
+        @include centered;
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        .gender-box{
+          @include centered;  
+        }
+      }
+    }
+    #security-question {
+      width: 100%;
+      padding: 4px;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+  
+    .subscribe-container {
+      display: flex;
+      font-size: 14px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+  
+}

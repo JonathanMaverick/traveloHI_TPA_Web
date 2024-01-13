@@ -1,10 +1,67 @@
 definitions:
-  model.PostUser:
+  model.BedType:
     properties:
-      email:
+      roomName:
         type: string
+      roomTypeID:
+        type: integer
+    type: object
+  model.Hotel:
+    properties:
+      address:
+        type: string
+      description:
+        type: string
+      hotelID:
+        type: integer
       name:
         type: string
+    type: object
+  model.Room:
+    properties:
+      hotelID:
+        type: integer
+      occupancy:
+        type: integer
+      price:
+        type: integer
+      quantity:
+        type: integer
+      roomID:
+        type: integer
+      roomName:
+        type: string
+      roomTypeID:
+        type: integer
+    type: object
+  model.User:
+    properties:
+      dob:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      gender:
+        type: string
+      lastName:
+        type: string
+      password:
+        type: string
+      personalSecurityAnswer:
+        type: string
+      profilePicture:
+        type: string
+      role:
+        type: string
+      status:
+        type: string
+      subscribedToNewsletter:
+        type: boolean
+      userID:
+        type: integer
+      wallet:
+        type: number
     type: object
 externalDocs:
   description: OpenAPI
@@ -23,6 +80,80 @@ info:
   title: TPA-Website
   version: "1.0"
 paths:
+  /hotel:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of hotel
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Hotel'
+            type: array
+      summary: List hotel
+      tags:
+      - Hotel
+  /hotel/{hotelId}/rooms:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of rooms for a specific hotel
+      parameters:
+      - description: Hotel ID
+        in: path
+        name: hotelId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Room'
+            type: array
+      summary: List rooms for a hotel
+      tags:
+      - Room
+  /room:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of rooms
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Room'
+            type: array
+      summary: List rooms
+      tags:
+      - Room
+  /room/type:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of bedtypes
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.BedType'
+            type: array
+      summary: List bed types
+      tags:
+      - Room
   /user:
     get:
       consumes:
@@ -35,7 +166,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/model.PostUser'
+              $ref: '#/definitions/model.User'
             type: array
       summary: List users
       tags:
@@ -43,22 +174,43 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create a new user
+      description: Create a new user account
       parameters:
-      - description: User
+      - description: User details
         in: body
         name: user
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/model.User'
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
-            type: string
+            $ref: '#/definitions/model.User'
       summary: Create user
+      tags:
+      - User
+  /user/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: Get a specific user account
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.User'
+      summary: Get a user
       tags:
       - User
 swagger: "2.0"

@@ -20,10 +20,9 @@ export default function LoginPage(){
     return(
         <form onSubmit={handleOnSubmit}>
             <div>
-                <h1>LoginPage</h1>
-                <TextField label="Username" name="username" type="text"/>
-                <TextField label="Password" name="password" type="password"/>
-                <Button />
+                {/* <TextField label="Username" name="username" type="text"/>
+                <TextField label="Password" name="password" type="password"/> */}
+                <Button content="Login" />
             </div>
         </form>
     )
