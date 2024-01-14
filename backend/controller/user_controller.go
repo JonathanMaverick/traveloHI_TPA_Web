@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"net/mail"
 	"regexp"
@@ -13,6 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 	age "github.com/theTardigrade/golang-age"
 	"golang.org/x/crypto/bcrypt"
+	"gopkg.in/gomail.v2"
 )
 
 // GetUsers lists all existing user accounts
@@ -123,6 +125,22 @@ func CreateUser(c *gin.Context) {
         return
     }
 
-    c.String(http.StatusCreated, "Success create user")
+	from := "VKTraveloHI@gmail.com"
+	password := "kpbyhdkeontawsvu"
+	subject := "User Created!"
+	body := "You just created an account on TraveloHI made by VK23-2!"
 
+	m := gomail.NewMessage()
+	m.SetHeader("From", from)
+	m.SetHeader("To", newUser.Email)
+	m.SetHeader("Subject", subject)
+	m.SetBody("text/plain", body)
+
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, from, password)
+
+	if err := dialer.DialAndSend(m); err != nil {
+		fmt.Println(err)
+	}
+	
+    c.String(http.StatusCreated, "Success create user")
 }
