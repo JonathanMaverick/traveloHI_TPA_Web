@@ -73,6 +73,7 @@ func isNameValid(name string) bool {
 // @Router /user [post]
 func CreateUser(c *gin.Context) {
     var newUser model.User
+	c.ShouldBindJSON(&newUser)
 
 	if newUser.Email == "" || newUser.FirstName == "" || newUser.LastName == "" || newUser.DOB == "" || newUser.Gender == "" || newUser.ProfilePicture == "" || newUser.PersonalSecurityAnswer == "" {
 		c.String(http.StatusBadRequest, "All Field are required")
@@ -104,6 +105,7 @@ func CreateUser(c *gin.Context) {
 
 	if dateAge < 13{
 		c.String(http.StatusBadRequest, "You must be at least 13 years old")
+		return
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), 10)
@@ -115,12 +117,12 @@ func CreateUser(c *gin.Context) {
 	newUser.Status = "active"
 	newUser.Wallet = 0
 
-	// result := config.DB.Create(&newUser)
-    // if result.Error != nil {
-    //     c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to create user"})
-    //     return
-    // }
+	result := config.DB.Create(&newUser)
+    if result.Error != nil {
+        c.String(http.StatusInternalServerError, "Email duplicated")
+        return
+    }
 
-    c.JSON(http.StatusCreated, newUser)
+    c.String(http.StatusCreated, "Success create user")
 
 }
