@@ -84,7 +84,7 @@ export default function RegisterPage(){
                     label="Email" 
                     name="email" 
                     type="text" 
-                    value={user.email} 
+                    value={user.email || ''} 
                     onChange={(e:string)=> setUser({...user, email: e})}
                 />
                 
@@ -94,7 +94,7 @@ export default function RegisterPage(){
                         <input 
                         type="text" 
                         name="firstName" 
-                        value={user.firstName}
+                        value={user.firstName|| ''}
                         onChange={(e)=> setUser({...user, firstName: e.target.value})}
                         />
                     </div>
@@ -103,7 +103,7 @@ export default function RegisterPage(){
                         <input 
                         type="text" 
                         name="lastName"
-                        value={user.lastName}
+                        value={user.lastName|| ''}
                         onChange={(e)=> setUser({...user, lastName: e.target.value})}
                         />
                     </div>
@@ -126,7 +126,7 @@ export default function RegisterPage(){
                     label="DOB" 
                     name="dob" 
                     type="date"
-                    value={user.dob}
+                    value={user.dob|| ''}
                     onChange={(e:string)=> setUser({...user, dob: e})}
                 />
                 
@@ -170,14 +170,14 @@ export default function RegisterPage(){
                     label="Security Answer" 
                     name="securityAnswer" 
                     type="text"
-                    value={user.personalSecurityAnswer}
+                    value={user.personalSecurityAnswer|| ''}
                     onChange={(e:string)=> setUser({...user, personalSecurityAnswer: e})}
                 />
                 <TextField 
                     label="Password" 
                     name="password" 
                     type="password"
-                    value={user.password}
+                    value={user.password|| ''}
                     onChange={(e:string)=> setUser({...user, password: e})}
                 />
                 <TextField 
