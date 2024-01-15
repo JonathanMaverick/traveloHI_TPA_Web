@@ -84,7 +84,7 @@ export default function RegisterPage(){
                     label="Email" 
                     name="email" 
                     type="text" 
-                    value={user.email} 
+                    value={user.email || ''} 
                     onChange={(e:string)=> setUser({...user, email: e})}
                 />
                 
@@ -126,7 +126,7 @@ export default function RegisterPage(){
                     label="DOB" 
                     name="dob" 
                     type="date"
-                    value={user.dob}
+                    value={user.dob || ''}
                     onChange={(e:string)=> setUser({...user, dob: e})}
                 />
                 
@@ -171,14 +171,14 @@ export default function RegisterPage(){
                     label="Security Answer" 
                     name="securityAnswer" 
                     type="text"
-                    value={user.personalSecurityAnswer}
+                    value={user.personalSecurityAnswer || ''}
                     onChange={(e:string)=> setUser({...user, personalSecurityAnswer: e})}
                 />
                 <TextField 
                     label="Password" 
                     name="password" 
                     type="password"
-                    value={user.password}
+                    value={user.password || ''}
                     onChange={(e:string)=> setUser({...user, password: e})}
                 />
                 <TextField 
