@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 export default function RegisterPage(){
 
     const USER_INITIAL_STATE:IUser = {
-        userID: 0,
         email: "",
         firstName: "",
         lastName: "",
@@ -35,6 +34,7 @@ export default function RegisterPage(){
     const [user, setUser] = useState<IUser>(USER_INITIAL_STATE);
     const [confPassword, setConfPassword] = useState<string>("");
     const [profilePicture, setProfilePicture] = useState<File | null>(null);
+    const [captchaValue, setCaptchaValue] = useState(null);
     const validatePassword = (password:string) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/.test(password)
 
     const handleOnSubmit = async (e : FormEvent<HTMLFormElement>) => {
@@ -55,24 +55,24 @@ export default function RegisterPage(){
             return;
         }
 
+        if(captchaValue === null){
+            alert('Please complete the captcha');
+            return;
+        }
+
         const imageRef = ref(storage, `profile/${profilePicture.name}`);
         await uploadBytes(imageRef, profilePicture);
         user.profilePicture = await getDownloadURL(imageRef);
         user.profilePicture = "testing"
-        const response:any = await register(user);
-        if (response == -1){
-            alert("Error registering user")
-        }
-        else if(response.status === 200){
-            alert("User registered successfully")
-            navigate('/login')
-        }else{
-            alert(response.data.message)
+
+        const response = await register(user);
+        if (response == 1){
+            navigate('/login');
         }
     }
 
     const onChange = (value: any) => {
-        console.log("Captcha value:", value);
+        setCaptchaValue(value)
     }
 
 
@@ -84,7 +84,7 @@ export default function RegisterPage(){
                     label="Email" 
                     name="email" 
                     type="text" 
-                    value={user.email || ''} 
+                    value={user.email || '' || ''} 
                     onChange={(e:string)=> setUser({...user, email: e})}
                 />
                 
@@ -94,7 +94,7 @@ export default function RegisterPage(){
                         <input 
                         type="text" 
                         name="firstName" 
-                        value={user.firstName}
+                        value={user.firstName|| ''}
                         onChange={(e)=> setUser({...user, firstName: e.target.value})}
                         />
                     </div>
@@ -103,7 +103,7 @@ export default function RegisterPage(){
                         <input 
                         type="text" 
                         name="lastName"
-                        value={user.lastName}
+                        value={user.lastName|| ''}
                         onChange={(e)=> setUser({...user, lastName: e.target.value})}
                         />
                     </div>
@@ -126,7 +126,7 @@ export default function RegisterPage(){
                     label="DOB" 
                     name="dob" 
                     type="date"
-                    value={user.dob || ''}
+                    value={user.dob || ''|| ''}
                     onChange={(e:string)=> setUser({...user, dob: e})}
                 />
                 
@@ -166,19 +166,18 @@ export default function RegisterPage(){
                     <option value="">What is the name of the elementary school you attend?</option>
                     <option value="">What is the model of your first car?</option>
                 </select>
-
                 <TextField 
                     label="Security Answer" 
                     name="securityAnswer" 
                     type="text"
-                    value={user.personalSecurityAnswer || ''}
+                    value={user.personalSecurityAnswer || ''|| ''}
                     onChange={(e:string)=> setUser({...user, personalSecurityAnswer: e})}
                 />
                 <TextField 
                     label="Password" 
                     name="password" 
                     type="password"
-                    value={user.password || ''}
+                    value={user.password || ''|| ''}
                     onChange={(e:string)=> setUser({...user, password: e})}
                 />
                 <TextField 
