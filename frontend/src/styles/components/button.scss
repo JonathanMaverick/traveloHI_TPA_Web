@@ -1,21 +1,21 @@
 @import "../mixins.scss";
 @import "../variables.scss";
 
-button {
+.login-register-button {
     @include border-radius;
-    background-color: #FF5E1F; 
+    background-color: $button; 
     color: $white;
     border: none;
-    margin: 20px 0;
+    margin: 10px 0;
     padding: 14px 20px;
     cursor: pointer;
-    font-weight: 400;
+    font-weight: 800;
     letter-spacing: 0.5px; 
     transition: all 0.3s ease-in-out;
     width: 100%;
 
     &:hover {
-      background-color: darken(#FF5E1F, 10%);
+      background-color: darken($button, 10%);
       color: $white;
     }
   }

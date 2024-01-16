@@ -6,8 +6,6 @@ const authenticate = async(token : object) => {
         const result = response.data;
         return result;
     }catch(error: any){
-        console.log(error)
-        alert(error.response.data)
         return -1;
     }
 }

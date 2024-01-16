@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { IChildren } from "../interfaces/children-interface";
 import { IUser } from "../interfaces/user-interface";
 import axios from "axios";
@@ -18,11 +18,10 @@ export function UserProvider({children} : IChildren){
     const [user, setUser] = useState <IUser | null>({});
 
     const getUser = async () => {
-
         const cookie = getCookie("token")
     
         const result = await authenticate({
-        "token": cookie
+            "token": cookie
         });
 
         if(result){
@@ -33,6 +32,14 @@ export function UserProvider({children} : IChildren){
         }
     }
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+          await getUser();
+        };
+    
+        fetchUserData(); 
+      }, []);
+
     async function login(user : IUser) :  Promise<number>{
         try{
             const response =  await axios.post(
@@ -40,7 +47,6 @@ export function UserProvider({children} : IChildren){
                 , user
             );
             setCookie('token', response.data, 1)
-            getUser();
             return 1;
         }catch(error: any){
             alert(error.response.data)
@@ -50,7 +56,6 @@ export function UserProvider({children} : IChildren){
 
     function logout(){
         setUser(null);
-        localStorage.removeItem('USER_KEY');
         setCookie('token', '', -1);
     }
 
