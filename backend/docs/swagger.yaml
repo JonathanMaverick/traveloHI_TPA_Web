@@ -213,4 +213,26 @@ paths:
       summary: Get a user
       tags:
       - User
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user
+      parameters:
+      - description: User details
+        in: body
+        name: user
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Login user
+      tags:
+      - User
 swagger: "2.0"

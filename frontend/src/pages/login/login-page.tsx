@@ -23,11 +23,16 @@ export default function LoginPage(){
     const [captchaValue, setCaptchaValue] = useState(null);
     const [user, setUser] = useState<IUser>(USER_INITIAL_STATE)
 
-    const handleOnSubmit = (e : FormEvent<HTMLFormElement>) => {
+    const handleOnSubmit = async (e : FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const {username, password} = e.currentTarget
-        if (login(username.value, password.value)){
-            navigate('/')
+        if(!captchaValue){
+            alert('Please complete the captcha');
+            return;
+        }
+
+        const response = await login(user);
+        if (response == 1){
+            navigate('/');
         }
     }
 
@@ -39,7 +44,7 @@ export default function LoginPage(){
         <form onSubmit={handleOnSubmit} className="register-login">
             <h1>Login</h1>
                 <TextField label="Email" name="email" type="text" value={user?.email || ''} onChange={(e:string)=> setUser({...user, email: e})}/>
-                <TextField label="Password" name="password" type="password" value={user?.password || ''} onChange={(e:string)=> setUser({...user, email: e})}/>
+                <TextField label="Password" name="password" type="password" value={user?.password || ''} onChange={(e:string)=> setUser({...user, password: e})}/>
                 <div className="recaptcha">
                     <ReCAPTCHA
                         sitekey="6Lf0tk8pAAAAAMhURN7Ka68VZPHCpR9Z3E-Bh_p2"

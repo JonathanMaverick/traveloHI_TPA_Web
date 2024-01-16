@@ -1,37 +1,57 @@
 import { createContext, useContext, useState } from "react";
 import { IChildren } from "../interfaces/children-interface";
 import { IUser } from "../interfaces/user-interface";
+import axios from "axios";
+import setCookie from "../settings/set-cookie";
+import authenticate from "../api/auth/auth";
+import getCookie from "../settings/get_cookie";
 
 interface IUserContext{
     user : IUser | null;
-    login : (name : string, password : string) => boolean; 
+    login : (user : IUser) => Promise<number>; 
     logout : () => void;
 }
 
 const context = createContext<IUserContext>({} as IUserContext);
 
 export function UserProvider({children} : IChildren){
-    const [user, setUser] = useState <IUser | null>
-    (localStorage.getItem('USER_KEY') ? 
-    JSON.parse(localStorage.getItem('USER_KEY') as string) as IUser
-    : null);
+    const [user, setUser] = useState <IUser | null>({});
 
-    function login(name : string, password : string) : boolean{
-        // if(name === 'admin' && password === 'admin'){
-        //     const user : IUser = {
-        //         Name : name,
-        //         Email : '',
-        //         ID : '',
-        //     }
-        //     setUser(user);
-        //     return true;
-        // }
-        return false;
+    const getUser = async () => {
+
+        const cookie = getCookie("token")
+    
+        const result = await authenticate({
+        "token": cookie
+        });
+
+        if(result){
+            setUser(result);
+        }
+        else{
+            setUser({})
+        }
+    }
+
+    async function login(user : IUser) :  Promise<number>{
+        try{
+            const response =  await axios.post(
+                import.meta.env.VITE_API_URL + "/user/login/"
+                , user
+            );
+            setCookie('token', response.data, 1)
+            getUser();
+            return 1;
+        }catch(error: any){
+            alert(error.response.data)
+            return -1;
+        }
     }
 
     function logout(){
         setUser(null);
         localStorage.removeItem('USER_KEY');
+        setCookie('token', '', -1);
     }
 
     const data : IUserContext = {
@@ -42,7 +62,6 @@ export function UserProvider({children} : IChildren){
 
     return <context.Provider value={data}>{children}</context.Provider>
 }
-
 export default function useUser(){
     return useContext(context);
 }

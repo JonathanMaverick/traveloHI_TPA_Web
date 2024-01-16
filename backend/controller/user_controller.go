@@ -147,6 +147,16 @@ func CreateUser(c *gin.Context) {
     c.String(http.StatusCreated, "Success create user")
 }
 
+
+// Login logs in a user
+// @Summary Login user
+// @Description Login a user
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param user body string true "User details"
+// @Success 200 {string} string
+// @Router /user/login [post]
 func Login(c *gin.Context){
 
 	var loginAttempt, user model.User;
@@ -160,7 +170,7 @@ func Login(c *gin.Context){
 
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginAttempt.Password))
 	if err != nil {
-		c.String(200, "Invalid Password")
+		c.String(http.StatusBadRequest, "Invalid Password")
 		return
 	}
 
@@ -182,4 +192,9 @@ func Login(c *gin.Context){
 
 	c.String(http.StatusOK, tokenString)
 
+}
+
+func Authenticate(c *gin.Context) {
+	user, _ := c.Get("user")
+	c.JSON(200, user)
 }
