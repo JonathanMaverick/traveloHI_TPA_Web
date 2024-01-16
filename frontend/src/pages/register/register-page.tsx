@@ -1,13 +1,13 @@
 import { FormEvent, useEffect, useState } from "react"
 import TextField from "../../component/text-field"
 import Button from "../../component/button"
-import '../../styles/pages/register.scss'
+import '../../styles/pages/register-login.scss'
 import ReCAPTCHA from "react-google-recaptcha";
 import { IUser } from "../../interfaces/user-interface";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../settings/firebase";
 import register from "../../api/auth/register";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function RegisterPage(){
 
@@ -78,13 +78,13 @@ export default function RegisterPage(){
 
     return(
         <>
-            <form onSubmit={handleOnSubmit} className="register">
+            <form onSubmit={handleOnSubmit} className="register-login">
                 <h1>Register</h1>
                 <TextField 
                     label="Email" 
                     name="email" 
                     type="text" 
-                    value={user.email || '' || ''} 
+                    value={user.email || ''} 
                     onChange={(e:string)=> setUser({...user, email: e})}
                 />
                 
@@ -198,11 +198,14 @@ export default function RegisterPage(){
                     />
                     <label htmlFor="subscribe"> Subscribe to newsletter </label>
                 </div>
-                <ReCAPTCHA
-                    sitekey="6Lf0tk8pAAAAAMhURN7Ka68VZPHCpR9Z3E-Bh_p2"
-                    onChange={onChange}
-                  />
+                <div className="recaptcha">
+                    <ReCAPTCHA
+                        sitekey="6Lf0tk8pAAAAAMhURN7Ka68VZPHCpR9Z3E-Bh_p2"
+                        onChange={onChange}
+                    />
+                </div>
                 <Button content="Register" />
+                <p>Already have an account? <Link to="/login">Login Here</Link></p>
             </form>
         </>
     )

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/mail"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -12,6 +13,7 @@ import (
 	"github.com/JonathanMaverickTPA_Web/config"
 	"github.com/JonathanMaverickTPA_Web/model"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 	age "github.com/theTardigrade/golang-age"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/gomail.v2"
@@ -121,7 +123,7 @@ func CreateUser(c *gin.Context) {
 
 	result := config.DB.Create(&newUser)
     if result.Error != nil {
-        c.String(http.StatusInternalServerError, "Email duplicated")
+        c.String(http.StatusBadRequest, "Email duplicated")
         return
     }
 
@@ -143,4 +145,41 @@ func CreateUser(c *gin.Context) {
 	}
 	
     c.String(http.StatusCreated, "Success create user")
+}
+
+func Login(c *gin.Context){
+
+	var loginAttempt, user model.User;
+	c.ShouldBindJSON(&loginAttempt)
+
+	config.DB.First(&user, "email = ?", loginAttempt.Email)
+	if user.UserID == 0 {
+		c.String(http.StatusBadRequest, "Email not found")
+		return
+	}
+
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginAttempt.Password))
+	if err != nil {
+		c.String(200, "Invalid Password")
+		return
+	}
+
+	if user.Status != "active" {
+		c.String(http.StatusBadRequest, "You Are Banned")
+		return
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": user.Email,
+		"exp":  time.Now().Add(time.Hour * 24 * 30).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte(os.Getenv("SECRETKEY")))
+	if err != nil {
+		c.String(200, "Failed to Create Token")
+		return
+	}
+
+	c.String(http.StatusOK, tokenString)
+
 }
