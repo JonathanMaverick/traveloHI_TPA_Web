@@ -39,7 +39,7 @@ export default function Navbar() {
                     ))}
                     {user?.role === 'admin' && (
                         ADMIN_LIST.map(({ path, icon, name }: any) => (
-                            <div onClick={() => sidebarMenuClick("admin" + path)} key={path} className="sidebar-menu">
+                            <div onClick={() => sidebarMenuClick(path.startsWith('/admin') ? path : `/admin${path}`)} key={path} className="sidebar-menu">
                             {icon}{name}
                             </div>
                         ))

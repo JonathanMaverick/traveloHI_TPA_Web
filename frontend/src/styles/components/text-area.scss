@@ -1,0 +1,23 @@
+@import "../mixins.scss";
+@import "../variables.scss";
+
+.text-area {
+  textarea {
+    @include border-radius;
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: none;
+    font-family: $global-font-family;
+    height: 5rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: $font-color;
+  }
+}

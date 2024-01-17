@@ -1,0 +1,21 @@
+@import "../mixins.scss";
+@import "../variables.scss";
+
+.add-hotel{
+    button{
+        @include centered;
+        gap: 5px;
+        color: $white;
+        background-color: $icon-color;
+        border: none;
+        padding: 0.5rem;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        font-weight: bolder;
+        width: 100%;
+        &:hover{
+            background-color: darken($icon-color, 10%);
+        }
+    }
+}
