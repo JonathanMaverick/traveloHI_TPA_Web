@@ -5,7 +5,7 @@ import { FaCartPlus, FaSearch } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import '../styles/components/sidebar.scss';
 import { ADMIN_LIST, MENU_LIST } from "../settings/menu-settings";
 
