@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"math/rand"
 	"net/http"
 	"net/mail"
 	"os"
@@ -96,7 +97,7 @@ func CreateUser(c *gin.Context) {
 
 	_, err := mail.ParseAddress(newUser.Email)
 	if err != nil {
-		c.String(200, "Invalid Email Format")
+		c.String(http.StatusBadRequest, "Invalid Email Format")
 		return
 	}
 
@@ -168,8 +169,14 @@ func Login(c *gin.Context){
 		return
 	}
 
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginAttempt.Password))
+	_, err := mail.ParseAddress(loginAttempt.Email)
 	if err != nil {
+		c.String(http.StatusBadRequest, "Invalid Email Format")
+		return
+	}
+
+	err_pass := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginAttempt.Password))
+	if err_pass != nil {
 		c.String(http.StatusBadRequest, "Invalid Password")
 		return
 	}
@@ -197,4 +204,95 @@ func Login(c *gin.Context){
 func Authenticate(c *gin.Context) {
 	user, _ := c.Get("user")
 	c.JSON(200, user)
+}
+
+func RequestOTP(c *gin.Context){
+	var otpRequest model.OTP
+	c.ShouldBindJSON(&otpRequest)
+
+	var user model.User;
+	config.DB.First(&user, "email = ?", otpRequest.UserEmail)
+	if user.UserID == 0 {
+		c.String(http.StatusBadRequest, "Email not found")
+		return
+	}
+
+	var otp model.OTP;
+	config.DB.First(&otp, "user_email = ?", otpRequest.UserEmail)
+	if otp.OTPID != 0 {
+		c.String(http.StatusBadRequest, "OTP already sent")
+		return
+	}
+
+	otpRequest.ExpiredAt = time.Now().Add(time.Minute * 10)
+	rand.New(rand.NewSource(time.Now().UnixNano()))
+	otpRequest.OTPValue = fmt.Sprintf("%06d", rand.Intn(999999))
+
+	from := "VKTraveloHI@gmail.com"
+	password := "kpbyhdkeontawsvu"
+	subject := "OTP"
+	body := "Your TraveloHI OTP code is " + otpRequest.OTPValue + ", valid for 10 minutes. Beware of fraud! NEVER share this code with anyone."
+
+	m := gomail.NewMessage()
+	m.SetHeader("From", from)
+	m.SetHeader("To", otpRequest.UserEmail)
+	m.SetHeader("Subject", subject)
+	m.SetBody("text/plain", body)
+
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, from, password)
+
+	if err := dialer.DialAndSend(m); err != nil {
+		fmt.Println(err)
+	}
+
+	config.DB.Create(&otpRequest)
+	c.String(http.StatusOK, "OTP Sent")
+}
+
+func LoginOTP(c *gin.Context){
+	var otpRequest model.OTP
+	c.ShouldBindJSON(&otpRequest)
+
+	if otpRequest.OTPValue == "" || otpRequest.UserEmail == "" {
+		c.String(http.StatusBadRequest, "All Field are required")
+		return
+	}
+
+	var user model.User;
+	config.DB.First(&user, "email = ?", otpRequest.UserEmail)
+	if user.Status != "active" {
+		c.String(http.StatusBadRequest, "You Are Banned")
+		return
+	}
+
+	var otp model.OTP;
+	config.DB.First(&otp, "user_email = ?", otpRequest.UserEmail)
+	if otp.OTPID == 0 {
+		c.String(http.StatusBadRequest, "OTP not found")
+		return
+	}
+
+	if otpRequest.OTPValue != otp.OTPValue {
+		c.String(http.StatusBadRequest, "Invalid OTP")
+		return
+	}
+
+	if time.Now().After(otp.ExpiredAt) {
+		c.String(http.StatusBadRequest, "OTP Expired")
+		return
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": otpRequest.UserEmail,
+		"exp":  time.Now().Add(time.Hour * 24 * 30).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte(os.Getenv("SECRETKEY")))
+	if err != nil {
+		c.String(200, "Failed to Create Token")
+		return
+	}
+
+	config.DB.Delete(&otp)
+	c.String(http.StatusOK, tokenString)
 }
