@@ -14,9 +14,6 @@ export default function UserRouteMiddleware() {
         if (user == null){
             navigate('/')
         }
-        else if(user.role !== 'admin'){
-            navigate('/')
-        }
     },[user])
 
     return (

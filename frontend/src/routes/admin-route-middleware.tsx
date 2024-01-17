@@ -9,8 +9,7 @@ export default function AdminRouteMiddleware() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log("admin")
-        console.log(user)
+        console.log(user?.role)
         if (user == null){
             navigate('/')
         }
@@ -18,6 +17,7 @@ export default function AdminRouteMiddleware() {
             navigate('/')
         }
     },[user])
+
 
     return (
         <MainLayout>

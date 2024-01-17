@@ -6,6 +6,7 @@ import setCookie from "../settings/set-cookie";
 import authenticate from "../api/auth/auth";
 import getCookie from "../settings/get_cookie";
 import { IOTP } from "../interfaces/otp-interface";
+import { useNavigate } from "react-router-dom";
 
 interface IUserContext{
     user : IUser | null;
@@ -17,8 +18,37 @@ interface IUserContext{
 const context = createContext<IUserContext>({} as IUserContext);
 
 export function UserProvider({children} : IChildren){
+    
+    const [user, setUser] = useState<IUser | null>(() => {
+        const storedUser = localStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
 
-    const user = JSON.parse(localStorage.getItem("user") || "{}").user;
+    const validate = async () => {
+        const cookie = getCookie("token");
+    
+        const result = await authenticate({
+            token: cookie,
+        });
+    
+        if (result == -1) {
+            setUser(null);
+        }
+        else{
+            localStorage.setItem(
+                "user",
+                JSON.stringify(
+                    result,
+                )
+            );
+        }
+    };
+
+    useEffect(() => {
+        validate();
+    }, []);
+
+    const navigate = useNavigate();
 
     async function login(user : IUser) :  Promise<number>{
         try{
@@ -26,12 +56,13 @@ export function UserProvider({children} : IChildren){
                 import.meta.env.VITE_API_URL + "/user/login/"
                 , user
             );
-            setCookie('token', response.data.token, 1)
             localStorage.setItem("user",
-                JSON.stringify({
-                    user: response.data.user
-                })
+                JSON.stringify(
+                    response.data.user
+                )
             )
+            setCookie('token', response.data.token, 1)
+            setUser(response.data.user)
             return 1;
         }catch(error: any){
             alert(error.response.data)
@@ -45,12 +76,13 @@ export function UserProvider({children} : IChildren){
                 import.meta.env.VITE_API_URL + "/user/login-otp"
                 , otp
             );        
-            setCookie('token', response.data.token, 1)
             localStorage.setItem("user",
-                JSON.stringify({
-                    user: response.data.user
-                })
+            JSON.stringify(
+                    response.data.user
+                )
             )
+            setCookie('token', response.data.token, 1)
+            setUser(response.data.user)
             return 1;
         }catch(error: any){
             alert(error.response.data)
@@ -59,7 +91,9 @@ export function UserProvider({children} : IChildren){
     }
 
     function logout(){
+        localStorage.removeItem("user");
         setCookie('token', '', -1);
+        navigate('/login');
     }
 
     const data : IUserContext = {

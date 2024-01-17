@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useState } from 'react';
 import '../styles/components/sidebar.scss';
-import { ADMIN_LIST } from "../settings/menu-settings";
+import { ADMIN_LIST, MENU_LIST } from "../settings/menu-settings";
 
 export default function Navbar() {
 
@@ -32,11 +32,18 @@ export default function Navbar() {
             <div className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
                 {isSidebarOpen && (
                     <>
-                    {ADMIN_LIST.map(({path, icon, name}: any) => (
-                        <div onClick={() => sidebarMenuClick(path)}  key={path} className="sidebar-menu">
-                            {icon}{name}
+                    {MENU_LIST.map(({ path, icon, name }: any) => (
+                        <div onClick={() => sidebarMenuClick(path)} key={path} className="sidebar-menu">
+                        {icon}{name}
                         </div>
                     ))}
+                    {user?.role === 'admin' && (
+                        ADMIN_LIST.map(({ path, icon, name }: any) => (
+                            <div onClick={() => sidebarMenuClick("admin" + path)} key={path} className="sidebar-menu">
+                            {icon}{name}
+                            </div>
+                        ))
+                    )}
                     </>
                 )}
             </div>

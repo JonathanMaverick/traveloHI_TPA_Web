@@ -1,7 +1,7 @@
 @import "../variables.scss";
 
 .sidebar {
-    height: 100%;
+    height: 100vh;
     width: 250px;
     position: absolute;
     top: 0;
@@ -11,6 +11,7 @@
     color: white;
     transition: transform 0.3s ease;
     z-index: 99;
+    overflow-y: auto;
   
     &.open {
       transform: translateX(0);

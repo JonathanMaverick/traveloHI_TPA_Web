@@ -17,12 +17,8 @@ export const MENU_LIST: IMenu[] = [
     },
 ]
 
+// export const USER_LIST: IMenu[] = [
 export const ADMIN_LIST: IMenu[] = [
-    {
-        name: "Home",
-        path: "/",
-        element: <HomePage />
-    },
     {
         name: "Add Flight",
         path: "/add-flight",
