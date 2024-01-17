@@ -1,0 +1,11 @@
+@import "../mixins.scss";
+
+.main-layout{
+    width: 100%;
+    flex-direction: column;
+    .children{
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
+

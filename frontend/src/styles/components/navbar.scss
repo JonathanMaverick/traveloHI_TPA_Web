@@ -1,0 +1,134 @@
+@import "../mixins.scss";
+@import "../variables.scss";
+
+.nav-bar{
+    @include centered;
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0px;
+    gap: 1rem;
+
+    .logo-icon{
+        color: $icon-color;
+    }
+
+    a{
+        color: black;
+    }
+
+    .hover{
+        height: 2.5rem;
+        padding: .3rem;
+        border-radius: 8px;
+    }
+
+    .hover:hover{
+        background-color: $hover-color;
+        cursor: pointer;
+    }
+
+    .search-bar{
+        position: relative;
+        width: 20rem;
+        border: .2px solid black;
+        border-radius: 5px;
+        background-color: rgb(241, 241, 241);
+        input{
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            padding: 10px 0px;
+            padding-left: 35px;
+            padding-right: 10px;
+            width: 85%;
+            background-color: transparent;
+            z-index: 1;
+        };
+
+        .search-icon{
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            color: gray;
+        }
+    }
+
+    .cart{
+        @include centered;
+        gap: 5px;
+    }
+
+    .flag-container{
+        @include centered;
+        gap: 3px;
+        .flag{
+            width: 1.8rem;
+            height: 1.8rem;
+            border-radius: 100%;
+            margin-right: 6px;
+        }
+    }
+
+    .pay{
+        @include centered;
+        gap: 2px;
+    }
+
+    .login{
+        @include centered;
+        gap: 5px;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .register{
+        @include centered;
+        gap: 5px;
+        color: $white;
+        background-color: $icon-color;
+        border: none;
+        padding: 0.5rem;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    .register:hover{
+        background-color: darken($icon-color, 10%);
+    }
+
+    .logout{
+        @include centered;
+        gap: 5px;
+        color: $white;
+        background-color: $red;
+        border: none;
+        padding: 0.5rem;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    .logout:hover{
+        background-color: darken($red, 10%);
+    }
+
+    .sidebar-overlay{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        display: none;
+        background-color: $black;
+        opacity: 0.5;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+  
+    .sidebar-overlay.open{
+        display: block;
+        z-index: 98;
+    }
+}

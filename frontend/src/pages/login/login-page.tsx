@@ -7,11 +7,10 @@ import { IUser } from "../../interfaces/user-interface";
 import ReCAPTCHA from "react-google-recaptcha";
 import { IOTP } from "../../interfaces/otp-interface";
 import requestotp from "../../api/auth/requestotp";
-import loginotp from "../../api/auth/loginotp";
 
 export default function LoginPage(){
 
-    const {login} = useUser()
+    const {login, loginotp} = useUser()
     const navigate = useNavigate()
 
     const USER_INITIAL_STATE:IUser = {

@@ -1,9 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { UserProvider } from "./contexts/user-context";
 import LoginPage from "./pages/login/login-page";
-import RouteMiddleware from "./routes/route-middleware";
 import RegisterPage from "./pages/register/register-page";
 import './styles/main.scss';
+import UserRouteMiddleware from "./routes/user-route-middleware";
+import GuestRouteMiddleware from "./routes/guest-route-middleware";
+import AdminRouteMiddleware from "./routes/admin-route-middleware";
 
 function App() {
   return (
@@ -13,7 +15,9 @@ function App() {
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path= "/*" element={<RouteMiddleware />} />
+              <Route path= "*" element={<AdminRouteMiddleware />} />
+              <Route path= "*" element={<UserRouteMiddleware />} />
+              <Route path= "*" element={<GuestRouteMiddleware />} />
             </Routes>
         </UserProvider>
       </BrowserRouter>
