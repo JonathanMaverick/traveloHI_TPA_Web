@@ -5,7 +5,7 @@ import { FaCartPlus, FaSearch } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../styles/components/sidebar.scss';
 import { ADMIN_LIST, MENU_LIST } from "../settings/menu-settings";
 
@@ -76,7 +76,10 @@ export default function Navbar() {
                 <button onClick={registerClick} className="register">Register</button>
             </>
             ) : (
-                <button onClick={logoutClick} className="logout">Logout</button>
+                <>
+                    <img src={user.profilePicture} id="profile-picture" alt="" />
+                    <button onClick={logoutClick} className="logout">Logout</button>
+                </>
             )}
         </div>
     )

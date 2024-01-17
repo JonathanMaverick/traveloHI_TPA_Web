@@ -1,6 +1,6 @@
 import AddFlight from "../pages/flight/addFlight";
 import HomePage from "../pages/home/home-page";
-import { FaPlaneDeparture } from "react-icons/fa";
+import { FaHome, FaHotel, FaPlaneDeparture } from "react-icons/fa";
 
 export interface IMenu {
     name : string;
@@ -13,7 +13,8 @@ export const MENU_LIST: IMenu[] = [
     {
         name: "Home",
         path: "/",
-        element: <HomePage />
+        element: <HomePage />,
+        icon: <FaHome />
     },
 ]
 
@@ -24,5 +25,11 @@ export const ADMIN_LIST: IMenu[] = [
         path: "/add-flight",
         element: <AddFlight />,
         icon: <FaPlaneDeparture />
+    },
+    {
+        name: "Add Hotel",
+        path: "/add-hotel",
+        element: <AddFlight />,
+        icon: <FaHotel />
     }
 ]

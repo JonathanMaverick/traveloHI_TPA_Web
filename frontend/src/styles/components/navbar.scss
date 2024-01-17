@@ -43,6 +43,7 @@
             width: 85%;
             background-color: transparent;
             z-index: 1;
+            font-family: $global-font-family;
         };
 
         .search-icon{
@@ -93,6 +94,7 @@
         border-radius: 5px;
         font-size: 1rem;
         cursor: pointer;
+        font-weight: bolder;
     }
 
     .register:hover{
@@ -109,6 +111,7 @@
         border-radius: 5px;
         font-size: 1rem;
         cursor: pointer;
+        font-weight: 600;
     }
 
     .logout:hover{
@@ -130,5 +133,16 @@
     .sidebar-overlay.open{
         display: block;
         z-index: 98;
+    }
+
+    #profile-picture{
+        object-fit: contain;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 100%;
+        margin-right: 5px;
+        &:hover{
+            cursor: pointer;
+        }
     }
 }

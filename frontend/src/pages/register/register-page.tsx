@@ -63,7 +63,6 @@ export default function RegisterPage(){
         const imageRef = ref(storage, `profile/${profilePicture.name}`);
         await uploadBytes(imageRef, profilePicture);
         user.profilePicture = await getDownloadURL(imageRef);
-        user.profilePicture = "testing"
 
         const response = await register(user);
         if (response == 1){
