@@ -1,13 +1,15 @@
 import Navbar from "../component/navbar"
 import { IChildren } from "../interfaces/children-interface"
-import styles from "../styles/layout/main-layout.module.scss"
+import "../styles/layout/main-layout.scss"
 
 export default function MainLayout({children}: IChildren) {
     
     return (
-        <div className={styles['main-layout']}>
+        <div className="main-layout">
             <Navbar />
-            {children}
+            <div className="children">
+               {children}
+            </div>
         </div>
     )
 }

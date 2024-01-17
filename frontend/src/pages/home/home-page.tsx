@@ -1,12 +1,12 @@
-import useUser from "../../contexts/user-context";
+import PlaneContainer from "./plane-ticket-container";
 
 export default function HomePage(){
-    const {user} = useUser();
     
     return(
         <div>
-            <h1>Home Page</h1>
-            {user && <p>Welcome {user.firstName}</p>}
+            <PlaneContainer />
+            <div>
+            </div>
         </div>
     )
 }
