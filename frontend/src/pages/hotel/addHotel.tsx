@@ -62,6 +62,13 @@ export default function AddHotel() {
             value={hotelData?.hotelAddress}
             onChange={(e:string) => setHotelData({ ...hotelData, hotelAddress: e })}
         />
+        <TextField
+          label="Hotel Picture"
+          name="picture"
+          type="file"
+          // value={hotelData?.picture}
+          // onChange={(e: string) => setHotelData({ ...hotelData, picture: e })}
+        />
         <div>
             {tempRooms &&
             tempRooms.map((room, index) => (
@@ -101,6 +108,13 @@ export default function AddHotel() {
                     type="number"
                     value={roomData?.quantity.toString()}
                     onChange={(e: string) => setRoomData({ ...roomData, quantity: parseInt(e) })}
+                />
+                <TextField
+                  label = "Room Picture"
+                  name = "picture"
+                  type = "file"
+                  // value = {roomData?.picture.toString()}
+                  // onChange={(e: string) => setRoomData({ ...roomData, picture: e })}
                 />
             <button type="submit" onClick={handleRoomFormSubmit}>
               Submit Room
