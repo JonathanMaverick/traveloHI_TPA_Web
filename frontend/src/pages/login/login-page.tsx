@@ -105,7 +105,7 @@ export default function LoginPage(){
                 )}
 
                 <Button content="Login"/>
-            <p><Link to="/">Forgot Password?</Link></p>
+            <p><Link to="/forgot-password">Forgot Password?</Link></p>
             <p>Don't have an account? <Link to="/register">Register Here</Link></p>
         </form>
     )

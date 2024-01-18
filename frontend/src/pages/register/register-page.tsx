@@ -21,6 +21,7 @@ export default function RegisterPage(){
         subscribedToNewsletter: false,
         profilePicture: "",  
         personalSecurityAnswer: "",
+        securityQuestion: "",
         status: "",  
         role: "",    
         wallet: 0     
@@ -39,6 +40,7 @@ export default function RegisterPage(){
 
     const handleOnSubmit = async (e : FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        console.log(user)
 
         if(!profilePicture){
             alert("Please upload a profile picture")
@@ -158,12 +160,17 @@ export default function RegisterPage(){
                 </div>
 
                 <label id="label-security-question" htmlFor="securityQuestion">Select a security question:</label>
-                <select id="security-question" name="securityQuestion">
-                    <option value="">What is your favorite childhood pet's name?</option>
-                    <option value="">In which city were you born?</option>
-                    <option value="">What is the name of your favorite book or movie?</option>
-                    <option value="">What is the name of the elementary school you attend?</option>
-                    <option value="">What is the model of your first car?</option>
+                <select
+                    value={user.securityQuestion}
+                    onChange={(event) => setUser({ ...user, securityQuestion: event.target.value })}
+                    id="security-question"
+                    name="securityQuestion"
+                >
+                    <option value="What is your favorite childhood pet's name?">What is your favorite childhood pet's name?</option>
+                    <option value="In which city were you born?">In which city were you born?</option>
+                    <option value="What is the name of your favorite book or movie?">What is the name of your favorite book or movie?</option>
+                    <option value="What is the name of the elementary school you attend?">What is the name of the elementary school you attend?</option>
+                    <option value="What is the model of your first car?">What is the model of your first car?</option>
                 </select>
                 <TextField 
                     label="Security Answer" 

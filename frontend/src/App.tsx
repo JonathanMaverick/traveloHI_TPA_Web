@@ -6,6 +6,7 @@ import './styles/main.scss';
 import UserRouteMiddleware from "./routes/user-route-middleware";
 import GuestRouteMiddleware from "./routes/guest-route-middleware";
 import AdminRouteMiddleware from "./routes/admin-route-middleware";
+import ForgetPassPage from "./pages/login/forgetpass-page";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgetPassPage />} />
               <Route path= "admin/*" element={<AdminRouteMiddleware />} />
               <Route path= "/user/*" element={<UserRouteMiddleware />} />
               <Route path= "/*" element={<GuestRouteMiddleware />} />

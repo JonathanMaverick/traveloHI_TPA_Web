@@ -11,6 +11,7 @@ type User struct {
 	Gender                 string    `json:"gender"`
 	ProfilePicture         string    `json:"profilePicture"`
 	PersonalSecurityAnswer string    `json:"personalSecurityAnswer"`
+	SecurityQuestion       string    `json:"securityQuestion"`
 	SubscribedToNewsletter bool      `json:"subscribedToNewsletter"`
 	Status                 string    `json:"status"`
 	Role                   string    `json:"role"`

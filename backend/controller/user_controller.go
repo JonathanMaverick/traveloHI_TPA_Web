@@ -205,7 +205,6 @@ func Login(c *gin.Context){
 		"token" : tokenString,
 		"user" : user,
 	})
-
 }
 
 func Authenticate(c *gin.Context) {
@@ -302,4 +301,64 @@ func LoginOTP(c *gin.Context){
 
 	config.DB.Delete(&otp)
 	c.String(http.StatusOK, tokenString)
+}
+
+func GetUserSecurityQuestion(c *gin.Context) {
+	var user model.User
+	c.ShouldBindJSON(&user)
+
+	var userSecurityQuestion model.User
+	config.DB.First(&userSecurityQuestion, "email = ?", user.Email)
+	if userSecurityQuestion.UserID == 0 {
+		c.String(http.StatusBadRequest, "Email not found")
+		return
+	}
+
+	c.JSON(http.StatusOK, userSecurityQuestion.SecurityQuestion)
+}
+
+func ValidateSecurityAnswer(c *gin.Context){
+	var user model.User
+	c.ShouldBindJSON(&user)
+
+	var userSecurityQuestion model.User
+	config.DB.First(&userSecurityQuestion, "email = ?", user.Email)
+	if userSecurityQuestion.UserID == 0 {
+		c.String(http.StatusBadRequest, "Email not found")
+		return
+	}
+
+	if userSecurityQuestion.PersonalSecurityAnswer != user.PersonalSecurityAnswer {
+		c.String(http.StatusBadRequest, "Invalid Answer")
+		return
+	}
+
+	c.JSON(http.StatusOK, "Success")
+}
+
+func ChangePassword(c *gin.Context) {
+    var userAttempt model.User
+    c.ShouldBindJSON(&userAttempt)
+
+    var user model.User
+    config.DB.First(&user, "email = ?", userAttempt.Email)
+    if user.UserID == 0 {
+        c.String(http.StatusBadRequest, "Email not found")
+        return
+    }
+
+    err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userAttempt.Password))
+    if err == nil {
+        c.String(http.StatusBadRequest, "Password can't be the same as the old password")
+        return
+    }
+
+    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userAttempt.Password), 10)
+    if err != nil {
+        panic(err)
+    }
+    user.Password = string(hashedPassword)
+
+    config.DB.Save(&user)
+    c.String(http.StatusOK, "Success")
 }
