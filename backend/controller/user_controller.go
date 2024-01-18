@@ -314,6 +314,11 @@ func GetUserSecurityQuestion(c *gin.Context) {
 		return
 	}
 
+	if userSecurityQuestion.Status != "active" {
+		c.String(http.StatusBadRequest, "You Are Banned")
+		return
+	}
+
 	c.JSON(http.StatusOK, userSecurityQuestion.SecurityQuestion)
 }
 
@@ -325,6 +330,11 @@ func ValidateSecurityAnswer(c *gin.Context){
 	config.DB.First(&userSecurityQuestion, "email = ?", user.Email)
 	if userSecurityQuestion.UserID == 0 {
 		c.String(http.StatusBadRequest, "Email not found")
+		return
+	}
+
+	if userSecurityQuestion.Status != "active" {
+		c.String(http.StatusBadRequest, "You Are Banned")
 		return
 	}
 
@@ -346,6 +356,11 @@ func ChangePassword(c *gin.Context) {
         c.String(http.StatusBadRequest, "Email not found")
         return
     }
+
+	if user.Status != "active" {
+		c.String(http.StatusBadRequest, "You Are Banned")
+		return
+	}
 
     err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userAttempt.Password))
     if err == nil {
