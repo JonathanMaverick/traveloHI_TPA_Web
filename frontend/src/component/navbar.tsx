@@ -6,7 +6,6 @@ import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useState } from 'react';
-import { FaPencilAlt } from "react-icons/fa";
 import '../styles/components/sidebar.scss';
 import { ADMIN_LIST, MENU_LIST } from "../settings/menu-settings";
 
@@ -33,12 +32,14 @@ export default function Navbar() {
             <div className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
                 {isSidebarOpen && (
                     <>
-                    <div className="sidebar-profile">
-                        <img src={user?.profilePicture} alt="" />
-                        <div className="user-profile">
-                            <p>Hello! {user?.firstName}</p>
+                    {user && (
+                        <div className="sidebar-profile">
+                            <img src={user?.profilePicture} alt="" />
+                            <div className="user-profile">
+                                <p>Hello! {user?.firstName}</p>
+                            </div>
                         </div>
-                    </div>
+                    )}
                     {MENU_LIST.map(({ path, icon, name }: any) => (
                         <div onClick={() => sidebarMenuClick(path)} key={path} className="sidebar-menu">
                         {icon}{name}

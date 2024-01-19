@@ -20,6 +20,7 @@ func migrate(db *gorm.DB){
 	db.AutoMigrate(&model.BedType{})
 	db.AutoMigrate(&model.Room{})
 	db.AutoMigrate(&model.OTP{})
+	db.AutoMigrate(&model.Facilities{})
 }
 
 func Connect (){

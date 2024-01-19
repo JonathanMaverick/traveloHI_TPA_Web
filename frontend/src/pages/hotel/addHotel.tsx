@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import TextField from "../../component/text-field";
 import TextArea from "../../component/text-area";
 import { IHotel } from "../../interfaces/hotel-interface";
@@ -29,45 +29,70 @@ export default function AddHotel() {
   const [roomData, setRoomData] = useState<IRoom>(INITIAL_ROOM_DATA);
   const [showRoomForm, setShowRoomForm] = useState(false);
   const [tempRooms, setTempRooms] = useState<IRoom[]>([]);
+  const [hotelImages, setHotelImages] = useState<File[]>([]);
 
-  const handleAddRoomClick = () => {
-    setShowRoomForm((prevShowRoomForm) => !prevShowRoomForm);
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e)
+    const selectedFiles = e.target.files;
+
+    if (selectedFiles && selectedFiles.length > 0) {
+      // Menggabungkan file-file baru dengan file-file sebelumnya
+      const newImages = Array.from(selectedFiles);
+      setHotelImages((prevImages) => [...prevImages, ...newImages]);
+    }
   };
 
   const handleRoomFormSubmit = () => {
     setTempRooms((prevRooms) => [...prevRooms, roomData]);
-
     setRoomData(INITIAL_ROOM_DATA); 
     setShowRoomForm(false); 
+  };
+
+  const handleAddRoomClick = () => {
+    setShowRoomForm((prevShowRoomForm) => !prevShowRoomForm);
   };
 
   return (
     <div className="add-hotel">
         <h2>Add Hotel</h2>
         <TextField
-            label="Hotel Name"
-            name="hotelName"
-            value={hotelData?.hotelName}
-            onChange={(e:string) => setHotelData({ ...hotelData, hotelName: e })}
+          label="Hotel Name"
+          name="hotelName"
+          value={hotelData?.hotelName}
+          onChange={(e:string) => setHotelData({ ...hotelData, hotelName: e })}
         />
         <TextArea
-            label="Hotel Description"
-            name="hotelDescription"
-            value={hotelData?.hotelDescription}
-            onChange={(e) => setHotelData({ ...hotelData, hotelDescription: e })}
+          label="Hotel Description"
+          name="hotelDescription"
+          value={hotelData?.hotelDescription}
+          onChange={(e) => setHotelData({ ...hotelData, hotelDescription: e })}
         />
         <TextField
-            label="Hotel Address"
-            name="hotelAddress"
-            value={hotelData?.hotelAddress}
-            onChange={(e:string) => setHotelData({ ...hotelData, hotelAddress: e })}
+          label="Hotel Address"
+          name="hotelAddress"
+          value={hotelData?.hotelAddress}
+          onChange={(e:string) => setHotelData({ ...hotelData, hotelAddress: e })}
         />
-        <TextField
-          label="Hotel Picture"
-          name="picture"
+        {hotelImages.length > 0 && (
+        <div>
+          <p>Preview:</p>
+          {hotelImages.map((image, index) => (
+            <img
+              key={index}
+              src={URL.createObjectURL(image)}
+              alt={`Preview ${index + 1}`}
+              style={{ height: '200px', width: '250px', objectFit: 'cover', marginRight: '10px' }}
+            />
+          ))}
+        </div>
+        )}
+        <label htmlFor="hotelpictures">Hotel image</label>
+        <input
           type="file"
-          // value={hotelData?.picture}
-          // onChange={(e: string) => setHotelData({ ...hotelData, picture: e })}
+          id="hotelpictures"
+          name="hotelpictures"
+          onChange={handleImageChange}
+          multiple
         />
         <div>
             {tempRooms &&
@@ -108,13 +133,6 @@ export default function AddHotel() {
                     type="number"
                     value={roomData?.quantity.toString()}
                     onChange={(e: string) => setRoomData({ ...roomData, quantity: parseInt(e) })}
-                />
-                <TextField
-                  label = "Room Picture"
-                  name = "picture"
-                  type = "file"
-                  // value = {roomData?.picture.toString()}
-                  // onChange={(e: string) => setRoomData({ ...roomData, picture: e })}
                 />
             <button type="submit" onClick={handleRoomFormSubmit}>
               Submit Room

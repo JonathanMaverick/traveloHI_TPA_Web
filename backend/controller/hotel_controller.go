@@ -25,3 +25,13 @@ func GetHotel(c *gin.Context) {
 	}
 	c.AsciiJSON(http.StatusOK, hotels)
 }
+
+func GetFacilities(c *gin.Context){
+	var facilities []model.Facilities
+	result := config.DB.Find(&facilities)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No facilities found!"})
+		return
+	}
+	c.AsciiJSON(http.StatusOK, facilities)
+}
