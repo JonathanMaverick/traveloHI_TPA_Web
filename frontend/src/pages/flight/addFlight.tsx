@@ -12,8 +12,8 @@ export default function AddFlight(){
             <TextField
                 label="Flight Name"
                 name="flightName"
-                value={flightData?.flightName}
-                onChange={(e:string) => setFlightData({ ...flightData, flightName: e })}
+                // value={flightData?.flightName}
+                // onChange={(e:string) => setFlightData({ ...flightData, flightName: e })}
             />
         </div>
     )

@@ -1,7 +1,8 @@
 @import "../variables.scss";
+@import "../mixins.scss";
 
 .sidebar {
-    height: 100vh;
+    height: 100%;
     width: 250px;
     position: absolute;
     top: 0;
@@ -11,7 +12,11 @@
     color: white;
     transition: transform 0.3s ease;
     z-index: 99;
-    overflow-y: auto;
+    overflow-y: scroll;
+    flex: 0.2;
+    &::-webkit-scrollbar{
+      display: none;
+    }
   
     &.open {
       transform: translateX(0);
@@ -25,6 +30,26 @@
       list-style-type: none;
       padding: 0;
       color: $black;
+    }
+
+    .sidebar-profile{
+      color: $black;
+      display: block;
+      background-color: lighten($icon-color, 40%);
+      border-radius: 5px;
+      padding: 5px; 
+      margin-bottom: 10px;
+      display: flex;
+      text-align: left;
+      align-items: center;
+      gap: 1rem;
+      justify-content: center;
+      img{
+        width: 5rem;
+        height: 5rem;
+        border-radius: 100%;
+        margin-right: 5px;
+      }
     }
 
     .sidebar-menu{
