@@ -6,7 +6,6 @@ const getFacilities = async() => {
         const response =  await axios.get(
             import.meta.env.VITE_API_URL + "/hotel/facilities"
         );
-        alert(response.data)
         return response;
     }catch(error: any){
         console.log(error)
