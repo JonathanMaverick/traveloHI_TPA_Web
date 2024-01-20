@@ -23,8 +23,9 @@ export default function AddHotel() {
     price: 0,
     occupancy: 0,
     quantity: 0,
+    images: [],
   };
-
+  
   const [hotelData, setHotelData] = useState<IHotel>(INITIAL_HOTEL_DATA);
   const [roomData, setRoomData] = useState<IRoom>(INITIAL_ROOM_DATA);
   const [showRoomForm, setShowRoomForm] = useState(false);
@@ -36,11 +37,23 @@ export default function AddHotel() {
     const selectedFiles = e.target.files;
 
     if (selectedFiles && selectedFiles.length > 0) {
-      // Menggabungkan file-file baru dengan file-file sebelumnya
       const newImages = Array.from(selectedFiles);
       setHotelImages((prevImages) => [...prevImages, ...newImages]);
     }
   };
+
+  const handleRoomImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files;
+  
+    if (selectedFiles && selectedFiles.length > 0) {
+      const newImages = Array.from(selectedFiles);
+      setRoomData((prevRoomData: IRoom) => ({
+        ...prevRoomData,
+        images: [...prevRoomData.images, ...newImages],
+      }));
+    }
+  };
+  
 
   const handleRoomFormSubmit = () => {
     setTempRooms((prevRooms) => [...prevRooms, roomData]);
@@ -80,27 +93,45 @@ export default function AddHotel() {
             <img
               key={index}
               src={URL.createObjectURL(image)}
-              alt={`Preview ${index + 1}`}
               style={{ height: '200px', width: '250px', objectFit: 'cover', marginRight: '10px' }}
             />
           ))}
         </div>
         )}
-        <label htmlFor="hotelpictures">Hotel image</label>
-        <input
-          type="file"
-          id="hotelpictures"
-          name="hotelpictures"
-          onChange={handleImageChange}
-          multiple
-        />
+        <div className="text-field">
+          <label htmlFor="hotelpictures">Hotel image</label>
+          <input
+            type="file"
+            id="hotelpictures"
+            name="hotelpictures"
+            onChange={handleImageChange}
+            multiple
+            />
+        </div>
         <div>
-            {tempRooms &&
-            tempRooms.map((room, index) => (
-                <div key={`temp-${index}`}>
-                <p>{`${room.roomName} - Price: ${room.price} - Occupancy: ${room.occupancy}`}</p>
-                </div>
-            ))}
+        {tempRooms &&
+        tempRooms.map((room, index) => (
+          <div key={`temp-${index}`}>
+            <p>{`${room.roomName} - Price: ${room.price} - Occupancy: ${room.occupancy}`}</p>
+            {room.images.length > 0 && (
+              <div>
+                <p>Room Images:</p>
+                {room.images.map((image, imageIndex) => (
+                  <img
+                    key={imageIndex}
+                    src={URL.createObjectURL(image)}
+                    style={{
+                      height: '100px',
+                      width: '100px',
+                      objectFit: 'cover',
+                      marginRight: '10px',
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
         </div>
         <button onClick={handleAddRoomClick}>
             {showRoomForm ? "Close Room Form" : "Add Room"}
@@ -134,6 +165,16 @@ export default function AddHotel() {
                     value={roomData?.quantity.toString()}
                     onChange={(e: string) => setRoomData({ ...roomData, quantity: parseInt(e) })}
                 />
+                <div className="text-field">
+                  <label htmlFor="roomimages">Room Images</label>
+                  <input
+                    type="file"
+                    id="roomimages"
+                    name="roomimages"
+                    onChange={handleRoomImageChange}
+                    multiple
+                    />
+                </div>
             <button type="submit" onClick={handleRoomFormSubmit}>
               Submit Room
             </button>
