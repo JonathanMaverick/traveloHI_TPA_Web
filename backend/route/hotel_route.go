@@ -9,5 +9,7 @@ func HotelRoute(r *gin.Engine) {
 	{
 		hotel.GET("/",controller.GetHotel)
 		hotel.GET("/:hotelId/rooms", controller.GetHotelRooms)
+
+		hotel.GET("/facilities", controller.GetFacilities)
 	}
 }

@@ -4,10 +4,20 @@ import TextArea from "../../component/text-area";
 import { IHotel } from "../../interfaces/hotel-interface";
 import { IRoom } from "../../interfaces/room-interface";
 import "../../styles/pages/add-hotel.scss";
+import getFacilities from "../../api/hotel/get_facilities";
 
 export default function AddHotel() {
   useEffect(() => {
     document.title = "Add Hotel";
+    const fetchData = async () => {
+      try {
+        const response = await getFacilities();
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
   }, []);
 
   const INITIAL_HOTEL_DATA: IHotel = {
