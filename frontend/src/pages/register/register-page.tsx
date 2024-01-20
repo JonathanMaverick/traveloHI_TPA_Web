@@ -40,7 +40,6 @@ export default function RegisterPage(){
 
     const handleOnSubmit = async (e : FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(user)
 
         if(!profilePicture){
             alert("Please upload a profile picture")
@@ -118,7 +117,7 @@ export default function RegisterPage(){
                         accept=".jpg, .jpeg, .png"
                         className="p-2"
                         onChange={(e) => {
-                            setProfilePicture(e.target.files && e.target.files[0]);
+                            setProfilePicture(e.target.files![0]);
                         }}
                     />
                 </div>

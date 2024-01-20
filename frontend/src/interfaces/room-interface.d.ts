@@ -5,4 +5,5 @@ export interface IRoom{
     price : number;
     occupancy : number;
     quantity : number;
+    images : File[]
 }
