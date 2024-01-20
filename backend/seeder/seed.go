@@ -1,12 +1,14 @@
 package seed
 
 import (
+	"fmt"
+
 	"github.com/JonathanMaverickTPA_Web/config"
-	"github.com/JonathanMaverickTPA_Web/model"
 )
 
 func Seed() {
 	db := config.DB;
+	fmt.Println(db)
 	// users := []model.User{
 	// 	{
 	// 		Email:                   "john.doe@example.com",
@@ -22,15 +24,6 @@ func Seed() {
 	// 		Status:                  "Active",
 	// 		Role:                    "User",
 	// 		Wallet:                  0, 
-	// 	},
-	// }
-
-	// roomType := []model.BedType{
-	// 	{
-	// 		BedName: "Grand Suite Room",
-	// 	},
-	// 	{
-	// 		BedName: "Royal Suite Room",
 	// 	},
 	// }
 
@@ -64,43 +57,42 @@ func Seed() {
 	// 	},
 	// }
 
-	facilities := []model.Facilities{
-		{
-			FacilitiesName: "Swimming Pool",
-		},
-		{
-			FacilitiesName: "Gym",
-		},
-		{
-			FacilitiesName : "Wifi",
-		},
-		{
-			FacilitiesName : "Breakfast",
-		},
-		{
-			FacilitiesName : "Parking",
-		},
-		{
-			FacilitiesName : "Spa",
-		},
-		{
-			FacilitiesName : "Restaurant",
-		},
-		{
-			FacilitiesName : "Bar",
-		},
-		{
-			FacilitiesName : "Airport Shuttle",
-		},
-		{
-			FacilitiesName : "Lift",
-		},
-	}
+	// facilities := []model.Facilities{
+	// 	{
+	// 		FacilitiesName: "Swimming Pool",
+	// 	},
+	// 	{
+	// 		FacilitiesName: "Gym",
+	// 	},
+	// 	{
+	// 		FacilitiesName : "Wifi",
+	// 	},
+	// 	{
+	// 		FacilitiesName : "Breakfast",
+	// 	},
+	// 	{
+	// 		FacilitiesName : "Parking",
+	// 	},
+	// 	{
+	// 		FacilitiesName : "Spa",
+	// 	},
+	// 	{
+	// 		FacilitiesName : "Restaurant",
+	// 	},
+	// 	{
+	// 		FacilitiesName : "Bar",
+	// 	},
+	// 	{
+	// 		FacilitiesName : "Airport Shuttle",
+	// 	},
+	// 	{
+	// 		FacilitiesName : "Lift",
+	// 	},
+	// }
 
 
 	// db.Create(&hotel)
-	// db.Create(&roomType)
 	// db.Create(&room)
 	// db.Create(&users)
-	db.Create(&facilities)
+	// db.Create(&facilities)
 }

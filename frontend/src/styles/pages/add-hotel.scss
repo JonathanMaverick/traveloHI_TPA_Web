@@ -54,4 +54,23 @@
             background-color: darken($icon-color, 10%);
         }
     }
+    .room-list{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        .room-detail{
+            background-color: ghostwhite;
+            border: 1px solid rgb(224, 217, 217);
+            border-radius: 10px;
+            gap: 10px;
+            padding: 10px;
+            .room-detail-description{
+                display: flex;
+                flex-direction: column;
+                p{
+                    margin: 4px 0px;
+                }
+            }
+        }
+    }
 }

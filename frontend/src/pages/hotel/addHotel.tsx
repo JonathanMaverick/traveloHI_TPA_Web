@@ -1,13 +1,24 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import TextField from "../../component/text-field";
 import TextArea from "../../component/text-area";
-import { IHotel } from "../../interfaces/hotel-interface";
-import { IRoom } from "../../interfaces/room-interface";
+import { IHotel } from "../../interfaces/hotel/hotel-interface";
+import { IRoom } from "../../interfaces/hotel/room-interface";
 import "../../styles/pages/add-hotel.scss";
 import getFacilities from "../../api/hotel/get_facilities";
-import { IFacility } from "../../interfaces/facility-interface";
+import { IFacility } from "../../interfaces/hotel/facility-interface";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import Button from "../../component/button";
+import add_hotel from "../../api/hotel/add_hotel";
+import add_hotel_picture from "../../api/hotel/add_hotel_picture";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../../settings/firebase";
+import { IHotelPicture } from "../../interfaces/hotel/hotel-picture-interface";
+import { IHotelFacilities } from "../../interfaces/hotel/hotel-facilities-interface";
+import add_hotel_facilities from "../../api/hotel/add_hotel_facilities";
+import add_hotel_room from "../../api/hotel/add_hotel_room";
+import { IRoomPicture } from "../../interfaces/hotel/room-picture-interface";
+import add_room_picture from "../../api/hotel/add_room_picture";
+import { useNavigate } from "react-router-dom";
 
 export default function AddHotel() {
   useEffect(() => {
@@ -33,14 +44,15 @@ export default function AddHotel() {
 
   const INITIAL_ROOM_DATA: IRoom = {
     roomName: "",
-    hotelID: "",
-    bedTypeID: "", 
+    hotelID: 0,
     price: 0,
     occupancy: 0,
     quantity: 0,
     images: [],
+    bedType: "",
   };
   
+  const [hotelID, setHotelID] = useState(0);
   const [hotelData, setHotelData] = useState<IHotel>(INITIAL_HOTEL_DATA);
   const [roomData, setRoomData] = useState<IRoom>(INITIAL_ROOM_DATA);
   const [tempRooms, setTempRooms] = useState<IRoom[]>([]);
@@ -48,9 +60,11 @@ export default function AddHotel() {
   const [facilities, setFacilities] = useState<IFacility[]>([]);
   const [selectedFacilities, setSelectedFacilities] = useState<IFacility[]>([]);
   const [selectedFacilityId, setSelectedFacilityId] = useState('');
+  const [step, setStep] = useState(1);
+  const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e)
     const selectedFiles = e.target.files;
 
     if (selectedFiles && selectedFiles.length > 0) {
@@ -69,13 +83,6 @@ export default function AddHotel() {
         images: [...prevRoomData.images, ...newImages],
       }));
     }
-  };
-  
-  const [step, setStep] = useState(1);
-
-  const handleRoomFormSubmit = () => {
-    setTempRooms((prevRooms) => [...prevRooms, roomData]);
-    setRoomData(INITIAL_ROOM_DATA); 
   };
 
   const handleAddFacility = () => {
@@ -99,6 +106,30 @@ export default function AddHotel() {
     setSelectedFacilities((prevSelectedFacilities) => prevSelectedFacilities.filter(facility => facility.facilitiesID !== facilityId));
   };
 
+  const handleUploadImage = async(image : File, responseHotelID : number) => {
+    const imageRef = ref(storage, `hotel/${responseHotelID}/${image.name}`);
+    await uploadBytes(imageRef, image);
+    const tempImage = await getDownloadURL(imageRef);
+    const payload : IHotelPicture = {
+      hotelID: responseHotelID,
+      hotelPicture: tempImage,
+    }
+    const response = await add_hotel_picture(payload);
+    if(response == -1)alert('Error adding hotel picture');
+  }
+
+  const handleUploadRoomImage = async (image: File, roomId : string) => {
+    const imageRef = ref(storage, `room/${roomId}/${image.name}`);
+    await uploadBytes(imageRef, image);
+    const tempImage = await getDownloadURL(imageRef);
+    const payload : IRoomPicture = {
+      roomID: roomId,
+      roomPicture: tempImage,
+    }
+    const response = await add_room_picture(payload);
+    if(response == -1)alert('Error adding room picture');
+  }
+
   const handleHotelSubmit = async (e : FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!hotelData.hotelName || !hotelData.hotelDescription || !hotelData.hotelAddress) {
@@ -115,10 +146,64 @@ export default function AddHotel() {
       alert('Please upload at least one hotel image.');
       return;
     }
+    setLoading(true);
+    const response = await add_hotel(hotelData);
+    if(response == -1)alert('Error adding hotel');
+    else{
+      const responseHotelID = response?.data.hotelID;
+      setHotelID(responseHotelID);
+      for (const image of hotelImages){
+        await handleUploadImage(image, responseHotelID);
+      }
+      for (const facilities of selectedFacilities){
+        const payload : IHotelFacilities = {
+          hotelID: responseHotelID,
+          facilitiesID: facilities.facilitiesID,
+        }
+        const response = await add_hotel_facilities(payload);
+        if(response == -1)alert('Error adding hotel facilities');
+      }
+      setLoading(false);
+      setStep(2);
+    }
+  }
 
-    console.log(selectedFacilities);
+  const handleRoomFormSubmit = () => {
+    if (!roomData.roomName || !roomData.price || !roomData.occupancy || !roomData.quantity || !roomData.bedType || roomData.images.length === 0) {
+      alert('Please fill in all room details.');
+      return;
+    }
 
-    setStep(2);
+    if(roomData.price < 0 || roomData.occupancy < 0 || roomData.quantity < 0){
+      alert('Please fill in valid room details.');
+      return;
+    }
+    roomData.hotelID = hotelID;
+    console.log(hotelID)
+    setTempRooms((prevRooms) => [...prevRooms, roomData]);
+    setRoomData(INITIAL_ROOM_DATA); 
+  };
+
+  const handleCompleteAddingRoom = async (e : FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (tempRooms.length === 0) {
+      alert('Please add at least one room.');
+      return;
+    }
+    setLoading(true);
+    for (const room of tempRooms){
+      const response = await add_hotel_room(room);
+      if(response == -1)alert('Error adding hotel');
+      else{
+        const roomId = response?.data.roomID;
+        for (const image of room.images){
+          await handleUploadRoomImage(image, roomId);
+        }
+      }
+    }
+    setLoading(false);
+    alert('Hotel added successfully!');
+    navigate('/');
   }
 
   const renderStep = () => {
@@ -201,15 +286,21 @@ export default function AddHotel() {
                 multiple
               />
             </div>
-            <Button content="Add Hotel"/>
+            <Button content="Add Hotel" isLoading={isLoading}/>
           </form>
         );
       case 2:
         return (
         <>
+        <div className="room-list">
           {tempRooms.map((room, index) => (
-            <div key={`temp-${index}`}>
-              <p>{`${room.roomName} - Price: ${room.price} - Occupancy: ${room.occupancy}`}</p>
+            <div className="room-detail" key={`temp-${index}`}>
+              <div className="room-detail-description">
+                <p style={{ fontWeight: 'bold' }}>{room.roomName}</p>
+                <p>Price : {room.price}</p>
+                <p>Occupancy : {room.occupancy}</p>
+                <p>BedType : {room.bedType}</p>
+              </div>
               {room.images.length > 0 && (
                 <div>
                   <p>Room Images:</p>
@@ -230,9 +321,10 @@ export default function AddHotel() {
               )}
             </div>
           ))}
+        </div>
           <div>
             <h3>Add Room</h3>
-            <form onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={handleCompleteAddingRoom}>
               <TextField
                 label="Room Name"
                 name="roomName"
@@ -261,6 +353,13 @@ export default function AddHotel() {
                 value={roomData?.quantity.toString()}
                 onChange={(e:string) => setRoomData({ ...roomData, quantity: parseInt(e) })}
               />
+              <TextField
+                label="Bed Type"
+                name="bedType"
+                type="text"
+                value={roomData?.bedType}
+                onChange={(e:string) => setRoomData({ ...roomData, bedType: e })}
+              />
               <div className="text-field">
                 <label htmlFor="roomimages">Room Images</label>
                 <input
@@ -271,9 +370,15 @@ export default function AddHotel() {
                   multiple
                 />
               </div>
-              <button type="submit" onClick={handleRoomFormSubmit}>
-                Submit Room
+              <button
+                type="button"
+                className={`add-button ${isLoading ? 'loading' : ''}`}
+                onClick={handleRoomFormSubmit}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Submitting...' : 'Submit Room'}
               </button>
+              <Button content="Complete Adding Room" isLoading={isLoading}/>
             </form>
           </div>
         </>

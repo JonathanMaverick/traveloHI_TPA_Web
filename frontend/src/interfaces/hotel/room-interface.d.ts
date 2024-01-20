@@ -1,9 +1,11 @@
+import { IBedType } from "./bedtype-interface";
+
 export interface IRoom{
     roomName: string;
-    hotelID : string;
-    bedTypeID : string;
+    hotelID : number;
     price : number;
     occupancy : number;
     quantity : number;
-    images : File[]
+    images : File[];
+    bedType : string;
 }

@@ -1,9 +1,16 @@
 import "../styles/components/button.scss"
 
-export default function Button ({ content }: { content: string }){
+interface IButton {
+    content: string;
+    isLoading?: boolean;
+}
+
+export default function Button ( props: IButton){
+    const { content, isLoading } = props;
+
     return(
-        <button type="submit" className="login-register-button">
-            {content}
+        <button type="submit" className="login-register-button" disabled={isLoading}>
+            {isLoading ? 'Loading...' : content}
         </button>
     )
 }

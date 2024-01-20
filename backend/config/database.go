@@ -15,12 +15,15 @@ func migrate(db *gorm.DB){
 	// db.Migrator().DropTable(&model.Room{})
 	// db.Migrator().DropTable(&model.User{})
 
+
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Hotel{})
-	db.AutoMigrate(&model.BedType{})
 	db.AutoMigrate(&model.Room{})
 	db.AutoMigrate(&model.OTP{})
 	db.AutoMigrate(&model.Facilities{})
+	db.AutoMigrate(&model.HotelPicture{})
+	db.AutoMigrate(&model.HotelFacilities{})
+	db.AutoMigrate(&model.RoomPicture{})
 }
 
 func Connect (){

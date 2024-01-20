@@ -8,8 +8,14 @@ func HotelRoute(r *gin.Engine) {
 	hotel := r.Group("/hotel")
 	{
 		hotel.GET("/",controller.GetHotel)
-		hotel.GET("/:hotelId/rooms", controller.GetHotelRooms)
+		hotel.POST("/", controller.AddHotel)
+
+		hotel.POST("/add_hotel_picture", controller.AddHotelPicture)
+		hotel.POST("/add_hotel_facilities", controller.AddHotelFacilities)		
 
 		hotel.GET("/facilities", controller.GetFacilities)
+
+		hotel.POST("/add_hotel_room", controller.AddHotelRoom)
+		hotel.POST("/add_hotel_room_picture", controller.AddHotelRoomPicture)
 	}
 }
