@@ -19,7 +19,7 @@ import (
 // @Router /hotel [get]
 func GetHotel(c *gin.Context) {
 	var hotels []model.Hotel
-	result := config.DB.Find(&hotels)
+	result := config.DB.Preload("HotelPictures").Preload("HotelFacilities.Facilities").Find(&hotels)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No hotel found!"})
 		return
@@ -77,7 +77,6 @@ func AddHotel(c *gin.Context) {
 func AddHotelPicture(c *gin.Context){
 	var hotelPicture model.HotelPicture
 	c.BindJSON(&hotelPicture)
-	fmt.Println(hotelPicture)
 	result := config.DB.Create(&hotelPicture)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to create hotel picture!"})

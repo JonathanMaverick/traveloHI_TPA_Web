@@ -40,6 +40,7 @@ export default function AddHotel() {
     hotelName: "",
     hotelDescription: "",
     hotelAddress: "",
+    hotelCity: "",
   };
 
   const INITIAL_ROOM_DATA: IRoom = {
@@ -229,6 +230,12 @@ export default function AddHotel() {
               name="hotelAddress"
               value={hotelData?.hotelAddress}
               onChange={(e:string) => setHotelData({ ...hotelData, hotelAddress: e })}
+            />
+            <TextField
+              label="Hotel City"
+              name="hotelCity"
+              value={hotelData?.hotelCity}
+              onChange={(e:string) => setHotelData({ ...hotelData, hotelCity: e })}
             />
             {selectedFacilities.length > 0 && (
               <div>
