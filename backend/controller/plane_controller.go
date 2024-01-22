@@ -8,34 +8,44 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// AddAirline creates a new airline
-// @Summary Add airline
-// @Description Add a new airline
-// @Tags Airline
+//AddPlane creates a new plane
+// @Summary Add plane
+// @Description Add a new plane
+// @Tags Plane
 // @Accept json
 // @Produce json
-// @Param airline body string true "Airline"
-// @Success 200 {string} string "Airline created successfully!"
-// @Router /airline [post]
-func AddAirline(c *gin.Context){
-	var airline model.Airline
-	c.BindJSON(&airline)
-	result := config.DB.Create(&airline)
+// @Param plane body string true "Plane"
+// @Success 200 {string} string "Plane created successfully!"
+// @Router /plane [post]
+func AddPlane(c *gin.Context){
+	var plane model.Plane
+	c.BindJSON(&plane)
+
+	if(plane.PlaneCode == ""){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Plane code can't be empty!"})
+		return
+	}
+
+	if(plane.AirlineID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Airline ID can't be empty!"})
+		return
+	}
+
+	if(plane.EconomySeats == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Economy seats can't be empty!"})
+		return
+	}
+
+	if(plane.BusinessSeats == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Business seats can't be empty!"})
+		return
+	}
+
+	result := config.DB.Create(&plane)
 	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to add airline!"})
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Plane code must be unique!"})
 		return
 	}
 
-	if(airline.AirlineName == ""){
-		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Airline name can't be empty!"})
-		return
-	}
-
-	if(airline.AirlineLogo == ""){
-		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Airline logo can't be empty!"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Airline added successfully!"})
-	
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Plane added successfully!"})
 }

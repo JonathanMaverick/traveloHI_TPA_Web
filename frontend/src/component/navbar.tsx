@@ -42,14 +42,16 @@ export default function Navbar() {
                     )}
                     {MENU_LIST.map(({ path, icon, name }: any) => (
                         <div onClick={() => sidebarMenuClick(path)} key={path} className="sidebar-menu">
-                        {icon}{name}
+                            {icon}{name}
                         </div>
                     ))}
                     {user?.role === 'admin' && (
-                        ADMIN_LIST.map(({ path, icon, name }: any) => (
-                            <div onClick={() => sidebarMenuClick(path.startsWith('/admin') ? path : `/admin${path}`)} key={path} className="sidebar-menu">
-                            {icon}{name}
-                            </div>
+                        ADMIN_LIST.map(({ path, icon, name, status }: any) => (
+                            status !== "skip" && (
+                                <div key={path} onClick={() => sidebarMenuClick(path.startsWith('/admin') ? path : `/admin${path}`)} className="sidebar-menu">
+                                    {icon}{name}
+                                </div>
+                            )
                         ))
                     )}
                     </>

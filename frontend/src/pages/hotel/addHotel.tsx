@@ -4,7 +4,6 @@ import TextArea from "../../component/text-area";
 import { IHotel } from "../../interfaces/hotel/hotel-interface";
 import { IRoom } from "../../interfaces/hotel/room-interface";
 import "../../styles/pages/add-hotel.scss";
-import getFacilities from "../../api/hotel/get_facilities";
 import { IFacility } from "../../interfaces/hotel/facility-interface";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import Button from "../../component/button";
@@ -19,13 +18,14 @@ import add_hotel_room from "../../api/hotel/add_hotel_room";
 import { IRoomPicture } from "../../interfaces/hotel/room-picture-interface";
 import add_room_picture from "../../api/hotel/add_room_picture";
 import { useNavigate } from "react-router-dom";
+import get_facilities from "../../api/hotel/get_facilities";
 
 export default function AddHotel() {
   useEffect(() => {
     document.title = "Add Hotel";
     const fetchData = async () => {
       try {
-        const response = await getFacilities();
+        const response = await get_facilities();
         if(response != -1){
           setFacilities(response.data);
         }

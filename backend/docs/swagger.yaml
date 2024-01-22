@@ -1,24 +1,56 @@
 definitions:
-  model.BedType:
+  model.Facilities:
     properties:
-      roomName:
-        type: string
-      roomTypeID:
+      facilitiesID:
         type: integer
+      facilitiesName:
+        type: string
     type: object
   model.Hotel:
     properties:
-      address:
+      hotelAddress:
         type: string
-      description:
+      hotelCity:
         type: string
+      hotelDescription:
+        type: string
+      hotelFacilities:
+        items:
+          $ref: '#/definitions/model.HotelFacilities'
+        type: array
       hotelID:
         type: integer
-      name:
+      hotelName:
         type: string
+      hotelPictures:
+        items:
+          $ref: '#/definitions/model.HotelPicture'
+        type: array
+    type: object
+  model.HotelFacilities:
+    properties:
+      facilities:
+        $ref: '#/definitions/model.Facilities'
+      facilitiesID:
+        type: integer
+      hotelFacilitiesID:
+        type: integer
+      hotelID:
+        type: integer
+    type: object
+  model.HotelPicture:
+    properties:
+      hotelID:
+        type: integer
+      hotelPicture:
+        type: string
+      hotelPictureID:
+        type: integer
     type: object
   model.Room:
     properties:
+      bedType:
+        type: string
       hotelID:
         type: integer
       occupancy:
@@ -31,7 +63,18 @@ definitions:
         type: integer
       roomName:
         type: string
-      roomTypeID:
+      roomPicture:
+        items:
+          $ref: '#/definitions/model.RoomPicture'
+        type: array
+    type: object
+  model.RoomPicture:
+    properties:
+      roomID:
+        type: integer
+      roomPicture:
+        type: string
+      roomPictureID:
         type: integer
     type: object
   model.User:
@@ -53,6 +96,8 @@ definitions:
       profilePicture:
         type: string
       role:
+        type: string
+      securityQuestion:
         type: string
       status:
         type: string
@@ -80,6 +125,49 @@ info:
   title: TPA-Website
   version: "1.0"
 paths:
+  /airline:
+    get:
+      consumes:
+      - application/json
+      description: Get an airline
+      parameters:
+      - description: Airline
+        in: body
+        name: airline
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Airline found successfully!
+          schema:
+            type: string
+      summary: Get airline
+      tags:
+      - Airline
+    post:
+      consumes:
+      - application/json
+      description: Add a new airline
+      parameters:
+      - description: Airline
+        in: body
+        name: airline
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Airline created successfully!
+          schema:
+            type: string
+      summary: Add airline
+      tags:
+      - Airline
   /hotel:
     get:
       consumes:
@@ -97,17 +185,98 @@ paths:
       summary: List hotel
       tags:
       - Hotel
-  /hotel/{hotelId}/rooms:
+    post:
+      consumes:
+      - application/json
+      description: Add a new hotel
+      parameters:
+      - description: Hotel
+        in: body
+        name: hotel
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel created successfully!
+          schema:
+            type: string
+      summary: Add hotel
+      tags:
+      - Hotel
+  /hotel/add_hotel_facilities:
+    post:
+      consumes:
+      - application/json
+      description: Add a new hotel facilities
+      parameters:
+      - description: Hotel Facilities
+        in: body
+        name: hotelFacilities
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel facilities created successfully!
+          schema:
+            type: string
+      summary: Add hotel facilities
+      tags:
+      - Hotel
+  /hotel/add_hotel_picture:
+    post:
+      consumes:
+      - application/json
+      description: Add a new hotel picture
+      parameters:
+      - description: Hotel Picture
+        in: body
+        name: hotelPicture
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel picture created successfully!
+          schema:
+            type: string
+      summary: Add hotel picture
+      tags:
+      - Hotel
+  /hotel/add_hotel_room:
+    post:
+      consumes:
+      - application/json
+      description: Add a new hotel room
+      parameters:
+      - description: Hotel Room
+        in: body
+        name: hotelRoom
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel room created successfully!
+          schema:
+            type: string
+      summary: Add hotel room
+      tags:
+      - Hotel
+  /hotel/facilities:
     get:
       consumes:
       - application/json
-      description: Get a list of rooms for a specific hotel
-      parameters:
-      - description: Hotel ID
-        in: path
-        name: hotelId
-        required: true
-        type: integer
+      description: Get a list of hotel facilities
       produces:
       - application/json
       responses:
@@ -115,11 +284,33 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/model.Room'
+              $ref: '#/definitions/model.Facilities'
             type: array
-      summary: List rooms for a hotel
+      summary: List hotel facilities
       tags:
-      - Room
+      - Hotel
+  /plane:
+    post:
+      consumes:
+      - application/json
+      description: Add a new plane
+      parameters:
+      - description: Plane
+        in: body
+        name: plane
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Plane created successfully!
+          schema:
+            type: string
+      summary: Add plane
+      tags:
+      - Plane
   /room:
     get:
       consumes:
@@ -137,21 +328,26 @@ paths:
       summary: List rooms
       tags:
       - Room
-  /room/type:
-    get:
+  /room/add_hotel_room_picture:
+    post:
       consumes:
       - application/json
-      description: Get a list of bedtypes
+      description: Add a new room picture
+      parameters:
+      - description: Room Picture
+        in: body
+        name: roomPicture
+        required: true
+        schema:
+          type: string
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Room picture created successfully!
           schema:
-            items:
-              $ref: '#/definitions/model.BedType'
-            type: array
-      summary: List bed types
+            type: string
+      summary: Add room picture
       tags:
       - Room
   /user:

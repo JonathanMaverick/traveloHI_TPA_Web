@@ -19,7 +19,7 @@
     }   
 }
 
-.add-airline-form {
+.add-form {
     display: none;
     position: fixed;
     top: 50%;
@@ -33,4 +33,38 @@
     &.open{
         display: block;
     }
+}
+
+.airline-list{
+    .airline-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .airline-item {
+        width: 200px;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        text-align: center;
+        background-color: $card-background;
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.2);
+        cursor: pointer;
+
+        .airline-image-container{
+            height: 150px;
+            @include centered;
+            img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 4px;
+            }
+        }
+        p {
+            margin-top: 10px;
+            color: $black;
+        }
+    }
+    
 }

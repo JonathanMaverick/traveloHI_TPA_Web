@@ -28,7 +28,6 @@ export default function AddAirline(){
         else{
             alert("Airline added successfully!")
         }
-        setAirline(INITIAL_AIRLINE_STATE);
         window.location.reload();
     }
 

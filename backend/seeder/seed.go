@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/JonathanMaverickTPA_Web/config"
+	"github.com/JonathanMaverickTPA_Web/model"
 )
 
 func Seed() {
@@ -57,42 +58,42 @@ func Seed() {
 	// 	},
 	// }
 
-	// facilities := []model.Facilities{
-	// 	{
-	// 		FacilitiesName: "Swimming Pool",
-	// 	},
-	// 	{
-	// 		FacilitiesName: "Gym",
-	// 	},
-	// 	{
-	// 		FacilitiesName : "Wifi",
-	// 	},
-	// 	{
-	// 		FacilitiesName : "Breakfast",
-	// 	},
-	// 	{
-	// 		FacilitiesName : "Parking",
-	// 	},
-	// 	{
-	// 		FacilitiesName : "Spa",
-	// 	},
-	// 	{
-	// 		FacilitiesName : "Restaurant",
-	// 	},
-	// 	{
-	// 		FacilitiesName : "Bar",
-	// 	},
-	// 	{
-	// 		FacilitiesName : "Airport Shuttle",
-	// 	},
-	// 	{
-	// 		FacilitiesName : "Lift",
-	// 	},
-	// }
+	facilities := []model.Facilities{
+		{
+			FacilitiesName: "Swimming Pool",
+		},
+		{
+			FacilitiesName: "Gym",
+		},
+		{
+			FacilitiesName : "Wifi",
+		},
+		{
+			FacilitiesName : "Breakfast",
+		},
+		{
+			FacilitiesName : "Parking",
+		},
+		{
+			FacilitiesName : "Spa",
+		},
+		{
+			FacilitiesName : "Restaurant",
+		},
+		{
+			FacilitiesName : "Bar",
+		},
+		{
+			FacilitiesName : "Airport Shuttle",
+		},
+		{
+			FacilitiesName : "Lift",
+		},
+	}
 
 
 	// db.Create(&hotel)
 	// db.Create(&room)
 	// db.Create(&users)
-	// db.Create(&facilities)
+	db.Create(&facilities)
 }

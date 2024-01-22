@@ -14,6 +14,8 @@ func migrate(db *gorm.DB){
 	// db.Migrator().DropTable(&model.BedType{})
 	// db.Migrator().DropTable(&model.Room{})
 	// db.Migrator().DropTable(&model.User{})
+	// db.Migrator().DropTable(&model.HotelFacilities{})
+	// db.Migrator().DropTable(&model.Facilities{})
 
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.OTP{})

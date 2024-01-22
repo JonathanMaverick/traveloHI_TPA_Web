@@ -33,6 +33,7 @@ export function UserProvider({children} : IChildren){
     
         if (result == -1) {
             setUser(null);
+            localStorage.removeItem("user");
         }
         else{
             localStorage.setItem(

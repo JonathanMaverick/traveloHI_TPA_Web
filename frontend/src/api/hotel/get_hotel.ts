@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const getHotel = async() => {
+const get_hotel = async() => {
 
     try{
         const response =  await axios.get(
@@ -15,4 +15,4 @@ const getHotel = async() => {
     }
 }
 
-export default getHotel;
+export default get_hotel;

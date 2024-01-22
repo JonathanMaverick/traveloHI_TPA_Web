@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const getFacilities = async() => {
+const get_facilities = async() => {
 
     try{
         const response =  await axios.get(
@@ -14,4 +14,4 @@ const getFacilities = async() => {
     }
 }
 
-export default getFacilities;
+export default get_facilities;

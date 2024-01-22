@@ -5,12 +5,14 @@ import AddHotel from "../pages/hotel/addHotel";
 import ViewHotel from "../pages/hotel/viewHotel";
 import { MdAirlines } from "react-icons/md";
 import ManageAirline from "../pages/flight/manageAirline";
+import ManagePlane from "../pages/flight/managePlane";
 
 export interface IMenu {
     name : string;
     path: string;
     element: JSX.Element;
     icon?: JSX.Element;
+    status?: string;
 }
 
 export const MENU_LIST: IMenu[] = [  
@@ -47,5 +49,11 @@ export const ADMIN_LIST: IMenu[] = [
         path : "/manage-airline",
         element : <ManageAirline />,
         icon : <MdAirlines />
+    },
+    {
+        name : "Manage Airline",
+        path : "/airlines/:id",
+        element : <ManagePlane />,
+        status : "skip"
     }
 ]

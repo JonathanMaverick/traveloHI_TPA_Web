@@ -24,6 +24,72 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/airline": {
+            "get": {
+                "description": "Get an airline",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Airline"
+                ],
+                "summary": "Get airline",
+                "parameters": [
+                    {
+                        "description": "Airline",
+                        "name": "airline",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Airline found successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add a new airline",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Airline"
+                ],
+                "summary": "Add airline",
+                "parameters": [
+                    {
+                        "description": "Airline",
+                        "name": "airline",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Airline created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/hotel": {
             "get": {
                 "description": "Get a list of hotel",
@@ -48,11 +114,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/hotel/{hotelId}/rooms": {
-            "get": {
-                "description": "Get a list of rooms for a specific hotel",
+            },
+            "post": {
+                "description": "Add a new hotel",
                 "consumes": [
                     "application/json"
                 ],
@@ -60,26 +124,187 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Room"
+                    "Hotel"
                 ],
-                "summary": "List rooms for a hotel",
+                "summary": "Add hotel",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Hotel ID",
-                        "name": "hotelId",
-                        "in": "path",
-                        "required": true
+                        "description": "Hotel",
+                        "name": "hotel",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "Hotel created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/hotel/add_hotel_facilities": {
+            "post": {
+                "description": "Add a new hotel facilities",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hotel"
+                ],
+                "summary": "Add hotel facilities",
+                "parameters": [
+                    {
+                        "description": "Hotel Facilities",
+                        "name": "hotelFacilities",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hotel facilities created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/hotel/add_hotel_picture": {
+            "post": {
+                "description": "Add a new hotel picture",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hotel"
+                ],
+                "summary": "Add hotel picture",
+                "parameters": [
+                    {
+                        "description": "Hotel Picture",
+                        "name": "hotelPicture",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hotel picture created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/hotel/add_hotel_room": {
+            "post": {
+                "description": "Add a new hotel room",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hotel"
+                ],
+                "summary": "Add hotel room",
+                "parameters": [
+                    {
+                        "description": "Hotel Room",
+                        "name": "hotelRoom",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hotel room created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/hotel/facilities": {
+            "get": {
+                "description": "Get a list of hotel facilities",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hotel"
+                ],
+                "summary": "List hotel facilities",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/model.Room"
+                                "$ref": "#/definitions/model.Facilities"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/plane": {
+            "post": {
+                "description": "Add a new plane",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Plane"
+                ],
+                "summary": "Add plane",
+                "parameters": [
+                    {
+                        "description": "Plane",
+                        "name": "plane",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Plane created successfully!",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -111,9 +336,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/room/type": {
-            "get": {
-                "description": "Get a list of bedtypes",
+        "/room/add_hotel_room_picture": {
+            "post": {
+                "description": "Add a new room picture",
                 "consumes": [
                     "application/json"
                 ],
@@ -123,15 +348,23 @@ const docTemplate = `{
                 "tags": [
                     "Room"
                 ],
-                "summary": "List bed types",
+                "summary": "Add room picture",
+                "parameters": [
+                    {
+                        "description": "Room Picture",
+                        "name": "roomPicture",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Room picture created successfully!",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.BedType"
-                            }
+                            "type": "string"
                         }
                     }
                 }
@@ -263,37 +496,86 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "model.BedType": {
+        "model.Facilities": {
             "type": "object",
             "properties": {
-                "roomName": {
-                    "type": "string"
-                },
-                "roomTypeID": {
+                "facilitiesID": {
                     "type": "integer"
+                },
+                "facilitiesName": {
+                    "type": "string"
                 }
             }
         },
         "model.Hotel": {
             "type": "object",
             "properties": {
-                "address": {
+                "hotelAddress": {
                     "type": "string"
                 },
-                "description": {
+                "hotelCity": {
                     "type": "string"
+                },
+                "hotelDescription": {
+                    "type": "string"
+                },
+                "hotelFacilities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.HotelFacilities"
+                    }
                 },
                 "hotelID": {
                     "type": "integer"
                 },
-                "name": {
+                "hotelName": {
                     "type": "string"
+                },
+                "hotelPictures": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.HotelPicture"
+                    }
+                }
+            }
+        },
+        "model.HotelFacilities": {
+            "type": "object",
+            "properties": {
+                "facilities": {
+                    "$ref": "#/definitions/model.Facilities"
+                },
+                "facilitiesID": {
+                    "type": "integer"
+                },
+                "hotelFacilitiesID": {
+                    "type": "integer"
+                },
+                "hotelID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.HotelPicture": {
+            "type": "object",
+            "properties": {
+                "hotelID": {
+                    "type": "integer"
+                },
+                "hotelPicture": {
+                    "type": "string"
+                },
+                "hotelPictureID": {
+                    "type": "integer"
                 }
             }
         },
         "model.Room": {
             "type": "object",
             "properties": {
+                "bedType": {
+                    "type": "string"
+                },
                 "hotelID": {
                     "type": "integer"
                 },
@@ -312,7 +594,24 @@ const docTemplate = `{
                 "roomName": {
                     "type": "string"
                 },
-                "roomTypeID": {
+                "roomPicture": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.RoomPicture"
+                    }
+                }
+            }
+        },
+        "model.RoomPicture": {
+            "type": "object",
+            "properties": {
+                "roomID": {
+                    "type": "integer"
+                },
+                "roomPicture": {
+                    "type": "string"
+                },
+                "roomPictureID": {
                     "type": "integer"
                 }
             }
@@ -345,6 +644,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
+                    "type": "string"
+                },
+                "securityQuestion": {
                     "type": "string"
                 },
                 "status": {
