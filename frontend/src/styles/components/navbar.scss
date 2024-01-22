@@ -61,6 +61,23 @@
         gap: 5px;
     }
 
+    .overlay{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        display: block;
+        background-color: $black;
+        opacity: 0.5;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+  
+    .overlay.open{
+        display: block;
+        z-index: 98;
+    }
+
     .flag-container{
         @include centered;
         gap: 3px;
@@ -116,23 +133,6 @@
 
     .logout:hover{
         background-color: darken($red, 10%);
-    }
-
-    .sidebar-overlay{
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        display: none;
-        background-color: $black;
-        opacity: 0.5;
-        top: 0;
-        left: 0;
-        z-index: -1;
-    }
-  
-    .sidebar-overlay.open{
-        display: block;
-        z-index: 98;
     }
 
     #profile-picture{

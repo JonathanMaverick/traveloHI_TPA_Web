@@ -6,6 +6,6 @@ export interface IHotel{
     hotelDescription : string;
     hotelAddress : string;
     hotelCity : string;
-    hotelPictures: IHotelPicture[];
-    hotelFacilities: IHotelFacilities[];
+    hotelPictures?: IHotelPicture[];
+    hotelFacilities?: IHotelFacilities[];
 }

@@ -109,13 +109,12 @@ export default function RegisterPage(){
                     </div>
                 </div>
 
-                <div className="profile-picture">
+                <div className="text-field">
                     <label htmlFor="profile">Profile Picture</label>
                     <input
                         id="profile"
                         type="file"
                         accept=".jpg, .jpeg, .png"
-                        className="p-2"
                         onChange={(e) => {
                             setProfilePicture(e.target.files![0]);
                         }}

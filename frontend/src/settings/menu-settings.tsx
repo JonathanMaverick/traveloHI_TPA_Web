@@ -3,6 +3,8 @@ import HomePage from "../pages/home/home-page";
 import { FaHome, FaHotel, FaPlaneDeparture } from "react-icons/fa";
 import AddHotel from "../pages/hotel/addHotel";
 import ViewHotel from "../pages/hotel/viewHotel";
+import { MdAirlines } from "react-icons/md";
+import ManageAirline from "../pages/flight/manageAirline";
 
 export interface IMenu {
     name : string;
@@ -39,5 +41,11 @@ export const ADMIN_LIST: IMenu[] = [
         path: "/view-hotel",
         element: <ViewHotel />,
         icon: <FaHotel />
+    },
+    {
+        name : "Manage Airline",
+        path : "/manage-airline",
+        element : <ManageAirline />,
+        icon : <MdAirlines />
     }
 ]

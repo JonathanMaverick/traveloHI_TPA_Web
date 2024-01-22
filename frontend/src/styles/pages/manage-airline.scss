@@ -1,0 +1,36 @@
+@import "../variables.scss";
+@import "../mixins.scss";
+
+.airline-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    button{
+        background-color: $icon-color;
+        border: none;
+        color: white;
+        height: 2.5rem;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        &:hover{
+            background-color: darken($icon-color, 10%);
+        }
+    }   
+}
+
+.add-airline-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    background-color: $white;
+    padding: 1rem;
+    z-index: 99; 
+    border-radius: 10px;
+    &.open{
+        display: block;
+    }
+}

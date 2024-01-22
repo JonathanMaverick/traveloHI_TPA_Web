@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/JonathanMaverickTPA_Web/config"
@@ -97,7 +96,7 @@ func AddHotelPicture(c *gin.Context){
 func AddHotelFacilities(c *gin.Context){
 	var hotelFacilities model.HotelFacilities
 	c.BindJSON(&hotelFacilities)
-	fmt.Println(hotelFacilities)
+
 	result := config.DB.Create(&hotelFacilities)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to create hotel facilities!"})
