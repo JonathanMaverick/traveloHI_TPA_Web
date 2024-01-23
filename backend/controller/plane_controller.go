@@ -77,9 +77,9 @@ func GetPlanes(c *gin.Context) {
 // @Tags Plane
 // @Accept json
 // @Produce json
-// @Param planeID path int true "Plane ID"
+// @Param airlineID path int true "Airline ID"
 // @Success 200 {string} string "Plane found successfully!"
-// @Router airline/plane/{airlineID} [get]
+// @Router /airline/plane/{airlineID} [get]
 func GetPlanesByAirline(c *gin.Context) {
 	var planes []model.Plane
 	airlineID := c.Params.ByName("airlineID")

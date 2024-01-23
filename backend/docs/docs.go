@@ -90,6 +90,122 @@ const docTemplate = `{
                 }
             }
         },
+        "/airline/plane/{airlineID}": {
+            "get": {
+                "description": "Get a plane",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Plane"
+                ],
+                "summary": "Get plane by airline",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Airline ID",
+                        "name": "airlineID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Plane found successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight/airport": {
+            "get": {
+                "description": "Get a list of airports",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight"
+                ],
+                "summary": "List airports",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Airport"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/flight/schedule": {
+            "get": {
+                "description": "Get a list of flight schedules",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight"
+                ],
+                "summary": "List flight schedules",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.FlightSchedule"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add a new flight schedule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight"
+                ],
+                "summary": "Add flight schedule",
+                "parameters": [
+                    {
+                        "description": "Flight Schedule",
+                        "name": "flightSchedule",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Flight schedule created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/hotel": {
             "get": {
                 "description": "Get a list of hotel",
@@ -277,6 +393,27 @@ const docTemplate = `{
             }
         },
         "/plane": {
+            "get": {
+                "description": "Get all planes",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Plane"
+                ],
+                "summary": "Get planes",
+                "responses": {
+                    "200": {
+                        "description": "Planes found successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Add a new plane",
                 "consumes": [
@@ -496,6 +633,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "model.Airport": {
+            "type": "object",
+            "properties": {
+                "airportCode": {
+                    "type": "string"
+                },
+                "airportID": {
+                    "type": "integer"
+                },
+                "airportLocation": {
+                    "type": "string"
+                },
+                "airportName": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Facilities": {
             "type": "object",
             "properties": {
@@ -504,6 +658,35 @@ const docTemplate = `{
                 },
                 "facilitiesName": {
                     "type": "string"
+                }
+            }
+        },
+        "model.FlightSchedule": {
+            "type": "object",
+            "properties": {
+                "arrivalTime": {
+                    "type": "string"
+                },
+                "businessPrice": {
+                    "type": "integer"
+                },
+                "departureTime": {
+                    "type": "string"
+                },
+                "destinationAirportID": {
+                    "type": "integer"
+                },
+                "economyPrice": {
+                    "type": "integer"
+                },
+                "flightScheduleID": {
+                    "type": "integer"
+                },
+                "originAirportID": {
+                    "type": "integer"
+                },
+                "planeID": {
+                    "type": "integer"
                 }
             }
         },

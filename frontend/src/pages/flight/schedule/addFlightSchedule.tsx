@@ -47,10 +47,8 @@ export default function AddFlightSchedule() {
   const [plane, setPlane] = useState<IPlane[]>([]);
   const [airport, setAirport] = useState<IAirport[]>([]);
   const [selectedPlaneID, setSelectedPlaneID] = useState<string>("");
-  const [selectedOriginAirportID, setSelectedOriginAirportID] =
-    useState<string>("");
-  const [selectedDestinationAirportID, setSelectedDestinationAirportID] =
-    useState<string>("");
+  const [selectedOriginAirportID, setSelectedOriginAirportID] = useState<string>("");
+  const [selectedDestinationAirportID, setSelectedDestinationAirportID] = useState<string>("");
   const [flightSchedule, setFlightSchedule] = useState<IFlightSchedule>(
     INITIAL_FLIGHT_DETAIL
   );
@@ -68,11 +66,7 @@ export default function AddFlightSchedule() {
 
     flightSchedule.planeID = parseInt(selectedPlaneID);
     flightSchedule.originAirportID = parseInt(selectedOriginAirportID);
-    flightSchedule.destinationAirportID = parseInt(
-      selectedDestinationAirportID
-    );
-
-    console.log(JSON.stringify(flightSchedule));
+    flightSchedule.destinationAirportID = parseInt(selectedDestinationAirportID);
 
     try {
       const response = await add_flight_schedule(flightSchedule);

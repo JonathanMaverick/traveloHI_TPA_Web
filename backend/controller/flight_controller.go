@@ -63,7 +63,7 @@ func GetAirlines(c *gin.Context){
 // @Tags Flight
 // @Accept json
 // @Produce json
-// @Success 200 {array} Airports
+// @Success 200 {array} model.Airport
 // @Router /flight/airport [get]
 func GetAirports(c *gin.Context) {
 	var airports []model.Airport
@@ -119,15 +119,12 @@ func AddFlightSchedule(c *gin.Context){
 		return
 	}
 
-	fmt.Println(flightSchedule.ArrivalTime)
-	fmt.Println(flightSchedule.DepartureTime)
-
-	if(flightSchedule.ArrivalTime.IsZero()){
+	if(flightSchedule.ArrivalTime == ""){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Arrival time can't be empty!"})
 		return
 	}
 
-	if(flightSchedule.DepartureTime.IsZero()){
+	if(flightSchedule.DepartureTime == ""){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Departure time can't be empty!"})
 		return
 	}
@@ -141,3 +138,21 @@ func AddFlightSchedule(c *gin.Context){
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Flight schedule added successfully!"})
 }
 
+//GetFlightSchedules lists all existing flight schedules
+// @Summary List flight schedules
+// @Description Get a list of flight schedules
+// @Tags Flight
+// @Accept json
+// @Produce json
+// @Success 200 {array} model.FlightSchedule
+// @Router /flight/schedule [get]
+func GetFlightSchedules(c *gin.Context) {
+	var flightSchedules []model.FlightSchedule
+	result := config.DB.Preload("Plane").Preload("OriginAirport").Preload("DestinationAirport").Find(&flightSchedules)
+
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No flight schedules found!"})
+		return
+	}
+	c.AsciiJSON(http.StatusOK, flightSchedules)
+}
