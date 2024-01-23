@@ -7,6 +7,9 @@ import (
 func FlightRoute(r *gin.Engine) {
 	flight := r.Group("/flight")
 	{
+		//Flight Schedule
+		flight.POST("/schedule", controller.AddFlightSchedule)
+
 		//Airline
 		flight.POST("/airline", controller.AddAirline)
 		flight.GET("/airline", controller.GetAirlines)

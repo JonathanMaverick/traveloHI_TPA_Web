@@ -64,7 +64,8 @@ func GetUser(c *gin.Context) {
 }
 
 func isNameValid(name string) bool {
-    return regexp.MustCompile("^[a-zA-Z\\s]+$").MatchString(name) && len(name) > 5
+    pattern := regexp.MustCompile(`^[a-zA-Z\s]+$`)
+	return pattern.MatchString(name) && len(name) > 5
 }
 
 // CreateUser creates a new user account

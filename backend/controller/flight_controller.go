@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/JonathanMaverickTPA_Web/config"
@@ -20,11 +21,6 @@ import (
 func AddAirline(c *gin.Context){
 	var airline model.Airline
 	c.BindJSON(&airline)
-	result := config.DB.Create(&airline)
-	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to add airline!"})
-		return
-	}
 
 	if(airline.AirlineName == ""){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Airline name can't be empty!"})
@@ -33,6 +29,12 @@ func AddAirline(c *gin.Context){
 
 	if(airline.AirlineLogo == ""){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Airline logo can't be empty!"})
+		return
+	}
+
+	result := config.DB.Create(&airline)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to add airline!"})
 		return
 	}
 
@@ -72,4 +74,70 @@ func GetAirports(c *gin.Context) {
 	}
 	c.AsciiJSON(http.StatusOK, airports)
 } 
+
+//AddSchedule creates a new flight schedule
+// @Summary Add flight schedule
+// @Description Add a new flight schedule
+// @Tags Flight
+// @Accept json
+// @Produce json
+// @Param flightSchedule body string true "Flight Schedule"
+// @Success 200 {string} string "Flight schedule created successfully!"
+// @Router /flight/schedule [post]
+func AddFlightSchedule(c *gin.Context){
+	var flightSchedule model.FlightSchedule
+	c.BindJSON(&flightSchedule)
+	fmt.Println(flightSchedule)
+
+	if(flightSchedule.PlaneID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Plane ID can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.OriginAirportID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Origin airport ID can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.DestinationAirportID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Destination airport ID can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.OriginAirportID == flightSchedule.DestinationAirportID){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Origin and destination airport can't be the same!"})
+		return
+	}
+
+	if(flightSchedule.BusinessPrice == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Business seats price can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.EconomyPrice == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Economy seats price can't be empty!"})
+		return
+	}
+
+	fmt.Println(flightSchedule.ArrivalTime)
+	fmt.Println(flightSchedule.DepartureTime)
+
+	if(flightSchedule.ArrivalTime.IsZero()){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Arrival time can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.DepartureTime.IsZero()){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Departure time can't be empty!"})
+		return
+	}
+
+	result := config.DB.Create(&flightSchedule)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to add flight schedule!"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Flight schedule added successfully!"})
+}
 

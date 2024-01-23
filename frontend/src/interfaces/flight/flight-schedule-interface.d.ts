@@ -4,8 +4,8 @@ export interface IFlightSchedule {
     planeID : number;
     originAirportID : number;
     destinationAirportID : number;
-    businessSeatsPrice : number;
-    economySeatsPrice : number;
+    businessPrice : number;
+    economyPrice : number;
     arrivalTime : string;
     departureTime : string;
 
