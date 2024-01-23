@@ -1,24 +1,23 @@
 @import "../mixins.scss";
 @import "../variables.scss";
 
-.text-field{
+.text-field {
+  input,
+  select {
+    @include border-radius;
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: $global-font-family;
+    display: block;
+  }
 
-    input,
-    select {
-      @include border-radius;
-      width: 100%;
-      padding: 6px;
-      margin-bottom: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-      font-family: $global-font-family;
-      display: block;
-    }
-        
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: $font-color;
-    }
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: $font-color;
+  }
 }

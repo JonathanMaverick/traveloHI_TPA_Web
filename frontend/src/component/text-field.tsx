@@ -15,7 +15,13 @@ export default function TextField (props : ITextField){
     return(
         <div className='text-field'>
             <label>{label}</label>
-            <input type={type} name={name} value ={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)}/>
+            <input 
+            type={type} 
+            name={name} 
+            value ={value} 
+            placeholder={placeholder} 
+            onChange={(e) => onChange(e.target.value)}
+            />
         </div>
     )
 }

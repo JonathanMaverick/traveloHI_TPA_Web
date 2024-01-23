@@ -13,5 +13,11 @@ func FlightRoute(r *gin.Engine) {
 
 		//Plane
 		flight.POST("/plane", controller.AddPlane)
+		flight.GET("/plane", controller.GetPlanes)
+
+		flight.GET("/airline/plane/:airlineID", controller.GetPlanesByAirline)
+
+		//Airport
+		flight.GET("/airports", controller.GetAirports)
 	}
 }

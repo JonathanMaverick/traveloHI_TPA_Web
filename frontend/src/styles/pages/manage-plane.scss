@@ -1,0 +1,36 @@
+@import "../mixins.scss";
+@import "../variables.scss";
+
+.planes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px 8px;
+
+  .plane-card {
+    background-color: $card-background;
+    border-radius: 8px;
+    @include box-shadow;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .seats-info {
+      p {
+        margin: 0;
+      }
+    }
+  }
+}

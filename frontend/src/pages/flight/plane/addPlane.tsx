@@ -1,9 +1,9 @@
 import { FormEvent, useState } from "react";
-import TextField from "../../component/text-field";
-import Button from "../../component/button";
-import { IPlane } from "../../interfaces/flight/plane-interface";
 import { useParams } from "react-router-dom";
-import add_plane from "../../api/flight/add_plane";
+import { IPlane } from "../../../interfaces/flight/plane-interface";
+import add_plane from "../../../api/flight/plane/add_plane";
+import TextField from "../../../component/text-field";
+import Button from "../../../component/button";
 
 export default function AddPlane(){
 
@@ -53,7 +53,7 @@ export default function AddPlane(){
                 value={plane?.economySeats.toString()}
                 onChange={(e:string) => setPlane({ ...plane, economySeats: parseInt(e) })}
               />
-            <Button content="Add Airline"/>
+            <Button content="Add Plane"/>
         </form>
     )
 }

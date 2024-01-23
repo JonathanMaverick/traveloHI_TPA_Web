@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { IChildren } from "../interfaces/children-interface";
-import { IUser } from "../interfaces/user-interface";
 import axios from "axios";
 import setCookie from "../settings/set-cookie";
 import authenticate from "../api/auth/auth";
 import getCookie from "../settings/get_cookie";
-import { IOTP } from "../interfaces/otp-interface";
 import { useNavigate } from "react-router-dom";
+import { IUser } from "../interfaces/user-interface";
+import { IOTP } from "../interfaces/otp-interface";
+import { IChildren } from "../interfaces/children-interface";
 
 interface IUserContext{
     user : IUser | null;
@@ -34,6 +34,7 @@ export function UserProvider({children} : IChildren){
         if (result == -1) {
             setUser(null);
             localStorage.removeItem("user");
+            setCookie('token', '', -1);
         }
         else{
             localStorage.setItem(

@@ -1,11 +1,11 @@
-import AddFlight from "../pages/flight/addFlight";
+import ManageAirline from "../pages/flight/airline/manageAirline";
+import ManageFlightSchedule from "../pages/flight/schedule/manageFlightSchedule";
+import ManagePlane from "../pages/flight/plane/managePlane";
 import HomePage from "../pages/home/home-page";
-import { FaHome, FaHotel, FaPlaneDeparture } from "react-icons/fa";
 import AddHotel from "../pages/hotel/addHotel";
 import ViewHotel from "../pages/hotel/viewHotel";
+import { FaHome, FaHotel, FaPlaneDeparture } from "react-icons/fa";
 import { MdAirlines } from "react-icons/md";
-import ManageAirline from "../pages/flight/manageAirline";
-import ManagePlane from "../pages/flight/managePlane";
 
 export interface IMenu {
     name : string;
@@ -27,9 +27,9 @@ export const MENU_LIST: IMenu[] = [
 // export const USER_LIST: IMenu[] = [
 export const ADMIN_LIST: IMenu[] = [
     {
-        name: "Add Flight",
+        name: "Manage Flight Schedule",
         path: "/add-flight",
-        element: <AddFlight />,
+        element: <ManageFlightSchedule />,
         icon: <FaPlaneDeparture />
     },
     {

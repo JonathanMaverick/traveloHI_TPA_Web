@@ -1,5 +1,5 @@
+import { IAirline } from "@interfaces/flight/airline-interface";
 import axios from "axios";
-import { IAirline } from "../../interfaces/flight/airline-interface";
 
 const add_airline = async(airline : IAirline) => {
     try{

@@ -1,5 +1,5 @@
+import { IHotel } from "@interfaces/hotel/hotel-interface";
 import axios from "axios";
-import { IHotel } from "../../interfaces/hotel/hotel-interface";
 
 const add_hotel = async(hotel : IHotel) => {
     try{

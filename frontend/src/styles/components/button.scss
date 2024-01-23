@@ -2,21 +2,20 @@
 @import "../variables.scss";
 
 .login-register-button {
-    @include border-radius;
-    background-color: $button; 
-    color: $white;
-    border: none;
-    margin: 10px 0;
-    padding: 14px 20px;
-    cursor: pointer;
-    font-weight: 800;
-    letter-spacing: 0.5px; 
-    transition: all 0.3s ease-in-out;
-    width: 100%;
+  @include border-radius;
+  background-color: $button;
+  color: $white;
+  border: none;
+  margin: 10px 0;
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
 
-    &:hover {
-      background-color: darken($button, 10%);
-      color: $white;
-    }
+  &:hover {
+    background-color: darken($button, 10%);
+    color: $white;
   }
-  
+}

@@ -1,5 +1,5 @@
+import { IRoomPicture } from "@interfaces/hotel/room-picture-interface";
 import axios from "axios";
-import { IRoomPicture } from "../../interfaces/hotel/room-picture-interface";
 
 const add_room_picture = async(room : IRoomPicture) => {
     try{

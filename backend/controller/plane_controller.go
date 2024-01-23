@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//AddPlane creates a new plane
+// AddPlane creates a new plane
 // @Summary Add plane
 // @Description Add a new plane
 // @Tags Plane
@@ -48,4 +48,48 @@ func AddPlane(c *gin.Context){
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Plane added successfully!"})
+}
+
+// GetPlanes returns all planes
+// @Summary Get planes
+// @Description Get all planes
+// @Tags Plane
+// @Accept json
+// @Produce json
+// @Success 200 {string} string "Planes found successfully!"
+// @Router /plane [get]
+func GetPlanes(c *gin.Context) {
+	var planes []model.Plane
+
+	result := config.DB.Find(&planes)
+
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "error": result.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Planes found successfully!", "planes": planes})
+}
+
+// GetPlane returns a plane by airline
+// @Summary Get plane by airline
+// @Description Get a plane
+// @Tags Plane
+// @Accept json
+// @Produce json
+// @Param planeID path int true "Plane ID"
+// @Success 200 {string} string "Plane found successfully!"
+// @Router airline/plane/{airlineID} [get]
+func GetPlanesByAirline(c *gin.Context) {
+	var planes []model.Plane
+	airlineID := c.Params.ByName("airlineID")
+
+	result := config.DB.Where("airline_id = ?", airlineID).Find(&planes)
+
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "error": result.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Planes found successfully!", "planes": planes})
 }

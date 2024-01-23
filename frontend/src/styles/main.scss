@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 body {
   font-family: $global-font-family;
@@ -6,10 +6,10 @@ body {
   margin: 0;
 }
 
-button{
+button {
   font-family: $global-font-family;
 }
 
-a{
+a {
   text-decoration: none;
 }

@@ -55,3 +55,21 @@ func GetAirlines(c *gin.Context){
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "airlines": airlines})
 }
 
+//GetAirports lists all existing airports
+// @Summary List airports
+// @Description Get a list of airports
+// @Tags Flight
+// @Accept json
+// @Produce json
+// @Success 200 {array} Airports
+// @Router /flight/airport [get]
+func GetAirports(c *gin.Context) {
+	var airports []model.Airport
+	result := config.DB.Find(&airports)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No airports found!"})
+		return
+	}
+	c.AsciiJSON(http.StatusOK, airports)
+} 
+

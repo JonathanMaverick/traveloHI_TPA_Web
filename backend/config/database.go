@@ -32,7 +32,6 @@ func migrate(db *gorm.DB){
 	db.AutoMigrate(&model.Airport{})
 	db.AutoMigrate(&model.Airline{})
 	db.AutoMigrate(&model.Plane{})
-	db.AutoMigrate(&model.FlightDetail{})
 	db.AutoMigrate(&model.FlightSchedule{})
 }
 

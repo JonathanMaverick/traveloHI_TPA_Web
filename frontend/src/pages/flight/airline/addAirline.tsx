@@ -1,10 +1,11 @@
 import { FormEvent, useState } from "react";
-import TextField from "../../component/text-field";
-import { IAirline } from "../../interfaces/flight/airline-interface";
-import Button from "../../component/button";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../../settings/firebase";
-import add_airline from "../../api/flight/add_airline";
+import { IAirline } from "../../../interfaces/flight/airline-interface";
+import { storage } from "../../../settings/firebase";
+import add_airline from "../../../api/flight/airline/add_airline";
+import TextField from "../../../component/text-field";
+import Button from "../../../component/button";
+
 
 export default function AddAirline(){
 

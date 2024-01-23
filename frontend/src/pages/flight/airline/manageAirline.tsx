@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import "../../styles/pages/manage-airline.scss"
-import "../../styles/components/navbar.scss"
+import "../../../styles/pages/manage-airline.scss"
+import "../../../styles/components/navbar.scss"
 import AddAirline from "./addAirline"
-import get_airline from "../../api/flight/get_airline"
-import { IAirline } from "../../interfaces/flight/airline-interface"
+import { IAirline } from "../../../interfaces/flight/airline-interface"
 import { Link } from "react-router-dom"
+import get_airline from "../../../api/flight/airline/get_airline"
 
 export default function ManageAirline(){
 
