@@ -378,3 +378,45 @@ func ChangePassword(c *gin.Context) {
     config.DB.Save(&user)
     c.String(http.StatusOK, "Success")
 }
+
+func BanUser(c *gin.Context) {
+	var user model.User
+	c.ShouldBindJSON(&user)
+
+	var userBan model.User
+	config.DB.First(&userBan, "email = ?", user.Email)
+	if userBan.ID == 0 {
+		c.String(http.StatusBadRequest, "Email not found")
+		return
+	}
+
+	if userBan.Status != "active" {
+		c.String(http.StatusBadRequest, "You Are Banned")
+		return
+	}
+
+	userBan.Status = "banned"
+	config.DB.Save(&userBan)
+	c.String(http.StatusOK, "Success")
+}
+
+func UnbanUser(c *gin.Context) {
+	var user model.User
+	c.ShouldBindJSON(&user)
+
+	var userBan model.User
+	config.DB.First(&userBan, "email = ?", user.Email)
+	if userBan.ID == 0 {
+		c.String(http.StatusBadRequest, "Email not found")
+		return
+	}
+
+	if userBan.Status != "banned" {
+		c.String(http.StatusBadRequest, "You Are Not Banned")
+		return
+	}
+
+	userBan.Status = "active"
+	config.DB.Save(&userBan)
+	c.String(http.StatusOK, "Success")
+}

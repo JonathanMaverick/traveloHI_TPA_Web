@@ -13,6 +13,9 @@ func UserRoute(r *gin.Engine) {
 		user.GET("/:userId", controller.GetUser)
 		user.POST("/", controller.CreateUser)
 
+		user.POST("/ban-user", controller.BanUser)
+		user.POST("/unban-user", controller.UnbanUser)
+
 		user.POST("/login", controller.Login)
 		user.POST("/authenticate",middleware.RequireAuthentication, controller.Authenticate)
 

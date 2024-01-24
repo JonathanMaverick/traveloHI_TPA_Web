@@ -155,7 +155,6 @@ func GetFlightSchedules(c *gin.Context) {
 	Preload("DestinationAirport").
 	Find(&flightSchedules)
 
-	fmt.Println(flightSchedules)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No flight schedules found!"})
 		return
