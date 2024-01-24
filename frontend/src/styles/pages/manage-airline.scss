@@ -55,10 +55,10 @@
     cursor: pointer;
 
     .airline-image-container {
-      height: 150px;
+      height: 100px;
       @include centered;
       img {
-        max-width: 100%;
+        width: 100px;
         height: auto;
         border-radius: 4px;
       }

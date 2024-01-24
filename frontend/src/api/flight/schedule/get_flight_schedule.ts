@@ -7,7 +7,6 @@ const get_flight_schedule = async() => {
         );
         return response;
     }catch(error: any){
-        alert(error.response.data.message)
         return -1;
     }
 }

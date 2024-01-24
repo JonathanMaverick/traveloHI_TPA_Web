@@ -1,0 +1,91 @@
+@import "../../../variables.scss";
+@import "../../../mixins.scss";
+
+.flight-schedule-card {
+  background: $card-background;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  @include box-shadow;
+  margin: 10px;
+  transition: border 0.2s ease;
+  border: 0.5px solid transparent;
+
+  &:hover {
+    cursor: pointer;
+    border: 0.5px solid $icon-color;
+  }
+
+  .flight-schedule-content {
+    .upper-flight-schedule-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .airline-logo-container {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        align-items: center;
+        img {
+          width: 2rem;
+        }
+        p {
+          font-size: $font-size-p;
+        }
+      }
+
+      .flight-schedule-detail {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        width: 300px;
+        .flight-schedule-time {
+        @include centered;
+          p {
+            font-size: $font-size-p;
+          }
+          display: flex;
+          flex-direction: row;
+          text-align: center;
+          gap: 10px;
+          .flight-city-code {
+            color: $secondary-font-color;
+          }
+        }
+        .flight-schedule-price {
+            width: 10rem;
+            display: flex;
+            justify-content: flex-end;
+            color: $price-font-color;
+          .flight-schedule-price-org {
+            color: $secondary-font-color;
+          }
+        }
+      }
+    }
+    .bottom-flight-schedule-content {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.5rem 0;
+
+      .detail-flight-schedule {
+        font-size: $font-size-p;
+        color: $secondary-font-color;
+        text-decoration: none;
+        transition: color 0.3s ease, text-decoration 0.3s ease;
+        
+        &.accordion-open{
+            color: $icon-color;
+        }
+      }
+
+      button {
+        background-color: $price-font-color;
+        color: $white;
+        border: none;
+        padding: 5px 20px;
+        @include border-radius;
+      }
+    }
+  }
+
+}

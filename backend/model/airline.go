@@ -1,9 +1,7 @@
 package model
 
-type Airline struct{
-	AirlineID uint `json:"airlineID" gorm:"primaryKey;autoIncrement"`
+type Airline struct {
+	ID   uint   `json:"airlineID"`
 	AirlineName string `json:"airlineName"`
 	AirlineLogo string `json:"airlineLogo"`
-
-	Plane[] Plane `json:"plane" gorm:"foreignKey:AirlineID"`
 }

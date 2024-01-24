@@ -1,7 +1,7 @@
 package model
 
 type Airport struct{
-	AirportID uint `json:"airportID" gorm:"primaryKey;autoIncrement"`
+	ID uint `json:"airportID"`
 	AirportName string `json:"airportName"`
 	AirportLocation string `json:"airportLocation"`
 	AirportCode string `json:"airportCode" gorm:"unique"`

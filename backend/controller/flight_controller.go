@@ -32,6 +32,7 @@ func AddAirline(c *gin.Context){
 		return
 	}
 
+	fmt.Println(airline)
 	result := config.DB.Create(&airline)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to add airline!"})
@@ -87,7 +88,6 @@ func GetAirports(c *gin.Context) {
 func AddFlightSchedule(c *gin.Context){
 	var flightSchedule model.FlightSchedule
 	c.BindJSON(&flightSchedule)
-	fmt.Println(flightSchedule)
 
 	if(flightSchedule.PlaneID == 0){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Plane ID can't be empty!"})
@@ -148,8 +148,14 @@ func AddFlightSchedule(c *gin.Context){
 // @Router /flight/schedule [get]
 func GetFlightSchedules(c *gin.Context) {
 	var flightSchedules []model.FlightSchedule
-	result := config.DB.Preload("Plane").Preload("OriginAirport").Preload("DestinationAirport").Find(&flightSchedules)
+	result := config.DB.
+	Preload("Plane").
+	Preload("Plane.Airline").
+	Preload("OriginAirport").
+	Preload("DestinationAirport").
+	Find(&flightSchedules)
 
+	fmt.Println(flightSchedules)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No flight schedules found!"})
 		return

@@ -165,7 +165,7 @@ func Login(c *gin.Context){
 	c.ShouldBindJSON(&loginAttempt)
 
 	config.DB.First(&user, "email = ?", loginAttempt.Email)
-	if user.UserID == 0 {
+	if user.ID == 0 {
 		c.String(http.StatusBadRequest, "Email not found")
 		return
 	}
@@ -219,14 +219,14 @@ func RequestOTP(c *gin.Context){
 
 	var user model.User;
 	config.DB.First(&user, "email = ?", otpRequest.UserEmail)
-	if user.UserID == 0 {
+	if user.ID == 0 {
 		c.String(http.StatusBadRequest, "Email not found")
 		return
 	}
 
 	var otp model.OTP;
 	config.DB.First(&otp, "user_email = ?", otpRequest.UserEmail)
-	if otp.OTPID != 0 {
+	if otp.ID != 0 {
 		c.String(http.StatusBadRequest, "OTP already sent")
 		return
 	}
@@ -274,7 +274,7 @@ func LoginOTP(c *gin.Context){
 
 	var otp model.OTP;
 	config.DB.First(&otp, "user_email = ?", otpRequest.UserEmail)
-	if otp.OTPID == 0 {
+	if otp.ID == 0 {
 		c.String(http.StatusBadRequest, "OTP not found")
 		return
 	}
@@ -310,7 +310,7 @@ func GetUserSecurityQuestion(c *gin.Context) {
 
 	var userSecurityQuestion model.User
 	config.DB.First(&userSecurityQuestion, "email = ?", user.Email)
-	if userSecurityQuestion.UserID == 0 {
+	if userSecurityQuestion.ID == 0 {
 		c.String(http.StatusBadRequest, "Email not found")
 		return
 	}
@@ -329,7 +329,7 @@ func ValidateSecurityAnswer(c *gin.Context){
 
 	var userSecurityQuestion model.User
 	config.DB.First(&userSecurityQuestion, "email = ?", user.Email)
-	if userSecurityQuestion.UserID == 0 {
+	if userSecurityQuestion.ID == 0 {
 		c.String(http.StatusBadRequest, "Email not found")
 		return
 	}
@@ -353,7 +353,7 @@ func ChangePassword(c *gin.Context) {
 
     var user model.User
     config.DB.First(&user, "email = ?", userAttempt.Email)
-    if user.UserID == 0 {
+    if user.ID == 0 {
         c.String(http.StatusBadRequest, "Email not found")
         return
     }

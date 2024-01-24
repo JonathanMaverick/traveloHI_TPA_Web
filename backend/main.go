@@ -6,6 +6,7 @@ import (
 	"github.com/JonathanMaverickTPA_Web/config"
 	_ "github.com/JonathanMaverickTPA_Web/docs"
 	"github.com/JonathanMaverickTPA_Web/route"
+	seed "github.com/JonathanMaverickTPA_Web/seeder"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/cors"
 	swaggerFiles "github.com/swaggo/files"
@@ -32,7 +33,7 @@ func main() {
 	r := gin.Default()
 	config.Connect()
 	// Seeding Backup >//<
-	// seed.Seed() 
+	seed.Seed() 
 
 	opts := cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173"},

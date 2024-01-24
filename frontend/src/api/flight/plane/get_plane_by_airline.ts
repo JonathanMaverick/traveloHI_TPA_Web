@@ -7,7 +7,6 @@ const get_plane_by_airline = async(airlineID : string) => {
         );
         return response;
     }catch(error: any){
-        alert(error.response.data)
         return -1;
     }
 }

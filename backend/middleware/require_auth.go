@@ -49,7 +49,7 @@ func RequireAuthentication(c *gin.Context) {
 		}
 		var user model.User
 		config.DB.First(&user, "email = ?", claims["sub"])
-		if user.UserID == 0 {
+		if user.ID == 0 {
 			c.String(http.StatusBadRequest, "Email not found")
 		} 
 		c.Set("user", user)

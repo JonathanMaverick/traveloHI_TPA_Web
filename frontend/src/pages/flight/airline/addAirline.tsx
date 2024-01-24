@@ -20,7 +20,7 @@ export default function AddAirline(){
         const imageRef = ref(storage, `airline/${airline.airlineName}/${airline.logoImage}`);
         await uploadBytes(imageRef, airline.logoImage!);
         airline.airlineLogo = await getDownloadURL(imageRef);
-
+        console.log(airline);
         const response = await add_airline(airline);
         if(response == -1){
             alert("Error occured!")

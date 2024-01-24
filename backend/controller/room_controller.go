@@ -43,7 +43,7 @@ func AddHotelRoom(c *gin.Context){
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to create hotel room!"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"roomID": hotelRoom.RoomID, "message": "Hotel room created successfully!"})
+	c.JSON(http.StatusOK, gin.H{"roomID": hotelRoom.ID, "message": "Hotel room created successfully!"})
 }
 
 // AddHotelRoomPicture creates a new room picture

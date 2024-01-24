@@ -34,7 +34,6 @@ export function UserProvider({children} : IChildren){
         if (result == -1) {
             setUser(null);
             localStorage.removeItem("user");
-            setCookie('token', '', -1);
         }
         else{
             localStorage.setItem(
