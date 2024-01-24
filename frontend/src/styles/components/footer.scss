@@ -1,0 +1,75 @@
+@import "../variables.scss";
+@import "../mixins.scss";
+
+.footer-content{
+    background-color: $footer-color;
+    color: $white;
+    @include centered;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    .footer-container{
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        width: 20rem;
+        padding: 2rem;
+
+        p{
+            color: #B0B4B6;
+            margin: 10px;
+        }
+
+        .payment-partner{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            .image-payment-partner{
+                background-color: $white;
+                padding: 5px;
+                border-radius: 5px;
+                flex-wrap: wrap;
+                margin-bottom: 10px;
+                flex-basis: calc(25% - 10px);
+                box-sizing: border-box;
+                height: 48px;
+                @include centered;
+                img{
+                    width: 57px;
+                    height: 19px;
+                    object-fit: cover;
+                }
+            }
+        }
+
+        .follow-us-content{
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+            img{
+                filter: grayscale(100%); 
+                transition: filter 0.3s ease;
+            }
+
+            &:hover{
+                img{
+                    filter: grayscale(0%); 
+                }
+                p{
+                    color: $white;
+                    text-decoration: underline;
+                }
+            }
+        }
+
+    }
+}
+
+.copyright{
+    background-color: $footer-color;
+    color: $white;
+    @include centered;
+    padding: 1rem;
+    border-top:2px solid #374247;
+}
