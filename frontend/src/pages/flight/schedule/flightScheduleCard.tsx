@@ -3,8 +3,6 @@ import { IFlightSchedule } from "../../../interfaces/flight/flight-schedule-inte
 import "../../../styles/pages/flight/schedule/flight_schedule_card.scss";
 
 const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule }) => {
-    // const formattedArrivalTime = new Date(flightSchedule.arrivalTime).toLocaleString();
-    // const formattedDepartureTime = new Date(flightSchedule.departureTime).toLocaleString();
 
     const formatTime = (date:string) => {
       const newDate = new Date(date);
@@ -52,7 +50,12 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
         </div>
         {isAccordionOpen && (
         <div className="accordion-content">
-          <h1>hello world</h1>
+          <p>{flightSchedule.OriginAirport?.airportLocation}({flightSchedule.OriginAirport?.airportCode})</p>
+          <p>{flightSchedule.OriginAirport?.airportName}</p>
+          <p>{flightSchedule.Plane?.Airline?.airlineName}</p>
+          <p>{flightSchedule.Plane?.planeCode}</p>
+          <p>{flightSchedule.DestinationAirport?.airportLocation}({flightSchedule.DestinationAirport?.airportCode})</p>
+          <p>{flightSchedule.DestinationAirport?.airportName}</p>
         </div>
       )}
       </div>

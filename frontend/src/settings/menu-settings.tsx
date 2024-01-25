@@ -4,8 +4,9 @@ import ManagePlane from "../pages/flight/plane/managePlane";
 import HomePage from "../pages/home/home-page";
 import AddHotel from "../pages/hotel/addHotel";
 import ViewHotel from "../pages/hotel/viewHotel";
-import { FaHome, FaHotel, FaPlaneDeparture } from "react-icons/fa";
+import { FaHome, FaHotel, FaPlaneDeparture, FaUser } from "react-icons/fa";
 import { MdAirlines } from "react-icons/md";
+import ManageUser from "../pages/user/manageUser";
 
 export interface IMenu {
     name : string;
@@ -55,5 +56,11 @@ export const ADMIN_LIST: IMenu[] = [
         path : "/airlines/:id",
         element : <ManagePlane />,
         status : "skip"
+    },
+    {
+        name : "Manage User",
+        path : "/manage-user",
+        element : <ManageUser />,
+        icon: <FaUser />
     }
 ]
