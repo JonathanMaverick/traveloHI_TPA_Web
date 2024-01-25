@@ -1,0 +1,86 @@
+@import "../../mixins.scss";
+@import "../../variables.scss";
+
+.profile-page{
+    padding: 1.5rem 0rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+    .profile-information{
+        background-color: $card-background;
+        max-width: 350px;
+        height: 290px;
+        border-radius: 10%;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        .profile-information-detail{
+            display: flex;
+            flex-direction: row;
+            @include centered;
+            gap: 1rem;
+            padding: .5rem 0rem;
+            border-bottom: 0.1rem solid #CDD0D1;
+            overflow: hidden;
+            margin-bottom: 15px;
+            img{
+                width: 64px;
+                height: 64px;
+                object-fit: cover;
+                border-radius: 50%;
+                @include box-shadow;
+            }
+        }
+        .profile-information-option{
+            display: flex;
+            flex-direction: row;
+            font-size: 18px;
+            margin: .2rem;
+            justify-content: start;
+            gap: .8rem;
+            padding: .5rem;
+            border-radius: 5px;
+            &:hover{
+                cursor: pointer;
+                background-color: $hover-color;
+            }
+            .profile-icon{
+                width: 1.5rem;
+                height: 1.5rem;
+                color: $icon-color;
+            }
+        }
+    }
+    .profile-container{
+        width: 100%;
+        h2{
+            margin-top: 0;
+        }
+        .profile-content{
+            background-color: $card-background;
+            display: block;
+            padding: 1rem;
+
+            .personal-information{
+                p{
+                    margin: 0;
+                    font-size: 18px;
+                    padding: .5rem 0rem;
+                    font-weight: 500;
+                }
+                border-bottom: 0.1rem solid #CDD0D1;
+            }
+            .personal-form{
+                width: 100%;
+                margin: .8rem 0;
+                .name-form{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    gap: 2rem;
+                }
+            }
+        }
+    }
+}

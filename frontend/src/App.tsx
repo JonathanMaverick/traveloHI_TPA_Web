@@ -7,6 +7,7 @@ import UserRouteMiddleware from "./routes/user-route-middleware";
 import GuestRouteMiddleware from "./routes/guest-route-middleware";
 import AdminRouteMiddleware from "./routes/admin-route-middleware";
 import ForgetPassPage from "./pages/login/forgetpass-page";
+import { CurrencyProvider } from "./contexts/currency-context";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
     <>
       <BrowserRouter>
         <UserProvider>
+        <CurrencyProvider>
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
@@ -22,6 +24,7 @@ function App() {
               <Route path= "/user/*" element={<UserRouteMiddleware />} />
               <Route path= "/*" element={<GuestRouteMiddleware />} />
             </Routes>
+        </CurrencyProvider>
         </UserProvider>
       </BrowserRouter>
     </>

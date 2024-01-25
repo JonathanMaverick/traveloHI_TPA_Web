@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IFlightSchedule } from "../../../interfaces/flight/flight-schedule-interface";
-import "../../../styles/pages/flight/schedule/flight_schedule_card.scss";
+import "../../../styles/pages/flight/schedule/flight_schedule_card.scss"
 
 const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule }) => {
 

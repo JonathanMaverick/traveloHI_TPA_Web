@@ -1,11 +1,12 @@
 import ManageAirline from "../pages/flight/airline/manageAirline";
 import ManageFlightSchedule from "../pages/flight/schedule/manageFlightSchedule";
 import ManagePlane from "../pages/flight/plane/managePlane";
-import HomePage from "../pages/home/home-page";
 import AddHotel from "../pages/hotel/addHotel";
 import ViewHotel from "../pages/hotel/viewHotel";
 import { FaHome, FaHotel, FaPlaneDeparture, FaUser } from "react-icons/fa";
 import { MdAirlines } from "react-icons/md";
+import ProfilePage from "../pages/profile/profile-page";
+import HomePage from "../pages/home/home-page";
 import ManageUser from "../pages/user/manageUser";
 
 export interface IMenu {
@@ -25,7 +26,15 @@ export const MENU_LIST: IMenu[] = [
     },
 ]
 
-// export const USER_LIST: IMenu[] = [
+export const USER_LIST: IMenu[] = [
+    {
+        name: "Profile",
+        path: "/profile/:id",
+        element: <ProfilePage />,
+        status: "skip"
+    }
+]
+
 export const ADMIN_LIST: IMenu[] = [
     {
         name: "Manage Flight Schedule",
@@ -62,5 +71,11 @@ export const ADMIN_LIST: IMenu[] = [
         path : "/manage-user",
         element : <ManageUser />,
         icon: <FaUser />
+    },
+    {
+        name: "Profile",
+        path: "/profile/:id",
+        element: <ProfilePage />,
+        status: "skip"
     }
 ]

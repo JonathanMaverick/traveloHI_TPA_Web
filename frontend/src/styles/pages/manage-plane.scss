@@ -17,6 +17,19 @@
     padding: 1rem;
     transition: transform 0.3s ease-in-out;
     cursor: pointer;
+    position: relative;
+
+    .remove-button{
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: red;
+      color: white;
+      padding: 10px;
+      border-radius: 100px;
+      cursor: pointer;
+      @include centered;
+    }
 
     &:hover {
       transform: scale(1.05);
@@ -33,4 +46,5 @@
       }
     }
   }
+  
 }

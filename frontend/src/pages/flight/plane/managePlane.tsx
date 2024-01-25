@@ -4,6 +4,8 @@ import "../../../styles/pages/manage-plane.scss"
 import { useParams } from "react-router-dom";
 import get_plane_by_airline from "../../../api/flight/plane/get_plane_by_airline";
 import { IPlane } from "../../../interfaces/flight/plane-interface";
+import { IoMdRemoveCircleOutline } from "react-icons/io";
+import remove_plane from "../../../api/flight/plane/remove_plane";
 
 export default function ManagePlane(){
 
@@ -30,6 +32,11 @@ export default function ManagePlane(){
     };
     const { id } = useParams();
 
+    const removePlane = async (planeID: number) => {
+        await remove_plane(planeID.toString());
+        window.location.reload();
+    }
+
     return(
         <div>
             <div className="airline-title">
@@ -47,6 +54,9 @@ export default function ManagePlane(){
                     <div className="seats-info">
                         <p>Economy Seats: {plane.economySeats}</p>
                         <p>Business Seats: {plane.businessSeats}</p>
+                    </div>
+                    <div className="remove-button" onClick={() => removePlane(plane?.planeID || 0)}>
+                        <IoMdRemoveCircleOutline />
                     </div>
                 </div>
             ))}

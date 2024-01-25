@@ -2,6 +2,7 @@
 @import "../variables.scss";
 
 .text-field {
+  width: 100%;
   input,
   select {
     @include border-radius;

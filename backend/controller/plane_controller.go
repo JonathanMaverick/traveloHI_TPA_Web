@@ -93,3 +93,26 @@ func GetPlanesByAirline(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Planes found successfully!", "planes": planes})
 }
+
+// DeletePlane deletes a plane
+// @Summary Delete plane
+// @Description Delete a plane
+// @Tags Plane
+// @Accept json
+// @Produce json
+// @Param planeID path int true "Plane ID"
+// @Success 200 {string} string "Plane deleted successfully!"
+// @Router /plane/{planeID} [delete]
+func DeletePlane(c *gin.Context) {
+	planeID := c.Params.ByName("planeID")
+
+	var plane model.Plane
+	result := config.DB.Where("id = ?", planeID).Delete(&plane)
+
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "error": result.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Plane deleted successfully!"})
+}
