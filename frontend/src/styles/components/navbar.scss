@@ -80,18 +80,74 @@
 
   .flag-container {
     @include centered;
+    position: relative;
     gap: 3px;
+    width: 115px;
     .flag {
       width: 1.8rem;
       height: 1.8rem;
       border-radius: 100%;
       margin-right: 6px;
     }
+    .hover-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+    }
+    &:hover .hover-content {
+      display: block;
+    }
   }
 
   .pay {
     @include centered;
     gap: 2px;
+    position: relative;
+    .pay-content{
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 15rem;
+      @include border-radius;
+      padding: 1rem;
+      background-color: $card-background;
+      h3{
+        margin: 10px 0px;
+      }
+      .payment-from-travelohi{
+        display: flex;
+        justify-content: space-between;
+      }
+      .travelohi-payment{
+        display: flex;
+        flex-direction: row;
+        margin: 10px 5px;
+        gap: 3px;
+        align-items: center;
+      }
+    }
+    &:hover .pay-content {
+      display: block;
+    }
+  }
+
+  .hi-wallet{
+    display: relative;
+    .hi-wallet-balance{
+      position: absolute;
+      display: none;
+      top: 40%;
+      right: 100%;
+      background-color: black;
+      color: white;
+      @include border-radius;
+      padding: 5px 15px;
+    }
+    &:hover .hi-wallet-balance{
+      display: block;
+    }
   }
 
   .login {

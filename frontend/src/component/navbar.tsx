@@ -1,19 +1,21 @@
 import "../styles/components/navbar.scss"
 import useUser from "../contexts/user-context";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { FaCartPlus, FaSearch } from "react-icons/fa";
+import { FaCartPlus, FaRegCreditCard, FaSearch, FaWallet } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useState } from 'react';
 import '../styles/components/sidebar.scss';
-import { ADMIN_LIST, MENU_LIST } from "../settings/menu-settings";
+import { ADMIN_LIST, MENU_LIST, USER_LIST } from "../settings/menu-settings";
+import useCurrency from "../contexts/currency-context";
 
 export default function Navbar() {
 
     const { logout, user } = useUser();
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
+    const {currency, setCurrency} = useCurrency();
 
     const logoutClick = () => {
         logout();
@@ -26,6 +28,18 @@ export default function Navbar() {
     const sidebarMenuClick = (path: string) => {
         navigate(path);
     }
+
+    const handleClick = () => {
+        if (currency === 'IDR') {
+            setCurrency('USD');
+        } else {
+            setCurrency('IDR');
+        }
+    };
+
+    const redirectProfilePage = () => {
+        navigate(`../user/profile/${user?.userID}`);
+    };
 
     return (
         <div className="nav-bar">
@@ -45,6 +59,15 @@ export default function Navbar() {
                             {icon}{name}
                         </div>
                     ))}
+                    {user && (
+                        USER_LIST.map(({ path, icon, name, status }: any) => (
+                            status !== "skip" && (
+                                <div key={path} onClick={() => sidebarMenuClick(path.startsWith('/user') ? path : `/user${path}`)} className="sidebar-menu">
+                                    {icon}{name}
+                                </div>
+                            )
+                        ))
+                    )}
                     {user?.role === 'admin' && (
                         ADMIN_LIST.map(({ path, icon, name, status }: any) => (
                             status !== "skip" && (
@@ -69,13 +92,46 @@ export default function Navbar() {
                 <p>Pesanan Saya</p>
             </div>
             <div className="flag-container hover">
-                <img className="flag" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/250px-Flag_of_Indonesia.svg.png" alt="" />
-                IDR
+                <img className="flag" src={currency === 'IDR' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/250px-Flag_of_Indonesia.svg.png' : 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Flag_of_the_United_States_%28Pantone%29.svg/1200px-Flag_of_the_United_States_%28Pantone%29.svg.png'} alt="" />
+                {currency}
                 <RiArrowDropDownLine size={25} />
+                <div className="hover-content" onClick={handleClick}>
+                    <div className="flag-container hover">
+                        <img className="flag" src={currency !== 'IDR' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/250px-Flag_of_Indonesia.svg.png' : 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Flag_of_the_United_States_%28Pantone%29.svg/1200px-Flag_of_the_United_States_%28Pantone%29.svg.png'} alt="" />
+                        {currency === 'IDR' ? 'USD' : 'IDR'}
+                    </div>
+                </div>
             </div>
             <div className="pay hover">
                 Pay
                 <RiArrowDropDownLine size={25} />
+                <div className="pay-content">
+                    <h3>Payment</h3>
+                    <p>From TraveloHI</p>
+                    <div className="payment-from-travelohi">
+                        <div className="travelohi-payment hi-wallet">
+                            <FaWallet className="logo-icon" size={25} />
+                            <p>HI Wallet</p>
+                            <div className="hi-wallet-balance">
+                                <p>Balance</p>
+                                {currency == 'IDR' ? (
+                                    <p>Rp. {user?.wallet}</p>
+                                ) : (
+                                    <p>$ {user?.wallet ? (user.wallet / 14000).toFixed(4) : '0'}</p>
+                                )}
+                            </div>
+                        </div>
+                        <div className="travelohi-payment ">
+                            <FaRegCreditCard className="logo-icon" size={25} />
+                            <p>Credit Card</p>
+                        </div>
+                    </div>
+                    <p>Another Method</p>
+                    <div className="travelohi-payment">
+                        <FaWallet className="logo-icon" size={25} />
+                        <p>HI Debt</p>
+                    </div>
+                </div>
             </div>
             {user == null ? (
             <>
@@ -87,7 +143,7 @@ export default function Navbar() {
             </>
             ) : (
                 <>
-                    <img src={user.profilePicture} id="profile-picture" alt="" />
+                    <img onClick={redirectProfilePage} src={user.profilePicture} id="profile-picture" alt="" />
                     <button onClick={logoutClick} className="logout">Logout</button>
                 </>
             )}
