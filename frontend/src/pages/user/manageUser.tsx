@@ -17,7 +17,6 @@ export default function ManageUser(){
             const response = await get_user();
             if (response !== -1) {
               setUser(response.data);
-              console.log(response.data);
             }
           } catch (error) {
             console.error("Error fetching data:", error);
