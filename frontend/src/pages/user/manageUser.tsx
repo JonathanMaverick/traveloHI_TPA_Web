@@ -3,9 +3,10 @@ import { IUser } from "../../interfaces/user-interface";
 import get_user from "../../api/user/get_user";
 import { FaBan, FaUserCheck } from "react-icons/fa";
 import useUser from "../../contexts/user-context";
-import "../../styles/pages/user/user-card.scss"
+import "../../styles/pages/user/manage-user.scss"
 import ban_user from "../../api/user/ban_user";
 import unban_user from "../../api/user/unban_user";
+import SendMessageUser from "./sendMessageUser";
 
 export default function ManageUser(){
     
@@ -38,10 +39,21 @@ export default function ManageUser(){
 
     const [users, setUser] = useState<IUser[]>([]);
     const {user} = useUser()
+    const [showSendMessageUser, setShowSendMessageUser] = useState(false);
+    const toggleButton = () => {
+        setShowSendMessageUser(!showSendMessageUser);
+    };
 
     return (
         <div>
-            <h1>Manage User</h1>
+            <div className="manage-user-title">
+                <h1>Manage User</h1>
+                <button onClick={toggleButton}>Send Message</button>
+            </div>
+            <div className={`add-form ${showSendMessageUser ? 'open' : ''}`}>
+                <SendMessageUser />
+            </div>
+            <div className={`overlay ${showSendMessageUser ? 'open' : ''}`} onClick={() => setShowSendMessageUser(false)}></div>
             <div>
                 {users.map((u: IUser) => (
                     user?.email !== u.email && (

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IFlightSchedule } from "../../../interfaces/flight/flight-schedule-interface";
 import "../../../styles/pages/flight/schedule/flight_schedule_card.scss"
+import useCurrency from "../../../contexts/currency-context";
 
 const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule }) => {
 
@@ -13,6 +14,7 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
     const formattedArrivalTime = formatTime(flightSchedule.arrivalTime);
     const formattedDepartureTime = formatTime(flightSchedule.departureTime);
+    const {currency} = useCurrency();
 
     const toggleAccordion = () => {
       setIsAccordionOpen(!isAccordionOpen);
@@ -39,7 +41,11 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
                 </div>
               </div>
               <div className="flight-schedule-price">
-                <p>Rp. {flightSchedule.economyPrice} <span className="flight-schedule-price-org">/org</span></p>
+                {currency == "IDR" ? (
+                  <p>Rp. {flightSchedule.economyPrice} <span className="flight-schedule-price-org">/org</span></p>
+                ) : (
+                  <p>$ {(flightSchedule.economyPrice / 14000).toFixed(4)} <span className="flight-schedule-price-org">/people</span></p>
+                )}
               </div>
             </div>
           </div>

@@ -82,7 +82,7 @@ export default function Navbar() {
             </div>
             <div onClick={() => setSidebarOpen(false)} className={`overlay ${isSidebarOpen ? 'open' : ''}`}></div>
             <RxHamburgerMenu className="logo-icon" size={25} onClick={() => setSidebarOpen(true)}/>
-            <Link to="/"><p style={{fontWeight: "bolder", fontSize: "1.2rem"}}>TraveloHI</p></Link>
+            <Link to="/"><p style={{fontWeight: "bolder", fontSize: "1.2rem"}}>TraveLoHI</p></Link>
             <div className="search-bar">
                 <FaSearch className="search-icon logo-icon" size={20}/>
                 <input type="text" />

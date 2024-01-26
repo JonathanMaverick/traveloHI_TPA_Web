@@ -43,18 +43,6 @@ export const ADMIN_LIST: IMenu[] = [
         icon: <FaPlaneDeparture />
     },
     {
-        name: "Add Hotel",
-        path: "/add-hotel",
-        element: <AddHotel />,
-        icon: <FaHotel />
-    },
-    {
-        name: "View Hotel",
-        path: "/view-hotel",
-        element: <ViewHotel />,
-        icon: <FaHotel />
-    },
-    {
         name : "Manage Airline",
         path : "/manage-airline",
         element : <ManageAirline />,
@@ -71,6 +59,18 @@ export const ADMIN_LIST: IMenu[] = [
         path : "/manage-user",
         element : <ManageUser />,
         icon: <FaUser />
+    },
+    {
+        name: "Add Hotel",
+        path: "/add-hotel",
+        element: <AddHotel />,
+        icon: <FaHotel />
+    },
+    {
+        name: "View Hotel",
+        path: "/view-hotel",
+        element: <ViewHotel />,
+        icon: <FaHotel />
     },
     {
         name: "Profile",

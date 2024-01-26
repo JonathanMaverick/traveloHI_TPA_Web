@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -64,7 +65,7 @@ func GetUser(c *gin.Context) {
 }
 
 func isNameValid(name string) bool {
-    pattern := regexp.MustCompile(`^[a-zA-Z\s]+$`)
+	pattern := regexp.MustCompile(`^[a-zA-Z\s]+$`)
 	return pattern.MatchString(name) && len(name) > 5
 }
 
@@ -78,7 +79,7 @@ func isNameValid(name string) bool {
 // @Success 201 {object} model.User
 // @Router /user [post]
 func CreateUser(c *gin.Context) {
-    var newUser model.User
+	var newUser model.User
 	c.ShouldBindJSON(&newUser)
 
 	if newUser.Email == "" || newUser.FirstName == "" || newUser.LastName == "" || newUser.DOB == "" || newUser.Gender == "" || newUser.ProfilePicture == "" || newUser.PersonalSecurityAnswer == "" {
@@ -88,13 +89,13 @@ func CreateUser(c *gin.Context) {
 
 	if !isNameValid(strings.TrimSpace(newUser.FirstName)) {
 		c.String(http.StatusBadRequest, "First name must be at least 5 characters long")
-        return
-    }
+		return
+	}
 
 	if !isNameValid(strings.TrimSpace(newUser.LastName)) {
 		c.String(http.StatusBadRequest, "Last name must be at least 5 characters long")
-        return
-    }
+		return
+	}
 
 	_, err := mail.ParseAddress(newUser.Email)
 	if err != nil {
@@ -109,7 +110,7 @@ func CreateUser(c *gin.Context) {
 	}
 	dateAge := age.CalculateToNow(dob)
 
-	if dateAge < 13{
+	if dateAge < 13 {
 		c.String(http.StatusBadRequest, "You must be at least 13 years old")
 		return
 	}
@@ -124,10 +125,10 @@ func CreateUser(c *gin.Context) {
 	newUser.Wallet = 0
 
 	result := config.DB.Create(&newUser)
-    if result.Error != nil {
-        c.String(http.StatusBadRequest, "Email duplicated")
-        return
-    }
+	if result.Error != nil {
+		c.String(http.StatusBadRequest, "Email duplicated")
+		return
+	}
 
 	from := "VKTraveloHI@gmail.com"
 	password := "kpbyhdkeontawsvu"
@@ -145,10 +146,9 @@ func CreateUser(c *gin.Context) {
 	if err := dialer.DialAndSend(m); err != nil {
 		fmt.Println(err)
 	}
-	
-    c.String(http.StatusCreated, "Success create user")
-}
 
+	c.String(http.StatusCreated, "Success create user")
+}
 
 // Login logs in a user
 // @Summary Login user
@@ -159,9 +159,9 @@ func CreateUser(c *gin.Context) {
 // @Param user body string true "User details"
 // @Success 200 {string} string
 // @Router /user/login [post]
-func Login(c *gin.Context){
+func Login(c *gin.Context) {
 
-	var loginAttempt, user model.User;
+	var loginAttempt, user model.User
 	c.ShouldBindJSON(&loginAttempt)
 
 	config.DB.First(&user, "email = ?", loginAttempt.Email)
@@ -189,7 +189,7 @@ func Login(c *gin.Context){
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": user.Email,
-		"exp":  time.Now().Add(time.Hour * 24 * 30).Unix(),
+		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRETKEY")))
@@ -198,14 +198,14 @@ func Login(c *gin.Context){
 		return
 	}
 	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("token", tokenString, 3600 * 72, "", "", true, true)
+	c.SetCookie("token", tokenString, 3600*72, "", "", true, true)
 	fmt.Print(tokenString)
 	c.JSON(
 		http.StatusOK,
 		gin.H{
-		"token" : tokenString,
-		"user" : user,
-	})
+			"token": tokenString,
+			"user":  user,
+		})
 }
 
 func Authenticate(c *gin.Context) {
@@ -213,18 +213,18 @@ func Authenticate(c *gin.Context) {
 	c.JSON(200, user)
 }
 
-func RequestOTP(c *gin.Context){
+func RequestOTP(c *gin.Context) {
 	var otpRequest model.OTP
 	c.ShouldBindJSON(&otpRequest)
 
-	var user model.User;
+	var user model.User
 	config.DB.First(&user, "email = ?", otpRequest.UserEmail)
 	if user.ID == 0 {
 		c.String(http.StatusBadRequest, "Email not found")
 		return
 	}
 
-	var otp model.OTP;
+	var otp model.OTP
 	config.DB.First(&otp, "user_email = ?", otpRequest.UserEmail)
 	if otp.ID != 0 {
 		c.String(http.StatusBadRequest, "OTP already sent")
@@ -256,7 +256,7 @@ func RequestOTP(c *gin.Context){
 	c.String(http.StatusOK, "OTP Sent")
 }
 
-func LoginOTP(c *gin.Context){
+func LoginOTP(c *gin.Context) {
 	var otpRequest model.OTP
 	c.ShouldBindJSON(&otpRequest)
 
@@ -265,14 +265,14 @@ func LoginOTP(c *gin.Context){
 		return
 	}
 
-	var user model.User;
+	var user model.User
 	config.DB.First(&user, "email = ?", otpRequest.UserEmail)
 	if user.Status != "active" {
 		c.String(http.StatusBadRequest, "You Are Banned")
 		return
 	}
 
-	var otp model.OTP;
+	var otp model.OTP
 	config.DB.First(&otp, "user_email = ?", otpRequest.UserEmail)
 	if otp.ID == 0 {
 		c.String(http.StatusBadRequest, "OTP not found")
@@ -291,7 +291,7 @@ func LoginOTP(c *gin.Context){
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": otpRequest.UserEmail,
-		"exp":  time.Now().Add(time.Hour * 24 * 30).Unix(),
+		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRETKEY")))
@@ -323,7 +323,7 @@ func GetUserSecurityQuestion(c *gin.Context) {
 	c.JSON(http.StatusOK, userSecurityQuestion.SecurityQuestion)
 }
 
-func ValidateSecurityAnswer(c *gin.Context){
+func ValidateSecurityAnswer(c *gin.Context) {
 	var user model.User
 	c.ShouldBindJSON(&user)
 
@@ -348,35 +348,35 @@ func ValidateSecurityAnswer(c *gin.Context){
 }
 
 func ChangePassword(c *gin.Context) {
-    var userAttempt model.User
-    c.ShouldBindJSON(&userAttempt)
+	var userAttempt model.User
+	c.ShouldBindJSON(&userAttempt)
 
-    var user model.User
-    config.DB.First(&user, "email = ?", userAttempt.Email)
-    if user.ID == 0 {
-        c.String(http.StatusBadRequest, "Email not found")
-        return
-    }
+	var user model.User
+	config.DB.First(&user, "email = ?", userAttempt.Email)
+	if user.ID == 0 {
+		c.String(http.StatusBadRequest, "Email not found")
+		return
+	}
 
 	if user.Status != "active" {
 		c.String(http.StatusBadRequest, "You Are Banned")
 		return
 	}
 
-    err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userAttempt.Password))
-    if err == nil {
-        c.String(http.StatusBadRequest, "Password can't be the same as the old password")
-        return
-    }
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userAttempt.Password))
+	if err == nil {
+		c.String(http.StatusBadRequest, "Password can't be the same as the old password")
+		return
+	}
 
-    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userAttempt.Password), 10)
-    if err != nil {
-        panic(err)
-    }
-    user.Password = string(hashedPassword)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userAttempt.Password), 10)
+	if err != nil {
+		panic(err)
+	}
+	user.Password = string(hashedPassword)
 
-    config.DB.Save(&user)
-    c.String(http.StatusOK, "Success")
+	config.DB.Save(&user)
+	c.String(http.StatusOK, "Success")
 }
 
 func BanUser(c *gin.Context) {
@@ -419,4 +419,108 @@ func UnbanUser(c *gin.Context) {
 	userBan.Status = "active"
 	config.DB.Save(&userBan)
 	c.String(http.StatusOK, "Success")
+}
+
+// UpdateUser updates an existing user account
+// @Summary Update user
+// @Description Update an existing user account
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param userId path int true "User ID"
+// @Param user body string true "User details"
+// @Success 200 {string} string
+// @Router /user/{userId} [put]
+func UpdateUser(c *gin.Context) {
+	userIdStr := c.Param("userId")
+	userId, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid user ID"})
+		return
+	}
+	var updatedUser model.User
+	c.ShouldBindJSON(&updatedUser)
+	fmt.Println(updatedUser.SubscribedToNewsletter)
+
+	if !isNameValid(strings.TrimSpace(updatedUser.FirstName)) {
+		c.String(http.StatusBadRequest, "First name must be at least 5 characters long")
+		return
+	}
+
+	if !isNameValid(strings.TrimSpace(updatedUser.LastName)) {
+		c.String(http.StatusBadRequest, "Last name must be at least 5 characters long")
+		return
+	}
+
+	dob, err := time.Parse("2006-01-02", updatedUser.DOB)
+	if err != nil {
+		c.String(http.StatusBadRequest, "Invalid date format")
+		return
+	}
+	dateAge := age.CalculateToNow(dob)
+
+	if dateAge < 13 {
+		c.String(http.StatusBadRequest, "You must be at least 13 years old")
+		return
+	}
+
+	if err := config.DB.Model(&model.User{}).Where("id = ?", userId).Updates(map[string]interface{}{
+		"subscribed_to_newsletter": updatedUser.SubscribedToNewsletter,
+		"first_name":               updatedUser.FirstName,
+		"last_name":                updatedUser.LastName,
+		"dob":                      updatedUser.DOB,
+		"profile_picture":          updatedUser.ProfilePicture,
+		"gender":                   updatedUser.Gender,
+	}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user"})
+		return
+	}
+
+	var updatedUserFromDB model.User
+	config.DB.First(&updatedUserFromDB, userId)
+	fmt.Println(updatedUserFromDB.SubscribedToNewsletter)
+
+	c.String(http.StatusOK, "Success")
+}
+
+func VerifyRecaptcha(c *gin.Context) {
+	var recaptcha model.Recaptcha
+
+	if err := c.ShouldBindJSON(&recaptcha); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if recaptcha.Recaptcha == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Recaptcha is required"})
+		return
+	}
+	verifyURL := fmt.Sprintf("https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s",
+	os.Getenv("RECAPTCHA_SECRET_KEY"), recaptcha.Recaptcha)
+
+	response, err := http.Post(verifyURL, "application/json", nil)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to verify reCAPTCHA"})
+		return
+	}
+	defer response.Body.Close()
+
+	var result map[string]interface{}
+	if err := json.NewDecoder(response.Body).Decode(&result); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode reCAPTCHA response"})
+		return
+	}
+	
+	success, ok := result["success"].(bool)
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reCAPTCHA response format"})
+		return
+	}
+	
+	if !success {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "reCAPTCHA verification failed"})
+		return
+	}	
+
+	c.JSON(http.StatusOK, gin.H{"message": "Success"})
 }

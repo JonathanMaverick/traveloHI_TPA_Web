@@ -1,7 +1,14 @@
 import axios from "axios";
 import { IUser } from "../../interfaces/user-interface";
+import verify_recaptcha from "./verify_recaptcha";
 
-const register = async(user : IUser) => {
+const register = async(user : IUser, captcha : string) => {
+    const captcha_response = await verify_recaptcha(captcha);
+    if (captcha_response == -1){
+        alert('Captcha verification failed');
+        return -1;
+    }
+
     try{
         await axios.post(
             import.meta.env.VITE_API_URL + "/user/"
