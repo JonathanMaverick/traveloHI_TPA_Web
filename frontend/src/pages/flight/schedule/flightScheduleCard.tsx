@@ -55,14 +55,25 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
           </div>
         </div>
         {isAccordionOpen && (
-        <div className="accordion-content">
-          <p>{flightSchedule.OriginAirport?.airportLocation}({flightSchedule.OriginAirport?.airportCode})</p>
-          <p>{flightSchedule.OriginAirport?.airportName}</p>
-          <p>{flightSchedule.Plane?.Airline?.airlineName}</p>
-          <p>{flightSchedule.Plane?.planeCode}</p>
-          <p>{flightSchedule.DestinationAirport?.airportLocation}({flightSchedule.DestinationAirport?.airportCode})</p>
-          <p>{flightSchedule.DestinationAirport?.airportName}</p>
-        </div>
+          <div className="accordion-content">
+            <div className="airport-info">
+              <p className="location">
+                {flightSchedule.OriginAirport?.airportLocation} ({flightSchedule.OriginAirport?.airportCode})
+              </p>
+              <p className="name">{flightSchedule.OriginAirport?.airportName}</p>
+            </div>
+
+            <div className="flight-details">
+              <p className="airline">{flightSchedule.Plane?.Airline?.airlineName} - {flightSchedule.Plane?.planeCode}</p>
+            </div>
+
+            <div className="airport-info">
+              <p className="location">
+                {flightSchedule.DestinationAirport?.airportLocation} ({flightSchedule.DestinationAirport?.airportCode})
+              </p>
+              <p className="name">{flightSchedule.DestinationAirport?.airportName}</p>
+            </div>
+          </div>
       )}
       </div>
     );

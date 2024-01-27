@@ -17,7 +17,6 @@ import add_hotel_facilities from "../../api/hotel/add_hotel_facilities";
 import add_hotel_room from "../../api/hotel/add_hotel_room";
 import { IRoomPicture } from "../../interfaces/hotel/room-picture-interface";
 import add_room_picture from "../../api/hotel/add_room_picture";
-import { useNavigate } from "react-router-dom";
 import get_facilities from "../../api/hotel/get_facilities";
 
 export default function AddHotel() {
@@ -63,7 +62,6 @@ export default function AddHotel() {
   const [selectedFacilityId, setSelectedFacilityId] = useState('');
   const [step, setStep] = useState(1);
   const [isLoading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files;
@@ -194,7 +192,12 @@ export default function AddHotel() {
     setLoading(true);
     for (const room of tempRooms){
       const response = await add_hotel_room(room);
-      if(response == -1)alert('Error adding hotel');
+      if(response == -1)
+      {
+        alert('Error adding hotel');
+        setLoading(false);
+        return;
+      }
       else{
         const roomId = response?.data.roomID;
         for (const image of room.images){
@@ -204,7 +207,7 @@ export default function AddHotel() {
     }
     setLoading(false);
     alert('Hotel added successfully!');
-    navigate('/');
+    window.location.reload()
   }
 
   const renderStep = () => {

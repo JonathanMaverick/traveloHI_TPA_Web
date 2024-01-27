@@ -137,6 +137,17 @@ definitions:
       roomPictureID:
         type: integer
     type: object
+  model.Search:
+    properties:
+      id:
+        type: integer
+      search:
+        type: string
+      time:
+        type: string
+      userID:
+        type: integer
+    type: object
   model.User:
     properties:
       dob:
@@ -521,6 +532,78 @@ paths:
       summary: Add room picture
       tags:
       - Room
+  /search:
+    get:
+      consumes:
+      - application/json
+      description: Get all searches
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Get Searches
+      tags:
+      - Search
+    post:
+      consumes:
+      - application/json
+      description: Add search query to db
+      parameters:
+      - description: Search
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Search'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Add Search
+      tags:
+      - Search
+  /search/history/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: Get search history by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Get Search History
+      tags:
+      - Search
+  /search/top-search:
+    get:
+      consumes:
+      - application/json
+      description: Get the top 5 recent unique searches across all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Get Top Searches
+      tags:
+      - Search
   /user:
     get:
       consumes:

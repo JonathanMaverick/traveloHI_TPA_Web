@@ -1,0 +1,81 @@
+@import "../variables.scss";
+@import "../mixins.scss";
+
+.hotel-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+}
+  
+.hotel-card {
+    @include border-radius;
+    display: flex;
+    flex-direction: row;
+    height: 210px;
+  
+    .hotel-image {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 300px;
+        margin: 0;
+      
+        .rectangle-image {
+          height: 145px;
+          width: 100%;
+          object-fit: cover;
+        }
+      
+        .secondary-hotel-image {
+          height: 100%;
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+        align-items: flex-end;
+          .square-image {
+            width: 98px; 
+            height: 63px;
+            object-fit: cover;
+          }
+        }
+      }
+
+
+    .hotel-details{
+        padding: .5rem .5rem .5rem .5rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        h3{
+            margin: .5rem 0rem;
+        }
+        .hotel-location{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: .3rem;
+            p{
+                font-size: $font-size-p;
+            }
+        }
+        .hotel-facilities{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: .5rem;
+            margin: .5rem 0rem;
+            .facilities{
+                border: 1px solid rgb(224, 217, 217);
+                padding: 2px 5px;
+                display: flex;
+                background-color: ghostwhite;
+                border-radius: 10px;
+                font-size: 14px;
+            }
+        }
+    }
+      
+}
+  

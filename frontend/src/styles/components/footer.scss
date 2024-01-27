@@ -2,6 +2,7 @@
 @import "../mixins.scss";
 
 .footer-content{
+    margin-top: 2rem;
     background-color: $footer-color;
     color: $white;
     @include centered;
@@ -18,7 +19,7 @@
 
         p{
             color: #B0B4B6;
-            margin: 10px;
+            margin: 10px 0px;
         }
 
         .payment-partner{
@@ -50,6 +51,9 @@
             img{
                 filter: grayscale(100%); 
                 transition: filter 0.3s ease;
+            }
+            p{
+                margin-left: 10px;
             }
 
             &:hover{

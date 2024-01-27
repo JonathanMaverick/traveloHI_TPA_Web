@@ -1,21 +1,69 @@
 import "../styles/components/navbar.scss"
 import useUser from "../contexts/user-context";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { FaCartPlus, FaRegCreditCard, FaSearch, FaWallet } from "react-icons/fa";
+import { FaCartPlus, FaFire, FaRegCreditCard, FaSearch, FaWallet } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../styles/components/sidebar.scss';
 import { ADMIN_LIST, MENU_LIST, USER_LIST } from "../settings/menu-settings";
 import useCurrency from "../contexts/currency-context";
+import { ISearch } from "../interfaces/search/search-interface";
+import add_search from "../api/search/add_search";
+import get_search_history from "../api/search/get_search_history";
+import { MdHistory } from "react-icons/md";
+import get_top_5_search from "../api/search/get_top_5_search";
 
 export default function Navbar() {
+
+    useEffect(() => {
+        fetchSearchHistory();
+        fetchTopSearch();
+    }, []); 
+
+    const INITIAL_SEARCH: ISearch = {
+        search: " ",
+        userID : 0,
+    };
+
+    const fetchSearchHistory = async () => {
+        if(!user){
+            return;
+        }
+        else{
+            const response = await get_search_history(user?.userID || 0);
+            if (response == -1) {
+                return;
+            }else{
+                // console.log(response.data)
+                setSearchHistory(response.data);
+            }
+        }
+    };
+
+    const fetchTopSearch = async () => {
+        if(!user){
+            return;
+        }
+        else{
+            const response = await get_top_5_search();
+            if (response == -1) {
+                return;
+            }else{
+                setTopSearch(response.data);
+            }
+        }
+    };
 
     const { logout, user } = useUser();
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
     const {currency, setCurrency} = useCurrency();
+    const [searchData, setSearchData] = useState<ISearch>(INITIAL_SEARCH);
+    const [searchHistory, setSearchHistory] = useState<ISearch[]>([]);
+    const [topSearch, setTopSearch] = useState<ISearch[]>([]);
+    const [showSearchOptions, setShowSearchOptions] = useState(false);
 
     const logoutClick = () => {
         logout();
@@ -39,6 +87,25 @@ export default function Navbar() {
 
     const redirectProfilePage = () => {
         navigate(`../user/profile/${user?.userID}`);
+    };
+
+    const handleSearch = async () => {
+        if(!user){
+            searchData.userID = 0;
+        }
+        else{
+            searchData.userID = user.userID || 0;
+        }
+        await add_search(searchData);
+        setSearchData(INITIAL_SEARCH);
+    };
+
+    let topIndexCounter = 0;
+
+    const handleOptionClick = (value:any) => {
+        console.log(value);
+        setSearchData({ ...searchData, search: value });
+        setShowSearchOptions(false);
     };
 
     return (
@@ -85,7 +152,36 @@ export default function Navbar() {
             <Link to="/"><p style={{fontWeight: "bolder", fontSize: "1.2rem"}}>TraveLoHI</p></Link>
             <div className="search-bar">
                 <FaSearch className="search-icon logo-icon" size={20}/>
-                <input type="text" />
+                <input type="text"
+                    value={searchData!.search}
+                    onChange={(e) => {
+                        setSearchData({ ...searchData, search: e.target.value });
+                        setShowSearchOptions(true);
+                        console.log("Input value:", e.target.value);
+                    }}
+                    onFocus={() => setShowSearchOptions(true)} 
+                    onBlur={() => setShowSearchOptions(false)} 
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleSearch();
+                    }}
+                />
+                {showSearchOptions && (
+                    <div className="search-option" onClick={() => {console.log("hello world")}}>
+                    {topSearch.map((item) => (
+                        <div className="search-item" key={topIndexCounter++} onClick={() => {
+                            console.log('Clicked on search item:', item.search);
+                            handleOptionClick(item.search);
+                        }}>
+                            <FaFire color="#FF6921" /> {item.search}
+                        </div>
+                    ))}
+                    {searchHistory.map((item) => (
+                        <div className="search-item" key={item.id} onClick={() => handleOptionClick(item.search)}>
+                            <MdHistory /> {item.search}
+                        </div>
+                    ))}
+                    </div>
+                )}
             </div>
             <div className="cart hover">
                 <FaCartPlus className="logo-icon" size={25}/>

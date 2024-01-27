@@ -89,4 +89,34 @@
     }
   }
 
+  .accordion-content {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 10px 0;
+  
+    .airport-info {
+  
+      .location {
+        font-weight: bold;
+        color: $icon-color;
+      }
+  
+      .name {
+        color: $font-color;
+      }
+    }
+  
+    .flight-details {
+      margin: .5rem 0rem;  
+      .airline,
+      .plane-code {
+        font-weight: bold;
+        color: #2ecc71;
+      }
+    }
+  }
+
 }

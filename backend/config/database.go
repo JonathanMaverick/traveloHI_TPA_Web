@@ -27,6 +27,9 @@ func migrate(db *gorm.DB){
 	db.AutoMigrate(&model.Airline{})
 	db.AutoMigrate(&model.Plane{})
 	db.AutoMigrate(&model.FlightSchedule{})
+
+	//Search
+	db.AutoMigrate(&model.Search{})
 }
 
 func Connect (){

@@ -62,6 +62,9 @@ export default function Footer(){
                 </div>
                 <div className="footer-container">
                     <h3>About Traveloka</h3>
+                    <Link to="/">
+                        <p>Home</p>
+                    </Link>
                 </div>
                 <div className="footer-container">
                     <h3>Follow Us</h3>
