@@ -1,12 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/JonathanMaverickTPA_Web/config"
 	_ "github.com/JonathanMaverickTPA_Web/docs"
 	"github.com/JonathanMaverickTPA_Web/route"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -31,8 +33,14 @@ import (
 func main() {
 	r := gin.Default()
 	config.Connect()
+
+	if err := godotenv.Load(); err != nil {
+        fmt.Println("Error loading .env file")
+        return
+    }
+
 	// Seeding Backup >//<
-	// seed.Seed() 
+	// seed.Seed()
 
 	opts := cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173"},

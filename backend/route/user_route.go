@@ -10,8 +10,12 @@ func UserRoute(r *gin.Engine) {
 	user := r.Group("/user")
 	{
 		user.GET("/", controller.GetUsers)
-		user.GET("/:userId", controller.GetUser)
 		user.POST("/", controller.CreateUser)
+		
+		user.POST("/verify-recaptcha", controller.VerifyRecaptcha)
+
+		user.GET("/:userId", controller.GetUser)
+		user.PUT("/:userId", controller.UpdateUser)
 
 		user.POST("/ban-user", controller.BanUser)
 		user.POST("/unban-user", controller.UnbanUser)
@@ -25,5 +29,7 @@ func UserRoute(r *gin.Engine) {
 		user.POST("/get-user-security-question", controller.GetUserSecurityQuestion)
 		user.POST("/validate-security-question", controller.ValidateSecurityAnswer)
 		user.POST("/change-password", controller.ChangePassword)
+
+		user.POST("/send-newsletter", controller.SendNewsletter)
 	}
 }

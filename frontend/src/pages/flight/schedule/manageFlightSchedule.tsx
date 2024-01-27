@@ -13,7 +13,6 @@ export default function ManageFlightSchedule(){
             try{
                 const response = await get_flight_schedule();
                 if(response != -1){
-                    console.log(response)
                     setFlightSchedule(response.data);
                 }
             }

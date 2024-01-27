@@ -39,7 +39,7 @@ export default function LoginPage(){
         }
 
         if (!showOtp){
-            const response = await login(user);
+            const response = await login(user, captchaValue);
             if (response == 1){
                 navigate('/');
             }

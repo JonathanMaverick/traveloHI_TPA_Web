@@ -7,6 +7,7 @@ export interface IUser {
     dob?: string;
     gender?: string;
     profilePicture?: string;
+    profilePictureFile? : File;
     personalSecurityAnswer?: string;
     securityQuestion?: string;
     subscribedToNewsletter?: boolean;

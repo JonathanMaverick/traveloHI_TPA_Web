@@ -10,7 +10,6 @@ export default function UserRouteMiddleware() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log(user)
         if (user == null){
             navigate('/')
         }

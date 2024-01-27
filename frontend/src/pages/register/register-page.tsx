@@ -36,6 +36,7 @@ export default function RegisterPage(){
     const [confPassword, setConfPassword] = useState<string>("");
     const [profilePicture, setProfilePicture] = useState<File | null>(null);
     const [captchaValue, setCaptchaValue] = useState(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const validatePassword = (password:string) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/.test(password)
 
     const handleOnSubmit = async (e : FormEvent<HTMLFormElement>) => {
@@ -61,20 +62,25 @@ export default function RegisterPage(){
             return;
         }
 
+        setIsLoading(true);
         const imageRef = ref(storage, `profile/${profilePicture.name}`);
         await uploadBytes(imageRef, profilePicture);
         user.profilePicture = await getDownloadURL(imageRef);
 
-        const response = await register(user);
+        const response = await register(user, captchaValue);
         if (response == 1){
+            alert("Registration successful")
+            setIsLoading(false);
             navigate('/login');
+        }
+        else{
+            setIsLoading(false);
         }
     }
 
     const onChange = (value: any) => {
         setCaptchaValue(value)
     }
-
 
     return(
         <>
@@ -208,7 +214,8 @@ export default function RegisterPage(){
                         onChange={onChange}
                     />
                 </div>
-                <Button content="Register" />
+                
+                <Button content="Register" isLoading={isLoading} />
                 <p>Already have an account? <Link to="/login">Login Here</Link></p>
             </form>
         </>

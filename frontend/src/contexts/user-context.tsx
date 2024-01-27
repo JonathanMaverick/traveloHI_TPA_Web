@@ -7,10 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { IUser } from "../interfaces/user-interface";
 import { IOTP } from "../interfaces/otp-interface";
 import { IChildren } from "../interfaces/children-interface";
+import verify_recaptcha from "../api/auth/verify_recaptcha";
 
 interface IUserContext{
     user : IUser | null;
-    login : (user : IUser) => Promise<number>; 
+    login : (user : IUser, captchaValue : string) => Promise<number>; 
     loginotp : (otp : IOTP) => Promise<number>;
     logout : () => void;
 }
@@ -42,6 +43,7 @@ export function UserProvider({children} : IChildren){
                     result,
                 )
             );
+            setUser(result);
         }
     };
 
@@ -51,8 +53,14 @@ export function UserProvider({children} : IChildren){
 
     const navigate = useNavigate();
 
-    async function login(user : IUser) :  Promise<number>{
+    async function login(user : IUser, captchaValue : string) :  Promise<number>{
         try{
+            const captcha_response = await verify_recaptcha(captchaValue);
+            if (captcha_response == -1){
+                alert('Captcha verification failed');
+                return -1;
+            }
+
             const response =  await axios.post(
                 import.meta.env.VITE_API_URL + "/user/login/"
                 , user

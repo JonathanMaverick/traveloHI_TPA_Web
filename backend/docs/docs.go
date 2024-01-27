@@ -447,6 +447,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/plane/{planeID}": {
+            "delete": {
+                "description": "Delete a plane",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Plane"
+                ],
+                "summary": "Delete plane",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Plane ID",
+                        "name": "planeID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Plane deleted successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/room": {
             "get": {
                 "description": "Get a list of rooms",
@@ -599,6 +631,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/send-newsletter": {
+            "post": {
+                "description": "Send a newsletter to all subscribed users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Send newsletter",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/user/{userId}": {
             "get": {
                 "description": "Get a specific user account",
@@ -629,10 +684,63 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "put": {
+                "description": "Update an existing user account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User details",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         }
     },
     "definitions": {
+        "model.Airline": {
+            "type": "object",
+            "properties": {
+                "airlineID": {
+                    "type": "integer"
+                },
+                "airlineLogo": {
+                    "type": "string"
+                },
+                "airlineName": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Airport": {
             "type": "object",
             "properties": {
@@ -673,6 +781,9 @@ const docTemplate = `{
                 "departureTime": {
                     "type": "string"
                 },
+                "destinationAirport": {
+                    "$ref": "#/definitions/model.Airport"
+                },
                 "destinationAirportID": {
                     "type": "integer"
                 },
@@ -682,8 +793,14 @@ const docTemplate = `{
                 "flightScheduleID": {
                     "type": "integer"
                 },
+                "originAirport": {
+                    "$ref": "#/definitions/model.Airport"
+                },
                 "originAirportID": {
                     "type": "integer"
+                },
+                "plane": {
+                    "$ref": "#/definitions/model.Plane"
                 },
                 "planeID": {
                     "type": "integer"
@@ -749,6 +866,29 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "hotelPictureID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.Plane": {
+            "type": "object",
+            "properties": {
+                "airline": {
+                    "$ref": "#/definitions/model.Airline"
+                },
+                "airlineID": {
+                    "type": "integer"
+                },
+                "businessSeats": {
+                    "type": "integer"
+                },
+                "economySeats": {
+                    "type": "integer"
+                },
+                "planeCode": {
+                    "type": "string"
+                },
+                "planeID": {
                     "type": "integer"
                 }
             }

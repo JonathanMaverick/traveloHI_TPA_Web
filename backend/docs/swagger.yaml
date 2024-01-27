@@ -1,4 +1,13 @@
 definitions:
+  model.Airline:
+    properties:
+      airlineID:
+        type: integer
+      airlineLogo:
+        type: string
+      airlineName:
+        type: string
+    type: object
   model.Airport:
     properties:
       airportCode:
@@ -25,14 +34,20 @@ definitions:
         type: integer
       departureTime:
         type: string
+      destinationAirport:
+        $ref: '#/definitions/model.Airport'
       destinationAirportID:
         type: integer
       economyPrice:
         type: integer
       flightScheduleID:
         type: integer
+      originAirport:
+        $ref: '#/definitions/model.Airport'
       originAirportID:
         type: integer
+      plane:
+        $ref: '#/definitions/model.Plane'
       planeID:
         type: integer
     type: object
@@ -75,6 +90,21 @@ definitions:
       hotelPicture:
         type: string
       hotelPictureID:
+        type: integer
+    type: object
+  model.Plane:
+    properties:
+      airline:
+        $ref: '#/definitions/model.Airline'
+      airlineID:
+        type: integer
+      businessSeats:
+        type: integer
+      economySeats:
+        type: integer
+      planeCode:
+        type: string
+      planeID:
         type: integer
     type: object
   model.Room:
@@ -431,6 +461,27 @@ paths:
       summary: Add plane
       tags:
       - Plane
+  /plane/{planeID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a plane
+      parameters:
+      - description: Plane ID
+        in: path
+        name: planeID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Plane deleted successfully!
+          schema:
+            type: string
+      summary: Delete plane
+      tags:
+      - Plane
   /room:
     get:
       consumes:
@@ -529,6 +580,32 @@ paths:
       summary: Get a user
       tags:
       - User
+    put:
+      consumes:
+      - application/json
+      description: Update an existing user account
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: User details
+        in: body
+        name: user
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Update user
+      tags:
+      - User
   /user/login:
     post:
       consumes:
@@ -549,6 +626,21 @@ paths:
           schema:
             type: string
       summary: Login user
+      tags:
+      - User
+  /user/send-newsletter:
+    post:
+      consumes:
+      - application/json
+      description: Send a newsletter to all subscribed users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Send newsletter
       tags:
       - User
 swagger: "2.0"
