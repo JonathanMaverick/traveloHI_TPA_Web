@@ -167,21 +167,21 @@ export default function AddFlightSchedule() {
         />
       </div>
       <TextField
-        label="Business Seats Price"
-        name="businessSeats"
-        type="number"
-        value={flightSchedule?.businessPrice.toString()}
-        onChange={(e: string) =>
-          setFlightSchedule({ ...flightSchedule, businessPrice: parseInt(e) })
-        }
-      />
-      <TextField
         label="Economy Seats Price"
         name="economySeats"
         type="number"
         value={flightSchedule?.economyPrice.toString()}
         onChange={(e: string) =>
           setFlightSchedule({ ...flightSchedule, economyPrice: parseInt(e) })
+        }
+      />
+      <TextField
+        label="Business Seats Price"
+        name="businessSeats"
+        type="number"
+        value={flightSchedule?.businessPrice.toString()}
+        onChange={(e: string) =>
+          setFlightSchedule({ ...flightSchedule, businessPrice: parseInt(e) })
         }
       />
       <Button content="Add Flight Schedule" />

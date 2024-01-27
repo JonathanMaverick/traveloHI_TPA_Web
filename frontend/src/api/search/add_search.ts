@@ -2,7 +2,6 @@ import axios from "axios";
 import { ISearch } from "../../interfaces/search/search-interface";
 
 const add_search = async(search : ISearch) => {
-    console.log(search)
     try{
         const response = await axios.post(
             import.meta.env.VITE_API_URL + "/search/"

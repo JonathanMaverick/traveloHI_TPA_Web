@@ -9,7 +9,6 @@ export default function AdminRouteMiddleware() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log(user?.role)
         if (user == null){
             navigate('/')
         }

@@ -11,6 +11,15 @@ const FlightSearchCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule 
         const minutes = newDate.getMinutes().toString().padStart(2, '0');
         return `${hours}:${minutes}`;
     };
+    
+    function formatDate(date:string) {
+      const dateObject = new Date(date);
+      return dateObject.toLocaleDateString('en-US', {
+        month: 'short',
+        day: '2-digit',
+      });
+    }
+
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
     const formattedArrivalTime = formatTime(flightSchedule.arrivalTime);
     const formattedDepartureTime = formatTime(flightSchedule.departureTime);
@@ -51,11 +60,14 @@ const FlightSearchCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule 
           </div>
           <div className="bottom-flight-schedule-content">
             <p className={`detail-flight-schedule ${isAccordionOpen ? 'accordion-open' : ''}`}>Detail</p>
-            <button>Edit</button>
+            <button>View Detail</button>
           </div>
         </div>
         {isAccordionOpen && (
           <div className="accordion-content">
+            <div className="date">
+              <p>{formatDate(flightSchedule.departureTime)} - {formatDate(flightSchedule.arrivalTime)}</p>
+            </div>
             <div className="airport-info">
               <p className="location">
                 {flightSchedule.OriginAirport?.airportLocation} ({flightSchedule.OriginAirport?.airportCode})

@@ -5,30 +5,50 @@ import { IFlightSchedule } from "../../interfaces/flight/flight-schedule-interfa
 import FlightSearchCard from "./flightSearchCard";
 import search_flight from "../../api/hotel/search_flight";
 
-export default function HotelSearch() {
+export default function FlightSearch({sortOption}: {sortOption: string}) {
 
     const { query } = useParams();
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const trimmedQuery = query?.trim();
-                const response = await search_flight(trimmedQuery || '');
-                if (response == -1){
-                    return;
-                }
-                else{
-                    console.log(response.data);
-                    setFlightScheduleList(response.data);
-                }
-            } catch (error) {
-                console.error('Error fetching hotel data');
+    const [flightScheduleList, setFlightScheduleList] = useState<IFlightSchedule[]>([])
+
+    const fetchData = async () => {
+        try {
+            const trimmedQuery = query?.trim();
+            const response = await search_flight(trimmedQuery || '');
+            if (response == -1){
+                return;
             }
-          };
-      
-          fetchData();
+            else{
+                setFlightScheduleList(response.data);
+            }
+        } catch (error) {
+            console.error('Error fetching hotel data');
+        }
+    };
+
+    useEffect(() => {      
+        fetchData();
     }, [query]);
 
-    const [flightScheduleList, setFlightScheduleList] = useState<IFlightSchedule[]>([])
+    useEffect(() => {
+        const sortFlightSchedule = () => {
+            if (sortOption === "price"){
+                const sortedFlightSchedule = [...flightScheduleList].sort((a, b) => a.economyPrice - b.economyPrice);
+                setFlightScheduleList(sortedFlightSchedule);
+            }
+            else if (sortOption === "duration"){
+                const sortedFlightSchedule = [...flightScheduleList].sort((a, b) => {
+                    const aDuration = new Date(a.arrivalTime).getTime() - new Date(a.departureTime).getTime();  
+                    const bDuration = new Date(b.arrivalTime).getTime() - new Date(b.departureTime).getTime();
+                    return aDuration - bDuration;
+                });
+                setFlightScheduleList(sortedFlightSchedule);
+            }
+            else{
+                fetchData();
+            }
+        }
+        sortFlightSchedule();
+    }, [sortOption]);
 
     return(
         <div className="flight-search-result">

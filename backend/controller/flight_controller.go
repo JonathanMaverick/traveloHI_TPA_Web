@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/JonathanMaverickTPA_Web/config"
 	"github.com/JonathanMaverickTPA_Web/model"
@@ -75,7 +76,36 @@ func GetAirports(c *gin.Context) {
 		return
 	}
 	c.AsciiJSON(http.StatusOK, airports)
-} 
+}
+
+
+func createSeatsForPlaneAndFlightSchedule(plane model.Plane, flightSchedule model.FlightSchedule) ([]model.Seat, error) {
+	var seats []model.Seat
+
+	for i := uint(1); i <= plane.EconomySeats; i++ {
+		seat := model.Seat{
+			PlaneID:           	plane.ID,
+			FlightScheduleID:  	flightSchedule.ID,
+			SeatType: 			"Economy",
+			SeatStatus: 		"Available",
+			SeatNumber:        	fmt.Sprintf("E%d", i),
+		}
+		seats = append(seats, seat)
+	}
+
+	for i := uint(1); i <= plane.BusinessSeats; i++ {
+		seat := model.Seat{
+			PlaneID:           	plane.ID,
+			FlightScheduleID:  	flightSchedule.ID,
+			SeatType: 			"Business",
+			SeatStatus: 		"Available",
+			SeatNumber:        	fmt.Sprintf("B%d", i),
+		}
+		seats = append(seats, seat)
+	}
+
+	return seats, nil
+}
 
 //AddSchedule creates a new flight schedule
 // @Summary Add flight schedule
@@ -130,10 +160,48 @@ func AddFlightSchedule(c *gin.Context){
 		return
 	}
 
+	departureTime, err := time.Parse("2006-01-02T15:04", flightSchedule.DepartureTime)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid Date Format!"})
+		return
+	}
+	arrivalTime, err := time.Parse("2006-01-02T15:04", flightSchedule.ArrivalTime)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid Date Format!"})
+		return
+	}
+	
+	if arrivalTime.Before(departureTime) || arrivalTime.Equal(departureTime) {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Arrival time must be after departure time!"})
+		return
+	}
+
+	if departureTime.Before(time.Now()) {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Departure time can't be less than current time!"})
+		return
+	}
+
+	var plane model.Plane
+	findPlane := config.DB.First(&plane, flightSchedule.PlaneID)
+	if findPlane.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Plane not found!"})
+		return
+	}
+
 	result := config.DB.Create(&flightSchedule)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to add flight schedule!"})
 		return
+	}
+
+	seats, err := createSeatsForPlaneAndFlightSchedule(plane, flightSchedule)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Error creating seats"})
+		return
+	}
+	
+	for _, seat := range seats {
+		config.DB.Create(&seat)
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Flight schedule added successfully!"})

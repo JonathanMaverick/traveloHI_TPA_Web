@@ -20,6 +20,14 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
         setIsAccordionOpen(!isAccordionOpen);
     };
 
+    function formatDate(date:string) {
+      const dateObject = new Date(date);
+      return dateObject.toLocaleDateString('en-US', {
+        month: 'short',
+        day: '2-digit',
+      });
+    }
+
     return (
       <div className={`flight-schedule-card ${isAccordionOpen ? 'open' : ''}`} onClick={toggleAccordion}>
         <div className="flight-schedule-content">
@@ -56,6 +64,9 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
         </div>
         {isAccordionOpen && (
           <div className="accordion-content">
+            <div className="date">
+              <p>{formatDate(flightSchedule.departureTime)} - {formatDate(flightSchedule.arrivalTime)}</p>
+            </div>
             <div className="airport-info">
               <p className="location">
                 {flightSchedule.OriginAirport?.airportLocation} ({flightSchedule.OriginAirport?.airportCode})

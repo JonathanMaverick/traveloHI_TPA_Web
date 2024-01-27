@@ -15,6 +15,12 @@ export default function SearchPage() {
   const [showHotelSearch, setShowHotelSearch] = useState(true);
   const [showFlightSearch, setShowFlightSearch] = useState(false);
 
+  const [sortOption, setSortOption] = useState<string>("");
+  const handleSortCheckboxChange = (option:string) => {
+    setSortOption((prevSortOption) => (prevSortOption === option ? "" : option));
+  };
+
+
   const handleHotelCheckboxChange = () => {
     setShowHotelSearch(true);
     setShowFlightSearch(false);
@@ -48,20 +54,47 @@ export default function SearchPage() {
             <div className="checkbox-container">
                 <label className="checkbox-label">
                     <input
-                    type="checkbox"
-                    className="checkbox-input"
-                    checked={showFlightSearch}
-                    onChange={handleFlightCheckboxChange}
+                      type="checkbox"
+                      className="checkbox-input"
+                      checked={showFlightSearch}
+                      onChange={handleFlightCheckboxChange}
                     />
                     <span className="checkbox-custom">
-                    <FaPlaneDeparture className="checkbox-icon" />
+                      <FaPlaneDeparture className="checkbox-icon" />
                     </span>
                     Flight
                 </label>
             </div>
+            {showFlightSearch && (
+              <>
+                <h4>Sort by :</h4>
+                <div className="checkbox-container">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      className="checkbox-input"
+                      checked={sortOption === 'duration'}
+                      onChange={() => handleSortCheckboxChange('duration')}
+                    />
+                    Duration
+                  </label>
+                </div>
+                <div className="checkbox-container">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      className="checkbox-input"
+                      checked={sortOption === 'price'}
+                      onChange={() => handleSortCheckboxChange('price')}
+                    />
+                    Price
+                  </label>
+                </div>
+              </>
+            )}
         </div>      
         {showHotelSearch && <HotelSearch />}
-        {showFlightSearch && <FlightSearch />}  
+        {showFlightSearch && <FlightSearch sortOption={sortOption} />}  
       </div>
     </div>
   );
