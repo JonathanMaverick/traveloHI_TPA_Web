@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/JonathanMaverickTPA_Web/config"
 	"github.com/JonathanMaverickTPA_Web/model"
@@ -154,6 +155,39 @@ func GetFlightSchedules(c *gin.Context) {
 	Preload("OriginAirport").
 	Preload("DestinationAirport").
 	Find(&flightSchedules)
+
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No flight schedules found!"})
+		return
+	}
+	c.AsciiJSON(http.StatusOK, flightSchedules)
+}
+
+//SearchFlightSchedule searches flight schedules
+// @Summary Search flight schedules
+// @Description Search flight schedules
+// @Tags Flight
+// @Accept json
+// @Produce json
+// @Param query path string true "Query"
+// @Success 200 {array} string
+// @Router /flight/search/{query} [get]
+func SearchFlightSchedule(c *gin.Context) {
+	query := strings.ToLower(c.Param("query")) // Convert query to lowercase
+	var flightSchedules []model.FlightSchedule
+	
+	result := config.DB.
+		Joins("JOIN airports AS origin_airport ON origin_airport.id = flight_schedules.origin_airport_id").
+		Joins("JOIN airports AS destination_airport ON destination_airport.id = flight_schedules.destination_airport_id").
+		Joins("JOIN planes ON planes.id = flight_schedules.plane_id").
+		Joins("JOIN airlines ON airlines.id = planes.airline_id").
+		Where("LOWER(destination_airport.airport_name) LIKE ? OR LOWER(destination_airport.airport_code) LIKE ? OR LOWER(destination_airport.airport_location) LIKE ? OR LOWER(planes.plane_code) LIKE ? OR LOWER(airlines.airline_name) LIKE ?",
+			"%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%").
+		Preload("Plane").
+		Preload("Plane.Airline").
+		Preload("OriginAirport").
+		Preload("DestinationAirport").
+		Find(&flightSchedules)
 
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No flight schedules found!"})

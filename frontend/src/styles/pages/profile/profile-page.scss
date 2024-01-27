@@ -9,7 +9,7 @@
     width: 100%;
     .profile-information{
         background-color: $card-background;
-        max-width: 350px;
+        min-width: 350px;
         height: 300px;
         border-radius: 10%;
         display: flex;

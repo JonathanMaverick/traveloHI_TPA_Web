@@ -67,7 +67,16 @@ func GetSearchHistory(c *gin.Context) {
     var searches []model.Search
     userId := c.Param("userId")
 
-    config.DB.Table("searches").Select("DISTINCT ON (search) *").Where("user_id = ?", userId).Order("search, time DESC").Limit(3).Find(&searches)
+	config.DB.Raw(`
+		SELECT * FROM (
+			SELECT DISTINCT ON (search) * 
+			FROM searches 
+			WHERE user_id = ? 
+			ORDER BY search, time DESC
+		) AS distinct_searches
+		ORDER BY time DESC
+		LIMIT 3
+	`, userId).Scan(&searches)
 
     c.JSON(http.StatusOK, searches)
 }

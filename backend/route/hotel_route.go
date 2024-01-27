@@ -11,6 +11,9 @@ func HotelRoute(r *gin.Engine) {
 		hotel.GET("/",controller.GetHotel)
 		hotel.POST("/", controller.AddHotel)
 
+		//Hotel Search
+		hotel.GET("/search/:query", controller.SearchHotel)
+
 		//Hotel Attributes
 		hotel.POST("/add_hotel_picture", controller.AddHotelPicture)
 		hotel.POST("/add_hotel_facilities", controller.AddHotelFacilities)		

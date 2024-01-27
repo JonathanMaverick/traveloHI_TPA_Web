@@ -1,7 +1,7 @@
 import { FaLocationDot } from 'react-icons/fa6';
 import { IHotel } from '../../interfaces/hotel/hotel-interface';
 
-const HotelCard = ({ hotel }: {hotel : IHotel}) => {
+const HotelSearchCard = ({ hotel }: {hotel : IHotel}) => {
 
     const defaultImageUrl = 'https://t3.ftcdn.net/jpg/04/62/93/66/360_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg';
 
@@ -48,4 +48,4 @@ const HotelCard = ({ hotel }: {hotel : IHotel}) => {
     );
 };
 
-export default HotelCard;
+export default HotelSearchCard;

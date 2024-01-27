@@ -97,6 +97,7 @@ export default function Navbar() {
             searchData.userID = user.userID || 0;
         }
         await add_search(searchData);
+        navigate(`/search/${searchData.search}`);
         setSearchData(INITIAL_SEARCH);
     };
 
@@ -121,10 +122,12 @@ export default function Navbar() {
                             </div>
                         </div>
                     )}
-                    {MENU_LIST.map(({ path, icon, name }: any) => (
-                        <div onClick={() => sidebarMenuClick(path)} key={path} className="sidebar-menu">
-                            {icon}{name}
-                        </div>
+                    {MENU_LIST.map(({ path, icon, name, status }: any) => (
+                        status !== "skip" && (
+                            <div onClick={() => sidebarMenuClick(path)} key={path} className="sidebar-menu">
+                                {icon}{name}
+                            </div>
+                        )
                     ))}
                     {user && (
                         USER_LIST.map(({ path, icon, name, status }: any) => (
@@ -156,8 +159,7 @@ export default function Navbar() {
                     value={searchData!.search}
                     onChange={(e) => {
                         setSearchData({ ...searchData, search: e.target.value });
-                        setShowSearchOptions(true);
-                        console.log("Input value:", e.target.value);
+                        setShowSearchOptions(false);
                     }}
                     onFocus={() => setShowSearchOptions(true)} 
                     onBlur={() => setShowSearchOptions(false)} 
@@ -166,10 +168,9 @@ export default function Navbar() {
                     }}
                 />
                 {showSearchOptions && (
-                    <div className="search-option" onClick={() => {console.log("hello world")}}>
+                    <div className="search-option">
                     {topSearch.map((item) => (
                         <div className="search-item" key={topIndexCounter++} onClick={() => {
-                            console.log('Clicked on search item:', item.search);
                             handleOptionClick(item.search);
                         }}>
                             <FaFire color="#FF6921" /> {item.search}

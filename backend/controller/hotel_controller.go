@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/JonathanMaverickTPA_Web/config"
 	"github.com/JonathanMaverickTPA_Web/model"
@@ -87,3 +88,22 @@ func AddHotelFacilities(c *gin.Context){
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Hotel facilities created successfully!"})
 }
 
+//SearchHotel searches hotel by name
+// @Summary Search hotel
+// @Description Search hotel by name
+// @Tags Hotel
+// @Accept json
+// @Produce json
+// @Param query path string true "Query"
+// @Success 200 {string} string "Hotel found!"
+// @Router /hotel/search/{query} [get]
+func SearchHotel(c *gin.Context) {
+	var hotels []model.Hotel
+	query := c.Param("query")
+	result := config.DB.Where("LOWER(name) LIKE ?", "%"+strings.ToLower(query)+"%").Preload("HotelPictures").Preload("HotelFacilities.Facilities").Find(&hotels)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No hotel found!"})
+		return
+	}
+	c.AsciiJSON(http.StatusOK, hotels)
+}

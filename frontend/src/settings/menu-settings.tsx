@@ -7,6 +7,7 @@ import ProfilePage from "../pages/profile/profile-page";
 import HomePage from "../pages/home/home-page";
 import ManageUser from "../pages/user/manageUser";
 import ManageHotel from "../pages/hotel/manageHotel";
+import SearchPage from "../pages/search/searchPage";
 
 export interface IMenu {
     name : string;
@@ -23,6 +24,12 @@ export const MENU_LIST: IMenu[] = [
         element: <HomePage />,
         icon: <FaHome />
     },
+    {
+        name : "Search",
+        path : "/search/:query",
+        element : <SearchPage />,
+        status : "skip"
+    }
 ]
 
 export const USER_LIST: IMenu[] = [

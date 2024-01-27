@@ -57,6 +57,7 @@
 
     .search-option{
       position: absolute;
+      display: block;
       width: 100%;
       top: 105%;
       @include border-radius;

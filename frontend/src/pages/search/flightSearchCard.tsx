@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { IFlightSchedule } from "../../../interfaces/flight/flight-schedule-interface";
-import "../../../styles/pages/flight/schedule/flight_schedule_card.scss"
-import useCurrency from "../../../contexts/currency-context";
+import "../../styles/pages/flight/schedule/flight_schedule_card.scss"
+import useCurrency from "../../contexts/currency-context";
+import { IFlightSchedule } from "../../interfaces/flight/flight-schedule-interface";
 
-const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule }) => {
+const FlightSearchCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule }) => {
 
     const formatTime = (date:string) => {
         const newDate = new Date(date);
@@ -17,7 +17,7 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
     const {currency} = useCurrency();
 
     const toggleAccordion = () => {
-        setIsAccordionOpen(!isAccordionOpen);
+      setIsAccordionOpen(!isAccordionOpen);
     };
 
     return (
@@ -79,4 +79,4 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
     );
 };
     
-export default FlightScheduleCard;
+export default FlightSearchCard;
