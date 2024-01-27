@@ -3,11 +3,11 @@ import "../../styles/pages/profile/profile-page.scss"
 import ProfileSidebar from "./profile-sidebar";
 import TextField from "../../component/text-field";
 import useUser from "../../contexts/user-context";
-import { IUser } from "../../interfaces/user-interface";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../settings/firebase";
 import { useParams } from "react-router-dom";
 import update_user from "../../api/user/update_user";
+import { IUser } from "../../interfaces/user/user-interface";
 
 export default function ProfilePage(){
 

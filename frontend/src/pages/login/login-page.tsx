@@ -3,10 +3,10 @@ import Button from "../../component/button";
 import TextField from "../../component/text-field";
 import useUser from "../../contexts/user-context";
 import { FormEvent, useEffect, useState } from "react";
-import { IUser } from "../../interfaces/user-interface";
 import ReCAPTCHA from "react-google-recaptcha";
-import { IOTP } from "../../interfaces/otp-interface";
 import requestotp from "../../api/auth/requestotp";
+import { IUser } from "../../interfaces/user/user-interface";
+import { IOTP } from "../../interfaces/user/otp-interface";
 
 export default function LoginPage(){
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "../../interfaces/user-interface";
+import { IUser } from "../../interfaces/user/user-interface";
 
 const unban_user = async(user : IUser) => {
 

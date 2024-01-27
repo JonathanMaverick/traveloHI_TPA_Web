@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "../../interfaces/user-interface";
+import { IUser } from "../../interfaces/user/user-interface";
 
 const update_user = async(userId : string, user : IUser) => {
     try{

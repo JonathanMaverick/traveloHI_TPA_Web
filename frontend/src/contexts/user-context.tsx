@@ -4,10 +4,10 @@ import setCookie from "../settings/set-cookie";
 import authenticate from "../api/auth/auth";
 import getCookie from "../settings/get_cookie";
 import { useNavigate } from "react-router-dom";
-import { IUser } from "../interfaces/user-interface";
-import { IOTP } from "../interfaces/otp-interface";
 import { IChildren } from "../interfaces/children-interface";
 import verify_recaptcha from "../api/auth/verify_recaptcha";
+import { IUser } from "../interfaces/user/user-interface";
+import { IOTP } from "../interfaces/user/otp-interface";
 
 interface IUserContext{
     user : IUser | null;

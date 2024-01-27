@@ -3,11 +3,11 @@ import TextField from "../../component/text-field"
 import Button from "../../component/button"
 import '../../styles/pages/register-login.scss'
 import ReCAPTCHA from "react-google-recaptcha";
-import { IUser } from "../../interfaces/user-interface";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../settings/firebase";
 import register from "../../api/auth/register";
 import { Link, useNavigate } from "react-router-dom";
+import { IUser } from "../../interfaces/user/user-interface";
 
 export default function RegisterPage(){
 

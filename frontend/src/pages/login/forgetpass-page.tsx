@@ -3,8 +3,8 @@ import TextField from '../../component/text-field';
 import '../../styles/pages/register-login.scss'
 import Button from '../../component/button';
 import { Link, useNavigate } from 'react-router-dom';
-import { IUser } from '../../interfaces/user-interface';
 import axios from 'axios';
+import { IUser } from '../../interfaces/user/user-interface';
 
 const ForgetPassPage = () => {
 

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { IUser } from "../../interfaces/user-interface";
 import verify_recaptcha from "./verify_recaptcha";
+import { IUser } from "../../interfaces/user/user-interface";
 
 const register = async(user : IUser, captcha : string) => {
     const captcha_response = await verify_recaptcha(captcha);

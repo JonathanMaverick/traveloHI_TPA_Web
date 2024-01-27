@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IOTP } from "../../interfaces/otp-interface";
+import { IOTP } from "../../interfaces/user/otp-interface";
 
 const requestotp = async(otp : IOTP) => {
 

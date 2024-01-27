@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { IUser } from "../../interfaces/user-interface";
 import get_user from "../../api/user/get_user";
 import { FaBan, FaUserCheck } from "react-icons/fa";
 import useUser from "../../contexts/user-context";
@@ -7,6 +6,7 @@ import "../../styles/pages/user/manage-user.scss"
 import ban_user from "../../api/user/ban_user";
 import unban_user from "../../api/user/unban_user";
 import SendNewsletterUser from "./SendNewsletterUser";
+import { IUser } from "../../interfaces/user/user-interface";
 
 export default function ManageUser(){
     
