@@ -65,6 +65,15 @@ export default function Footer(){
                     <Link to="/">
                         <p>Home</p>
                     </Link>
+                    <Link to="/login">
+                        <p>Login</p>
+                    </Link>
+                    <Link to="/register">
+                        <p>Register</p>
+                    </Link>
+                    <Link to="/game">
+                        <p>Game</p>
+                    </Link>
                 </div>
                 <div className="footer-container">
                     <h3>Follow Us</h3>
