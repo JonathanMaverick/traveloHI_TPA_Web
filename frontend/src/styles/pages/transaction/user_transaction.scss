@@ -39,6 +39,12 @@
                   display: block;
                 }
             }
+
+            .flight-transaction-list{
+                overflow-y: scroll;
+                height: 600px;
+            }
         }
     }
 }
+

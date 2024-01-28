@@ -191,7 +191,7 @@ func AddFlightSchedule(c *gin.Context){
 
 	result := config.DB.Create(&flightSchedule)
 	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to add flight schedule!"})
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to add flight schedule! Make sure the code is unique"})
 		return
 	}
 
@@ -277,8 +277,8 @@ func SearchFlightSchedule(c *gin.Context) {
 		Joins("JOIN airports AS destination_airport ON destination_airport.id = flight_schedules.destination_airport_id").
 		Joins("JOIN planes ON planes.id = flight_schedules.plane_id").
 		Joins("JOIN airlines ON airlines.id = planes.airline_id").
-		Where("LOWER(destination_airport.airport_name) LIKE ? OR LOWER(destination_airport.airport_code) LIKE ? OR LOWER(destination_airport.airport_location) LIKE ? OR LOWER(planes.plane_code) LIKE ? OR LOWER(airlines.airline_name) LIKE ?",
-			"%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%").
+		Where("LOWER(destination_airport.airport_name) LIKE ? OR LOWER(destination_airport.airport_code) LIKE ? OR LOWER(destination_airport.airport_location) LIKE ? OR LOWER(planes.plane_code) LIKE ? OR LOWER(airlines.airline_name) LIKE ? OR LOWER (flight_schedules.flight_schedule_code) LIKE ?",
+			"%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%").
 		Preload("Plane").
 		Preload("Plane.Airline").
 		Preload("OriginAirport").

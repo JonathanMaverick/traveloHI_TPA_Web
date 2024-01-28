@@ -35,6 +35,7 @@ export default function AddFlightSchedule() {
 
   const INITIAL_FLIGHT_DETAIL: IFlightSchedule = {
     flightScheduleID: 0,
+    flightScheduleCode : "",
     planeID: 0,
     originAirportID: 0,
     destinationAirportID: 0,
@@ -71,19 +72,27 @@ export default function AddFlightSchedule() {
     try {
       const response = await add_flight_schedule(flightSchedule);
       if (response == -1) {
+        
         return;
       } else {
         alert("Flight schedule added successfully!");
         window.location.reload();
       }
     } catch {
-      alert("Error adding flight schedule!");
+      console.log("here!")
+      alert("Flight Schedule Code must be unique!");
     }
   };
 
   return (
     <form className="airline-form" onSubmit={handleAddSchedule}>
       <h2>Add Flight Schedule</h2>
+      <TextField name="flight-schedule-code"
+        label="Flight Schedule Code"
+        type="text"
+        value={flightSchedule?.flightScheduleCode}
+        onChange={(e: string) => setFlightSchedule({ ...flightSchedule, flightScheduleCode: e })}
+      />
       <div className="text-field">
         <label htmlFor="plane">Select Plane:</label>
         <select

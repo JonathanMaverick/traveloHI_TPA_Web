@@ -34,7 +34,7 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
           <div className="upper-flight-schedule-content">
             <div className="airline-logo-container">
               <img src={flightSchedule.Plane?.Airline?.airlineLogo} alt="" />
-              <p>{flightSchedule.Plane?.Airline?.airlineName}</p>
+              <p>{flightSchedule.Plane?.Airline?.airlineName} - {flightSchedule.flightScheduleCode}</p>
             </div>
             <div className="flight-schedule-detail">
               <div className="flight-schedule-time">

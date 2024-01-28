@@ -2,6 +2,7 @@ package model
 
 type FlightSchedule struct {
 	ID                   uint   `json:"flightScheduleID"`
+	FlightScheduleCode   string `gorm:"unique" json:"flightScheduleCode"`
 	PlaneID              uint   `json:"planeID"`
 	OriginAirportID      uint   `json:"originAirportID"`
 	DestinationAirportID uint   `json:"destinationAirportID"`

@@ -3,6 +3,7 @@ import { IPlane } from "./plane-interface";
 
 export interface IFlightSchedule {
     flightScheduleID? : number;
+    flightScheduleCode : string;
     planeID : number;
     originAirportID : number;
     destinationAirportID : number;

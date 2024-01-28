@@ -6,9 +6,10 @@ import FlightTransactions from "./flightTransaction";
 export default function UserTransaction(){
 
     const [selectedTransaction, setSelectedTransaction] = useState('flight');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const handleCheckboxChange = (transactionType:string) => {
-      setSelectedTransaction(transactionType);
+        setSelectedTransaction(transactionType);
     };
 
     return(
@@ -37,11 +38,15 @@ export default function UserTransaction(){
                 </label>
             </div>
             <div className="text-field-search">
-                <input type="text" placeholder="Search" />
+                <input type="text" 
+                placeholder="Search"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                />
             </div>
-            {selectedTransaction === 'flight' && <FlightTransactions />}
+            {selectedTransaction === 'flight' && <FlightTransactions searchTerm={searchTerm} />}
                 {/* {selectedTransaction === 'hotel' && <HotelTransactions />} */}
-                </div>
+            </div>
             </div>
         </div>
     )
