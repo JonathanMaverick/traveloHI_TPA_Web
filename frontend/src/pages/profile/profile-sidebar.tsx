@@ -30,9 +30,11 @@ export default function ProfileSidebar(){
             <div className="profile-information-option">
                 <FaShoppingCart className="profile-icon"/><p>Cart</p>
             </div>
-            <div className="profile-information-option">
-                <IoNewspaper className="profile-icon"/><p>History</p>
-            </div>
+            <Link to={`/user/history/${user?.userID}`}> 
+                <div className="profile-information-option">
+                    <IoNewspaper className="profile-icon"/><p>History</p>
+                </div>
+            </Link>
             <Link to={`/user/profile/${user?.userID}`}>
                 <div className="profile-information-option">
                     <IoIosSettings className="profile-icon"/><p>Profile</p>

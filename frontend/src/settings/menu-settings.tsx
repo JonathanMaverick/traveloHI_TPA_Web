@@ -10,6 +10,7 @@ import ManageHotel from "../pages/hotel/manageHotel";
 import SearchPage from "../pages/search/searchPage";
 import FlightDetail from "../pages/flight/flightDetail";
 import UserTransaction from "../pages/transaction/userTransaction";
+import UserHistoryTransaction from "../pages/transaction/history/userHistoryTransaction";
 
 export interface IMenu {
     name : string;
@@ -51,6 +52,12 @@ export const USER_LIST: IMenu[] = [
         name: "User Order",
         path: "/order/:id",
         element: <UserTransaction />,
+        status: "skip"
+    },
+    {
+        name: "User History",
+        path: "/history/:id",
+        element: <UserHistoryTransaction />,
         status: "skip"
     }
 ]

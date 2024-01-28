@@ -1,7 +1,9 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/JonathanMaverickTPA_Web/config"
 	"github.com/JonathanMaverickTPA_Web/model"
@@ -102,6 +104,45 @@ func GetUserFlightTransaction(c *gin.Context){
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": flightTransaction})
 }
 
+//GetUserOnGoingFlightTransaction is a function to get on going flight transaction by user id
+// @Summary Get on going flight transaction by user id
+// @Description Get on going flight transaction by user id
+// @Tags Flight Transaction
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {string} string "Flight Transaction found successfully!"
+// @Router /flight-transaction/user/ongoing/{id} [get]
+func GetUserOnGoingFlightTransaction(c *gin.Context){
+	var flightTransactions []model.FlightTransaction
+	err := config.DB.Where("user_id = ?", c.Param("id")).Preload("FlightSchedule").Preload("FlightSchedule.Plane").
+	Preload("FlightSchedule.Plane.Airline").Preload("FlightSchedule.OriginAirport").Preload("FlightSchedule.DestinationAirport").Preload("Seat").Preload("Payment").Find(&flightTransactions).Error
+
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+		return
+	}
+
+	var onGoingFlight []model.FlightTransaction
+	currentTime := time.Now()
+	for _, flightTransaction := range flightTransactions {
+		arrivalTimeStr := flightTransaction.FlightSchedule.ArrivalTime
+
+		arrivalTime, err := time.Parse("2006-01-02T15:04", arrivalTimeStr)
+		if err != nil {
+			fmt.Println("Error parsing arrival time:", err)
+			continue
+		}
+
+		arrivalTime = arrivalTime.In(currentTime.Location())
+		arrivalTime = arrivalTime.Add(time.Hour * -7)
+		if currentTime.Before(arrivalTime) {
+			onGoingFlight = append(onGoingFlight, flightTransaction)
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": onGoingFlight})
+}
+
 //GetUserTotalFlightTransaction is a function to get total flight transaction by user id
 // @Summary Get total flight transaction by user id
 // @Description Get total flight transaction by user id
@@ -111,13 +152,70 @@ func GetUserFlightTransaction(c *gin.Context){
 // @Param id path int true "User ID"
 // @Success 200 {string} string "Flight Transaction found successfully!"
 // @Router /flight-transaction/user/total/{id} [get]
-func GetUserTotalFlightTransaction(c *gin.Context){
+func GetUserOnGoingTotalFlightTransaction(c *gin.Context){
 	var flightTransaction []model.FlightTransaction
-	err := config.DB.Where("user_id = ?", c.Param("id")).Find(&flightTransaction).Error
+	err := config.DB.Where("user_id = ?", c.Param("id")).Preload("FlightSchedule").Find(&flightTransaction).Error
 	
 	if err != nil{
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": len(flightTransaction)})
+
+	var onGoingFlight []model.FlightTransaction
+	currentTime := time.Now()
+	for _, flightTransaction := range flightTransaction {
+		arrivalTimeStr := flightTransaction.FlightSchedule.ArrivalTime
+		arrivalTime, err := time.Parse("2006-01-02T15:04", arrivalTimeStr)
+		if err != nil {
+			fmt.Println("Error parsing arrival time:", err)
+			continue
+		}
+
+		arrivalTime = arrivalTime.In(currentTime.Location())
+		arrivalTime = arrivalTime.Add(time.Hour * -7)
+		if currentTime.Before(arrivalTime) {
+			onGoingFlight = append(onGoingFlight, flightTransaction)
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": len(onGoingFlight)})
+}
+
+//GetUserHistoryFlightTransaction is a function to get history flight transaction by user id
+// @Summary Get history flight transaction by user id
+// @Description Get history flight transaction by user id
+// @Tags Flight Transaction
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {string} string "Flight Transaction found successfully!"
+// @Router /flight-transaction/user/history/{id} [get]
+func GetUserHistoryFlightTransaction(c *gin.Context){
+	var flightTransaction []model.FlightTransaction
+	err := config.DB.Where("user_id = ?", c.Param("id")).Preload("FlightSchedule").Preload("FlightSchedule.Plane").
+	Preload("FlightSchedule.Plane.Airline").Preload("FlightSchedule.OriginAirport").Preload("FlightSchedule.DestinationAirport").Preload("Seat").Preload("Payment").Find(&flightTransaction).Error
+	
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+		return
+	}
+
+	var historyFlight []model.FlightTransaction
+	currentTime := time.Now()
+	for _, flightTransaction := range flightTransaction {
+		arrivalTimeStr := flightTransaction.FlightSchedule.ArrivalTime
+		arrivalTime, err := time.Parse("2006-01-02T15:04", arrivalTimeStr)
+		if err != nil {
+			fmt.Println("Error parsing arrival time:", err)
+			continue
+		}
+
+		arrivalTime = arrivalTime.In(currentTime.Location())
+		arrivalTime = arrivalTime.Add(time.Hour * -7)
+		if currentTime.After(arrivalTime) {
+			historyFlight = append(historyFlight, flightTransaction)
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": historyFlight})
 }

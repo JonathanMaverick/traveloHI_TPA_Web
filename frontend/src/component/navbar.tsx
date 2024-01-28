@@ -205,9 +205,11 @@ export default function Navbar() {
                     <div className="cart hover">
                         <FaCartPlus className="logo-icon" size={25}/>
                         <p>Pesanan Saya</p>
-                        <div className="notif-transaction">
-                            {userTotalTransaction}
-                        </div>
+                        {userTotalTransaction > 0 && (
+                            <div className="notif-transaction">
+                                {userTotalTransaction}
+                            </div>
+                        )}
                     </div>
                     
                 </Link>

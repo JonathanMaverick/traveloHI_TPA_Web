@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react"
-import useUser from "../../contexts/user-context";
-import { IFlightTransaction } from "../../interfaces/flight/flight-transaction-interface";
-import FlightTransactionCard from "./flightTransactionCard";
-import get_user_ongoing_flight_transaction from "../../api/transaction/get_user_ongoing_flight_transaction";
+import get_user_history_flight_transaction from "../../../api/transaction/get_user_history_flight_transaction";
+import { IFlightTransaction } from "../../../interfaces/flight/flight-transaction-interface";
+import useUser from "../../../contexts/user-context";
+import FlightTransactionCard from "../flightTransactionCard";
 
-export default function FlightTransactions({searchTerm}: {searchTerm:string}){
+export default function HistoryFlightTransaction({searchTerm}: {searchTerm:string}){
 
     const [flightTransactionList, setFlightTransactionList] = useState<IFlightTransaction[]>([]);
     const {user} = useUser();
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await get_user_ongoing_flight_transaction(user?.userID || 0);
+                const response = await get_user_history_flight_transaction(user?.userID || 0);
                 if (response == -1){
                     return;
                 }
@@ -44,7 +44,7 @@ export default function FlightTransactions({searchTerm}: {searchTerm:string}){
                     </div>
                 ))
             ) : (
-                <p>No matching flight transactions found.</p>
+                <p>No history flight transactions found.</p>
             )}
         </div>
     );
