@@ -16,7 +16,7 @@ import (
 // @Produce json
 // @Param flightTransaction body string true "Flight Transaction"
 // @Success 200 {string} string "Flight Transaction created successfully!"
-// @Router /flight/transaction [post]
+// @Router /flight-transaction [post]
 func AddFlightTransaction(c *gin.Context){
 	var flightTransaction model.FlightTransaction
 	c.BindJSON(&flightTransaction)
@@ -79,4 +79,25 @@ func AddFlightTransaction(c *gin.Context){
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Flight transaction created successfully!"})
+}
+
+//GetUserFlightTransaction is a function to get flight transaction by user id
+// @Summary Get flight transaction by user id
+// @Description Get flight transaction by user id
+// @Tags Flight Transaction
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {string} string "Flight Transaction found successfully!"
+// @Router /flight-transaction/user/{id} [get]
+func GetUserFlightTransaction(c *gin.Context){
+	var flightTransaction []model.FlightTransaction
+	err := config.DB.Where("user_id = ?", c.Param("id")).Preload("FlightSchedule").Preload("FlightSchedule.Plane").
+		Preload("FlightSchedule.Plane.Airline").Preload("FlightSchedule.OriginAirport").Preload("FlightSchedule.DestinationAirport").Preload("Seat").Preload("Payment").Find(&flightTransaction).Error
+	
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": flightTransaction})
 }

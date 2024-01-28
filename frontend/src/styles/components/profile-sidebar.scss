@@ -5,7 +5,8 @@
     background-color: $card-background;
     min-width: 350px;
     height: 350px;
-    border-radius: 10%;
+    border-radius: 8px;
+    @include box-shadow;
     display: flex;
     flex-direction: column;
     padding: 1rem;

@@ -248,8 +248,7 @@ export default function FlightDetail(){
                     <div className="flight-schedule-content">
                         <div className="airline-logo-container">
                             <img src={flightSchedule.Plane?.Airline?.airlineLogo} alt="Airline Logo" />
-                            <p className="airline-name">{flightSchedule.Plane?.Airline?.airlineName}</p>
-                            <p className="airline-name">{flightSchedule.Plane?.planeCode}</p>
+                            <p className="airline-name">{flightSchedule.Plane?.Airline?.airlineName} - {flightSchedule.Plane?.planeCode}</p>
                             <p className="airline-name">Duration: {timeDifferenceMs(flightSchedule.arrivalTime, flightSchedule.departureTime)}</p>
                         </div>
                         <div className="flight-schedule-details">

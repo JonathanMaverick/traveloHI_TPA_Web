@@ -1,14 +1,46 @@
 import ProfileSidebar from "../profile/profile-sidebar";
 import "../../styles/pages/transaction/user_transaction.scss"
+import { useState } from "react";
+import FlightTransactions from "./flightTransaction";
 
 export default function UserTransaction(){
+
+    const [selectedTransaction, setSelectedTransaction] = useState('flight');
+
+    const handleCheckboxChange = (transactionType:string) => {
+      setSelectedTransaction(transactionType);
+    };
+
     return(
         <div className="user-transaction">
             <ProfileSidebar />
-            <div className="user-transaction-content">
-                <h2>Transaction</h2>
-                <div className="filter">
-                    
+            <div className="user-transaction-container">
+        <h2>Transaction</h2>
+
+        <div className="user-transaction-content">
+            <div className="filter-hotel-flight">
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={selectedTransaction === 'flight'}
+                        onChange={() => handleCheckboxChange('flight')}
+                    />
+                    Show Flights
+                </label>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={selectedTransaction === 'hotel'}
+                        onChange={() => handleCheckboxChange('hotel')}
+                    />
+                    Show Hotels
+                </label>
+            </div>
+            <div className="text-field-search">
+                <input type="text" placeholder="Search" />
+            </div>
+            {selectedTransaction === 'flight' && <FlightTransactions />}
+                {/* {selectedTransaction === 'hotel' && <HotelTransactions />} */}
                 </div>
             </div>
         </div>

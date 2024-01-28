@@ -7,14 +7,38 @@
     flex-direction: row;
     gap: 1rem;
     width: 100%;
-    .user-transaction-content{
+    .user-transaction-container{
         h2{
             margin-top: 0;
         }
-        background-color: $card-background;
-        display: block;
-        padding: 1rem;
         width: 100%;
-        
+        .user-transaction-content{
+            background-color: $card-background;
+            display: block;
+            padding: 1rem;
+            border-radius: 8px;
+            @include box-shadow;
+
+            .filter-hotel-flight{
+                display: flex;
+                gap: .5rem;
+            }
+
+            .text-field-search{
+                margin: .8rem 0rem;
+                input,
+                select {
+                  @include border-radius;
+                  width: 100%;
+                  padding: 6px;
+                  margin-bottom: 16px;
+                  border: 1px solid #ccc;
+                  border-radius: 4px;
+                  box-sizing: border-box;
+                  font-family: $global-font-family;
+                  display: block;
+                }
+            }
+        }
     }
 }

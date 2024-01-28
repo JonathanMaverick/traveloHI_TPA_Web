@@ -9,5 +9,6 @@ func FlightTransactionRoute(r *gin.Engine) {
 	flight := r.Group("/flight-transaction")
 	{
 		flight.POST("/", controller.AddFlightTransaction)
+		flight.GET("/user/:id", controller.GetUserFlightTransaction)
 	}
 }

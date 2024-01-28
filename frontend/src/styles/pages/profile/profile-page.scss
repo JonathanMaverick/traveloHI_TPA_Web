@@ -16,6 +16,8 @@
             background-color: $card-background;
             display: block;
             padding: 1rem;
+            border-radius: 8px;
+            @include box-shadow;
 
             .gender-container {
                 .gender-option{
