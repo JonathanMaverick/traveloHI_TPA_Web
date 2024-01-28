@@ -101,3 +101,23 @@ func GetUserFlightTransaction(c *gin.Context){
 	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": flightTransaction})
 }
+
+//GetUserTotalFlightTransaction is a function to get total flight transaction by user id
+// @Summary Get total flight transaction by user id
+// @Description Get total flight transaction by user id
+// @Tags Flight Transaction
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {string} string "Flight Transaction found successfully!"
+// @Router /flight-transaction/user/total/{id} [get]
+func GetUserTotalFlightTransaction(c *gin.Context){
+	var flightTransaction []model.FlightTransaction
+	err := config.DB.Where("user_id = ?", c.Param("id")).Find(&flightTransaction).Error
+	
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": len(flightTransaction)})
+}

@@ -122,6 +122,104 @@ const docTemplate = `{
                 }
             }
         },
+        "/flight-transaction": {
+            "post": {
+                "description": "Add a new flight transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight Transaction"
+                ],
+                "summary": "Add flight transaction",
+                "parameters": [
+                    {
+                        "description": "Flight Transaction",
+                        "name": "flightTransaction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Flight Transaction created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight-transaction/user/total/{id}": {
+            "get": {
+                "description": "Get total flight transaction by user id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight Transaction"
+                ],
+                "summary": "Get total flight transaction by user id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Flight Transaction found successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight-transaction/user/{id}": {
+            "get": {
+                "description": "Get flight transaction by user id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight Transaction"
+                ],
+                "summary": "Get flight transaction by user id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Flight Transaction found successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/flight/airport": {
             "get": {
                 "description": "Get a list of airports",
@@ -1030,6 +1128,9 @@ const docTemplate = `{
                 },
                 "economyPrice": {
                     "type": "integer"
+                },
+                "flightScheduleCode": {
+                    "type": "string"
                 },
                 "flightScheduleID": {
                     "type": "integer"

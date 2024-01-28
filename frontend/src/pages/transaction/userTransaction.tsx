@@ -16,37 +16,37 @@ export default function UserTransaction(){
         <div className="user-transaction">
             <ProfileSidebar />
             <div className="user-transaction-container">
-        <h2>Transaction</h2>
+                <h2>My Order</h2>
 
-        <div className="user-transaction-content">
-            <div className="filter-hotel-flight">
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={selectedTransaction === 'flight'}
-                        onChange={() => handleCheckboxChange('flight')}
-                    />
-                    Show Flights
-                </label>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={selectedTransaction === 'hotel'}
-                        onChange={() => handleCheckboxChange('hotel')}
-                    />
-                    Show Hotels
-                </label>
-            </div>
-            <div className="text-field-search">
-                <input type="text" 
-                placeholder="Search"
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-                />
-            </div>
-            {selectedTransaction === 'flight' && <FlightTransactions searchTerm={searchTerm} />}
-                {/* {selectedTransaction === 'hotel' && <HotelTransactions />} */}
-            </div>
+                <div className="user-transaction-content">
+                    <div className="filter-hotel-flight">
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={selectedTransaction === 'flight'}
+                                onChange={() => handleCheckboxChange('flight')}
+                            />
+                            Show Flights
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={selectedTransaction === 'hotel'}
+                                onChange={() => handleCheckboxChange('hotel')}
+                            />
+                            Show Hotels
+                        </label>
+                    </div>
+                    <div className="text-field-search">
+                        <input type="text" 
+                        placeholder="Search"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    {selectedTransaction === 'flight' && <FlightTransactions searchTerm={searchTerm} />}
+                    {/* {selectedTransaction === 'hotel' && <HotelTransactions />} */}
+                </div>
             </div>
         </div>
     )

@@ -10,5 +10,7 @@ func FlightTransactionRoute(r *gin.Engine) {
 	{
 		flight.POST("/", controller.AddFlightTransaction)
 		flight.GET("/user/:id", controller.GetUserFlightTransaction)
+
+		flight.GET("/user/total/:id", controller.GetUserTotalFlightTransaction)
 	}
 }

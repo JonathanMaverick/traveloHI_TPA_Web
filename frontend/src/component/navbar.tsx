@@ -14,18 +14,34 @@ import add_search from "../api/search/add_search";
 import get_search_history from "../api/search/get_search_history";
 import { MdHistory } from "react-icons/md";
 import get_top_5_search from "../api/search/get_top_5_search";
+import get_user_total_flight_transaction from "../api/transaction/get_user_total_flight_transaction";
 
 export default function Navbar() {
 
     useEffect(() => {
         fetchSearchHistory();
         fetchTopSearch();
+        fetchUserTotalTransaction();
     }, []); 
 
     const INITIAL_SEARCH: ISearch = {
         search: " ",
         userID : 0,
     };
+
+    const fetchUserTotalTransaction = async () => {
+        if(!user){
+            return;
+        }
+        else{
+            const response = await get_user_total_flight_transaction(user?.userID || 0);
+            if (response == -1) {
+                return;
+            }else{
+                setUserTotalTransaction(response.data.data);
+            }
+        }
+    }
 
     const fetchSearchHistory = async () => {
         if(!user){
@@ -36,7 +52,6 @@ export default function Navbar() {
             if (response == -1) {
                 return;
             }else{
-                // console.log(response.data)
                 setSearchHistory(response.data);
             }
         }
@@ -64,6 +79,7 @@ export default function Navbar() {
     const [searchHistory, setSearchHistory] = useState<ISearch[]>([]);
     const [topSearch, setTopSearch] = useState<ISearch[]>([]);
     const [showSearchOptions, setShowSearchOptions] = useState(false);
+    const [userTotalTransaction, setUserTotalTransaction] = useState(0);
 
     const logoutClick = () => {
         logout();
@@ -184,10 +200,28 @@ export default function Navbar() {
                     </div>
                 )}
             </div>
-            <div className="cart hover">
-                <FaCartPlus className="logo-icon" size={25}/>
-                <p>Pesanan Saya</p>
-            </div>
+            {user ? (
+                <Link to={`/user/order/${user?.userID}`}>
+                    <div className="cart hover">
+                        <FaCartPlus className="logo-icon" size={25}/>
+                        <p>Pesanan Saya</p>
+                        <div className="notif-transaction">
+                            {userTotalTransaction}
+                        </div>
+                    </div>
+                    
+                </Link>
+            ) : (
+                <>
+                    <Link to="/login">
+                        <div className="cart hover">
+                            <FaCartPlus className="logo-icon" size={25}/>
+                            <p>Pesanan Saya</p>
+                        </div>
+                    </Link>
+                </>
+            )
+            }
             <div className="flag-container hover">
                 <img className="flag" src={currency === 'IDR' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/250px-Flag_of_Indonesia.svg.png' : 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Flag_of_the_United_States_%28Pantone%29.svg/1200px-Flag_of_the_United_States_%28Pantone%29.svg.png'} alt="" />
                 {currency}

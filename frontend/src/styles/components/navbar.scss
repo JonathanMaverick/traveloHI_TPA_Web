@@ -77,7 +77,20 @@
 
   .cart {
     @include centered;
+    border-radius: 10px;
     gap: 5px;
+    position: relative;
+    .notif-transaction{
+      position: absolute;
+      top: 0%;
+      left: 90%;
+      background-color: $red;
+      padding: 5px;
+      border-radius: 100%;
+      width: 15px;
+      height: 15px;
+      @include centered;
+    }
   }
 
   .overlay {
@@ -125,6 +138,7 @@
 
   .pay {
     @include centered;
+    border-radius: 10px;
     gap: 2px;
     position: relative;
     .pay-content{
