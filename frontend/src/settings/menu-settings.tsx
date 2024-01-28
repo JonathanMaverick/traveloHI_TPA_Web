@@ -1,7 +1,7 @@
 import ManageAirline from "../pages/flight/airline/manageAirline";
 import ManageFlightSchedule from "../pages/flight/schedule/manageFlightSchedule";
 import ManagePlane from "../pages/flight/plane/managePlane";
-import { FaHome, FaHotel, FaPlaneDeparture, FaUser } from "react-icons/fa";
+import { FaGamepad, FaHome, FaHotel, FaPlaneDeparture, FaUser } from "react-icons/fa";
 import { MdAirlines } from "react-icons/md";
 import ProfilePage from "../pages/profile/profile-page";
 import HomePage from "../pages/home/home-page";
@@ -11,6 +11,7 @@ import SearchPage from "../pages/search/searchPage";
 import FlightDetail from "../pages/flight/flightDetail";
 import UserTransaction from "../pages/transaction/userTransaction";
 import UserHistoryTransaction from "../pages/transaction/history/userHistoryTransaction";
+import Game from "../pages/game/game";
 
 export interface IMenu {
     name : string;
@@ -38,6 +39,12 @@ export const MENU_LIST: IMenu[] = [
         path : "/flight-detail/:id",
         element : <FlightDetail />,
         status : "skip"
+    },
+    {
+        name : "Game",
+        path : "/game",
+        element : <Game />,
+        icon: <FaGamepad />
     }
 ]
 

@@ -1,0 +1,9 @@
+@import "../../variables.scss";
+@import "../../mixins.scss";
+
+.game {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    @include centered;
+}
