@@ -52,3 +52,7 @@
         }
     }
 }
+
+.blue-background{
+    background-color: lighten($icon-color, 40%);
+}

@@ -26,7 +26,6 @@ export default function FlightDetail(){
                     return;
                 }
                 else{
-                    console.log(response.data);
                     setFlightSchedule(response.data);
                 }
             }
@@ -46,6 +45,7 @@ export default function FlightDetail(){
         arrivalTime: "",
         economyPrice: 0,
         businessPrice: 0,
+        flightScheduleCode: "",
     };
 
     function formatDate(date:string) {
@@ -184,8 +184,9 @@ export default function FlightDetail(){
             return;
         }
         if(selectedPaymentOption === "hi-wallet"){
+            console.log("hi-wallet")
             if (selectedSeat?.seatType === "business") {
-                if (user?.wallet ?? 0 >= flightSchedule.businessPrice) {
+                if (user?.wallet >= flightSchedule.businessPrice) {
                     const flight_transaction : IFlightTransaction = {
                         flightScheduleID: flightSchedule.flightScheduleID,
                         seatID: selectedSeat.seatID,
@@ -200,6 +201,7 @@ export default function FlightDetail(){
                         return;
                     }
                     else{
+                        console.log("kok sukses?")
                         alert("Payment Success");
                         navigate("/")
                     }
@@ -208,7 +210,7 @@ export default function FlightDetail(){
                     alert("Insufficient Balance");
                 }
             } else {
-                if (user?.wallet ?? 0 >= flightSchedule.economyPrice) {
+                if (user?.wallet >= flightSchedule.businessPrice) {
                     const flight_transaction : IFlightTransaction = {
                         flightScheduleID: flightSchedule.flightScheduleID,
                         seatID: selectedSeat?.seatID,

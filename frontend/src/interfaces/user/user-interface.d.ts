@@ -13,5 +13,5 @@ export interface IUser {
     subscribedToNewsletter?: boolean;
     status?: string;
     role?: string;
-    wallet?: number;
+    wallet: number;
   }
