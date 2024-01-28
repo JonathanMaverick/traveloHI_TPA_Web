@@ -5,7 +5,7 @@ import useCurrency from "../../../contexts/currency-context";
 
 const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule }) => {
 
-    const formatTime = (date:string) => {
+    function formatTime (date:string) {
         const newDate = new Date(date);
         const hours = newDate.getHours().toString().padStart(2, '0');
         const minutes = newDate.getMinutes().toString().padStart(2, '0');

@@ -19,7 +19,6 @@
   .hover {
     height: 2.5rem;
     padding: 0.3rem;
-    border-radius: 8px;
   }
 
   .hover:hover {
@@ -103,6 +102,8 @@
     position: relative;
     gap: 3px;
     width: 115px;
+    border-radius: 5px;
+    
     .flag {
       width: 1.8rem;
       height: 1.8rem;
@@ -114,6 +115,8 @@
       position: absolute;
       top: 100%;
       left: 0;
+      background-color: $card-background;
+      @include border-radius;
     }
     &:hover .hover-content {
       display: block;

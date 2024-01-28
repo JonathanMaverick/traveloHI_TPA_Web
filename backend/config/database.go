@@ -30,6 +30,10 @@ func migrate(db *gorm.DB){
 
 	//Search
 	db.AutoMigrate(&model.Search{})
+
+	//Transaction
+	db.AutoMigrate(&model.PaymentType{})
+	db.AutoMigrate(&model.FlightTransaction{})
 }
 
 func Connect (){

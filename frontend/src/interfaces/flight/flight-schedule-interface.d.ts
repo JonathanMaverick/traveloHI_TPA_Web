@@ -14,4 +14,5 @@ export interface IFlightSchedule {
     Plane? : IPlane;
     OriginAirport? : IAirport;
     DestinationAirport? : IAirport;
+    Seats? : ISeat[];
 }

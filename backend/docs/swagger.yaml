@@ -50,6 +50,10 @@ definitions:
         $ref: '#/definitions/model.Plane'
       planeID:
         type: integer
+      seats:
+        items:
+          $ref: '#/definitions/model.Seat'
+        type: array
     type: object
   model.Hotel:
     properties:
@@ -70,6 +74,10 @@ definitions:
       hotelPictures:
         items:
           $ref: '#/definitions/model.HotelPicture'
+        type: array
+      rooms:
+        items:
+          $ref: '#/definitions/model.Room'
         type: array
     type: object
   model.HotelFacilities:
@@ -147,6 +155,21 @@ definitions:
         type: string
       userID:
         type: integer
+    type: object
+  model.Seat:
+    properties:
+      flightScheduleID:
+        type: integer
+      planeID:
+        type: integer
+      seatID:
+        type: integer
+      seatNumber:
+        type: string
+      seatStatus:
+        type: string
+      seatType:
+        type: string
     type: object
   model.User:
     properties:
@@ -315,6 +338,50 @@ paths:
       summary: Add flight schedule
       tags:
       - Flight
+  /flight/schedule/{flightID}:
+    get:
+      consumes:
+      - application/json
+      description: Get a flight schedule by ID
+      parameters:
+      - description: Flight ID
+        in: path
+        name: flightID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Flight schedule found successfully!
+          schema:
+            type: string
+      summary: Get flight schedule by ID
+      tags:
+      - Flight
+  /flight/search/{query}:
+    get:
+      consumes:
+      - application/json
+      description: Search flight schedules
+      parameters:
+      - description: Query
+        in: path
+        name: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      summary: Search flight schedules
+      tags:
+      - Flight
   /hotel:
     get:
       consumes:
@@ -434,6 +501,27 @@ paths:
               $ref: '#/definitions/model.Facilities'
             type: array
       summary: List hotel facilities
+      tags:
+      - Hotel
+  /hotel/search/{query}:
+    get:
+      consumes:
+      - application/json
+      description: Search hotel by name
+      parameters:
+      - description: Query
+        in: path
+        name: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel found!
+          schema:
+            type: string
+      summary: Search hotel
       tags:
       - Hotel
   /plane:
@@ -566,6 +654,27 @@ paths:
           schema:
             type: string
       summary: Add Search
+      tags:
+      - Search
+  /search/{search}:
+    get:
+      consumes:
+      - application/json
+      description: Get search result
+      parameters:
+      - description: Search Query
+        in: path
+        name: search
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Get Search Result
       tags:
       - Search
   /search/history/{userId}:

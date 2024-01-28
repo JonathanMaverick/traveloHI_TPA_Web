@@ -206,6 +206,73 @@ const docTemplate = `{
                 }
             }
         },
+        "/flight/schedule/{flightID}": {
+            "get": {
+                "description": "Get a flight schedule by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight"
+                ],
+                "summary": "Get flight schedule by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Flight ID",
+                        "name": "flightID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Flight schedule found successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight/search/{query}": {
+            "get": {
+                "description": "Search flight schedules",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight"
+                ],
+                "summary": "Search flight schedules",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Query",
+                        "name": "query",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/hotel": {
             "get": {
                 "description": "Get a list of hotel",
@@ -387,6 +454,38 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/model.Facilities"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/hotel/search/{query}": {
+            "get": {
+                "description": "Search hotel by name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hotel"
+                ],
+                "summary": "Search hotel",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Query",
+                        "name": "query",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hotel found!",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -639,6 +738,38 @@ const docTemplate = `{
                     "Search"
                 ],
                 "summary": "Get Top Searches",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/search/{search}": {
+            "get": {
+                "description": "Get search result",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Get Search Result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search Query",
+                        "name": "search",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok",
@@ -914,6 +1045,12 @@ const docTemplate = `{
                 },
                 "planeID": {
                     "type": "integer"
+                },
+                "seats": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Seat"
+                    }
                 }
             }
         },
@@ -945,6 +1082,12 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.HotelPicture"
+                    }
+                },
+                "rooms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Room"
                     }
                 }
             }
@@ -1063,6 +1206,29 @@ const docTemplate = `{
                 },
                 "userID": {
                     "type": "integer"
+                }
+            }
+        },
+        "model.Seat": {
+            "type": "object",
+            "properties": {
+                "flightScheduleID": {
+                    "type": "integer"
+                },
+                "planeID": {
+                    "type": "integer"
+                },
+                "seatID": {
+                    "type": "integer"
+                },
+                "seatNumber": {
+                    "type": "string"
+                },
+                "seatStatus": {
+                    "type": "string"
+                },
+                "seatType": {
+                    "type": "string"
                 }
             }
         },

@@ -82,27 +82,28 @@ func GetAirports(c *gin.Context) {
 func createSeatsForPlaneAndFlightSchedule(plane model.Plane, flightSchedule model.FlightSchedule) ([]model.Seat, error) {
 	var seats []model.Seat
 
+	for i := uint(1); i <= plane.BusinessSeats; i++ {
+		seat := model.Seat{
+			PlaneID:           	plane.ID,
+			FlightScheduleID:  	flightSchedule.ID,
+			SeatType: 			"business",
+			SeatStatus: 		"available",
+			SeatNumber:        	fmt.Sprintf("B%d", i),
+		}
+		seats = append(seats, seat)
+	}
+	
 	for i := uint(1); i <= plane.EconomySeats; i++ {
 		seat := model.Seat{
 			PlaneID:           	plane.ID,
 			FlightScheduleID:  	flightSchedule.ID,
-			SeatType: 			"Economy",
-			SeatStatus: 		"Available",
+			SeatType: 			"economy",
+			SeatStatus: 		"available",
 			SeatNumber:        	fmt.Sprintf("E%d", i),
 		}
 		seats = append(seats, seat)
 	}
 
-	for i := uint(1); i <= plane.BusinessSeats; i++ {
-		seat := model.Seat{
-			PlaneID:           	plane.ID,
-			FlightScheduleID:  	flightSchedule.ID,
-			SeatType: 			"Business",
-			SeatStatus: 		"Available",
-			SeatNumber:        	fmt.Sprintf("B%d", i),
-		}
-		seats = append(seats, seat)
-	}
 
 	return seats, nil
 }

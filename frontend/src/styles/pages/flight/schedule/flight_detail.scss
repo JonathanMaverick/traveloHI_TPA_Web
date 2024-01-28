@@ -1,0 +1,255 @@
+@import "../../../variables.scss";
+@import "../../../mixins.scss";
+
+.available {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  height: auto;
+  cursor: pointer;
+  &.business {
+    color: $button;
+  }
+
+  &.economy {
+    color: $icon-color;
+  }
+
+  &.unavailable {
+    color: $hover-color;
+  }
+}
+
+.seat-map{
+  @include box-shadow;
+  h2{
+    margin: 0;
+    margin-bottom: 0.5rem;
+  }
+  @include border-radius;
+  max-width: 300px;
+  background-color: $card-background;
+  padding: 1rem;
+  .seat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  
+    .left-seats,
+    .right-seats {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+}
+
+.seat-color{
+  display: flex;
+  flex-direction: row;
+  gap: .5rem;
+  .seat-color-information{
+    display: flex;
+    flex-direction: row;
+    gap: .2rem;
+    align-items: center;
+    margin: 10px 0px;
+    .box{
+      width: 15px;
+      height: 15px;
+      @include border-radius;
+    }
+
+    .business-box{
+      background-color: $price-font-color;
+    }
+
+    .economy-box{
+      background-color: $icon-color;
+    }
+
+    .unavailable-box{
+      background-color: $hover-color;
+    }
+  }
+}
+
+.seat-information{
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin: 10px 5px;
+  .seat-selected-information{
+    @include box-shadow;
+    @include border-radius;
+    width: 100%;
+    height: 300px;
+    position: relative;
+    background-color: $card-background;
+    padding: 1rem;
+    h2, h3{
+      margin: 0;
+      margin-bottom: 0.5rem;
+    }
+    .seat-information-detail{
+      display: flex;
+      flex-direction: column;
+      p{
+        font-size: 18px; 
+        margin-top: 5px; 
+      }
+    }
+    .flight-schedule-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      @include border-radius;
+      @include box-shadow;
+      padding: 10px;
+      margin-bottom: 10px;
+    
+      .airline-logo-container {
+        img {
+          width: 5rem;
+        }
+    
+        .airline-name {
+          margin-top: 5px;
+          font-size: 14px;
+        }
+      }
+    
+      .flight-schedule-details {
+        display: flex;
+        flex-direction: column;
+    
+        .flight-schedule-location {
+          p {
+            font-size: 16px;
+            margin: 0;
+    
+            &.departure-date {
+              font-weight: bold;
+              font-size: 18px; 
+            }
+          }
+    
+          .route {
+            font-size: 16px;
+            color: $secondary-font-color;
+            margin-top: 5px; 
+          }
+        }
+    
+        .flight-schedule-time {
+          p {
+            font-size: 16px;
+            margin: 0;
+    
+            &.flight-time {
+              font-weight: semi-bold;
+              font-size: 16px; 
+              margin-top: 5px; 
+            }
+          }
+        }
+      }
+    }
+
+    .transaction-detail-price {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      align-items: center; 
+      justify-content: space-between;
+      margin-top: 2rem;
+    
+      p {
+        font-size: 20px;
+        color: $price-font-color; 
+        .flight-schedule-price-org {
+          color: $secondary-font-color;
+        }
+      }
+      .button-container{
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        button {
+          font-size: 16px;
+          border: none;
+          padding: 5px 20px;
+          cursor: pointer;
+          @include border-radius;
+          @include centered;
+        }
+
+        .add-to-cart-button{
+          background-color: $secondary-font-color;
+          color: $white;
+        }
+
+        .payment-button{
+          background-color: $price-font-color;
+          color: $white;
+        }
+      }
+    }
+  }
+}
+
+.payment-form{
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: max-content;
+  overflow-y: scroll;
+  background-color: $white;
+  padding: 1rem;
+  z-index: 99;
+  border-radius: 10px;
+  &.open {
+    display: block;
+  }
+
+  .addon-luggage-container{
+    label{
+      font-size: $font-size-p - 2px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .form-payment-price{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: space-between;
+    margin: 2rem 0rem;
+  
+    p {
+      font-size: $font-size-p;
+      color: $price-font-color; 
+      .flight-schedule-price-org {
+        color: $secondary-font-color;
+      }
+    }
+  
+    button {
+      background-color: $price-font-color;
+      color: $white;
+      font-size: $font-size-p - 2px;
+      border: none;
+      padding: 5px 20px;
+      cursor: pointer;
+      @include border-radius;
+      @include centered;
+    }
+  }
+}

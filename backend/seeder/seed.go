@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/JonathanMaverickTPA_Web/config"
+	"github.com/JonathanMaverickTPA_Web/model"
 )
 
 func Seed() {
@@ -67,6 +68,10 @@ func Seed() {
 	// 	{AirportCode: "GTO", AirportName: "Jalaluddin Airport", AirportLocation: "Gorontalo, Gorontalo"},
 	// }
 
+	payment := []model.PaymentType{
+		{PaymentType: "Credit Card"},
+		{PaymentType: "HI Wallet"},
+	}
 
 	// db.Create(&hotel)
 	// db.Create(&room)
@@ -74,4 +79,5 @@ func Seed() {
 	// db.Create(&facilities)
 	// db.Create(&airports)
 	// db.Create(&airports)
+	db.Create(&payment)
 }

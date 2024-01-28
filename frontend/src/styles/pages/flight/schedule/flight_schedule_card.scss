@@ -85,6 +85,7 @@
         border: none;
         padding: 5px 20px;
         @include border-radius;
+        cursor: pointer;
       }
     }
   }

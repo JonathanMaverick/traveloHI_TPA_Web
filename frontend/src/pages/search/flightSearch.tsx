@@ -56,7 +56,7 @@ export default function FlightSearch({sortOption}: {sortOption: string}) {
             <div className="flight-list">
                 {flightScheduleList.map((f) => (
                     <div className="flight-card" key={f.flightScheduleID}>
-                        <FlightSearchCard flightSchedule={f} />
+                        <FlightSearchCard flightSchedule={f} status={"search"} />
                     </div>
                 ))}
             </div>
