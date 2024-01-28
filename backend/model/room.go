@@ -1,9 +1,9 @@
 package model
 
 type Room struct {
-	ID      uint          `json:"roomID"`
+	ID          uint          `json:"roomID"`
 	RoomName    string        `json:"roomName"`
-	HotelID     uint          `json:"hotelID" gorm:"foreignKey:HotelID;references:HotelID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	HotelID     uint          `json:"hotelID"`
 	Price       int64         `json:"price"`
 	Occupancy   int           `json:"occupancy"`
 	Quantity    int           `json:"quantity"`
