@@ -56,7 +56,7 @@
 
     .search-option{
       position: absolute;
-      display: block;
+      display: none;
       width: 100%;
       top: 105%;
       @include border-radius;
@@ -72,6 +72,13 @@
           cursor: pointer;
         }
       }
+    }
+    &.search-option {
+      display: none;
+    }
+    
+    &.show-options .search-option {
+      display: block;
     }
   }
 
@@ -114,7 +121,7 @@
     @include centered;
     position: relative;
     gap: 3px;
-    width: 115px;
+    width: 100px;
     border-radius: 5px;
     
     .flag {
@@ -181,6 +188,7 @@
       color: white;
       @include border-radius;
       padding: 5px 15px;
+      width: max-content;
     }
     &:hover .hi-wallet-balance{
       display: block;

@@ -54,6 +54,12 @@ func AddFlightTransaction(c *gin.Context){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
 		return
 	}
+
+	if(user.Wallet < flightTransaction.Price){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Insufficient wallet!"})
+		return
+	}
+
 	user.Wallet = user.Wallet - flightTransaction.Price
 	err = config.DB.Save(&user).Error
 	if err != nil{

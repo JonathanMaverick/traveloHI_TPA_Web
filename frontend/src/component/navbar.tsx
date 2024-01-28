@@ -5,7 +5,7 @@ import { FaCartPlus, FaFire, FaRegCreditCard, FaSearch, FaWallet } from "react-i
 import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import '../styles/components/sidebar.scss';
 import { ADMIN_LIST, MENU_LIST, USER_LIST } from "../settings/menu-settings";
 import useCurrency from "../contexts/currency-context";
@@ -125,6 +125,21 @@ export default function Navbar() {
         setShowSearchOptions(false);
     };
 
+    const searchOptionRef = useRef<HTMLDivElement>(null);
+  
+    useEffect(() => {
+      const handleOutsideClick = (event:MouseEvent) => {
+        if (searchOptionRef.current && !searchOptionRef.current.contains(event.target as Node)) {
+          setShowSearchOptions(false);
+        }
+      };
+  
+      document.addEventListener('mousedown', handleOutsideClick);  
+      return () => {
+        document.removeEventListener('mousedown', handleOutsideClick);
+      };
+    }, [searchOptionRef]);
+
     return (
         <div className="nav-bar">
             <div className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
@@ -169,7 +184,7 @@ export default function Navbar() {
             <div onClick={() => setSidebarOpen(false)} className={`overlay ${isSidebarOpen ? 'open' : ''}`}></div>
             <RxHamburgerMenu className="logo-icon" size={25} onClick={() => setSidebarOpen(true)}/>
             <Link to="/"><p style={{fontWeight: "bolder", fontSize: "1.2rem"}}>TraveLoHI</p></Link>
-            <div className="search-bar">
+            <div className={`search-bar ${showSearchOptions ? 'show-options' : ''}`}>
                 <FaSearch className="search-icon logo-icon" size={20}/>
                 <input type="text"
                     value={searchData!.search}
@@ -178,13 +193,11 @@ export default function Navbar() {
                         setShowSearchOptions(false);
                     }}
                     onFocus={() => setShowSearchOptions(true)} 
-                    onBlur={() => setShowSearchOptions(false)} 
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') handleSearch();
                     }}
                 />
-                {showSearchOptions && (
-                    <div className="search-option">
+                <div className="search-option" ref={searchOptionRef}>
                     {topSearch.map((item) => (
                         <div className="search-item" key={topIndexCounter++} onClick={() => {
                             handleOptionClick(item.search);
@@ -197,8 +210,7 @@ export default function Navbar() {
                             <MdHistory /> {item.search}
                         </div>
                     ))}
-                    </div>
-                )}
+                </div>
             </div>
             {user ? (
                 <Link to={`/user/order/${user?.userID}`}>
