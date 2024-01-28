@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../../styles/pages/flight/schedule/flight_schedule_card.scss"
 import useCurrency from "../../contexts/currency-context";
 import { IFlightSchedule } from "../../interfaces/flight/flight-schedule-interface";
+import { Link } from "react-router-dom";
 
 const FlightSearchCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule }) => {
 
@@ -60,7 +61,7 @@ const FlightSearchCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule 
           </div>
           <div className="bottom-flight-schedule-content">
             <p className={`detail-flight-schedule ${isAccordionOpen ? 'accordion-open' : ''}`}>Detail</p>
-            <button>View Detail</button>
+            <Link to={`/flight-detail/${flightSchedule.flightScheduleID}`}><button>Book Flight</button></Link>
           </div>
         </div>
         {isAccordionOpen && (

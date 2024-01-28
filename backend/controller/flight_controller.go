@@ -207,6 +207,33 @@ func AddFlightSchedule(c *gin.Context){
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Flight schedule added successfully!"})
 }
 
+//GetFlightScheduleByID gets a flight schedule by ID
+// @Summary Get flight schedule by ID
+// @Description Get a flight schedule by ID
+// @Tags Flight
+// @Accept json
+// @Produce json
+// @Param flightID path string true "Flight ID"
+// @Success 200 {string} string "Flight schedule found successfully!"
+// @Router /flight/schedule/{flightID} [get]
+func GetFlightScheduleByID(c *gin.Context) {
+	flightID := c.Param("flightID")
+	var flightSchedule model.FlightSchedule
+	result := config.DB.
+		Preload("Plane").
+		Preload("Plane.Airline").
+		Preload("OriginAirport").
+		Preload("DestinationAirport").
+		Preload("Seats").
+		First(&flightSchedule, flightID)
+
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Flight schedule not found!"})
+		return
+	}
+	c.AsciiJSON(http.StatusOK, flightSchedule)
+}
+
 //GetFlightSchedules lists all existing flight schedules
 // @Summary List flight schedules
 // @Description Get a list of flight schedules

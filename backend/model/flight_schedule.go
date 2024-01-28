@@ -10,6 +10,7 @@ type FlightSchedule struct {
 	ArrivalTime          string `json:"arrivalTime"`
 	DepartureTime        string `json:"departureTime"`
 
+	Seats              []Seat  `gorm:"foreignKey:FlightScheduleID"`
 	Plane              Plane   `gorm:"foreignKey:PlaneID"`
 	OriginAirport      Airport `gorm:"foreignKey:OriginAirportID"`
 	DestinationAirport Airport `gorm:"foreignKey:DestinationAirportID"`

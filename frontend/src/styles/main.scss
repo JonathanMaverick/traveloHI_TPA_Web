@@ -17,3 +17,16 @@ a {
 p {
   margin: 0;
 }
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $icon-color; 
+  border-radius: 2px; 
+}
+
+::-webkit-scrollbar-track {
+  background-color: $background-color; 
+}

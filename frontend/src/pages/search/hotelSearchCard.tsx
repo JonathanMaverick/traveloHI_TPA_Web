@@ -1,9 +1,14 @@
 import { FaLocationDot } from 'react-icons/fa6';
 import { IHotel } from '../../interfaces/hotel/hotel-interface';
+import '../../styles/pages/hotel-card.scss';
+import useCurrency from '../../contexts/currency-context';
 
 const HotelSearchCard = ({ hotel }: {hotel : IHotel}) => {
 
     const defaultImageUrl = 'https://t3.ftcdn.net/jpg/04/62/93/66/360_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg';
+    const prices = hotel.rooms?.map((room) => room.price) || [];
+    const minPrice = Math.min(...prices);
+    const {currency} = useCurrency();
 
     return (
     <>
@@ -43,6 +48,16 @@ const HotelSearchCard = ({ hotel }: {hotel : IHotel}) => {
                     </div>
                 )}
             </div>
+        </div>
+        <div className="hotel-price">
+                {currency == "IDR" ? (
+                  <p>Rp. {minPrice} </p>
+                ) : (
+                  <p>$ {(minPrice/ 14000).toFixed(4)} </p>
+                )}
+            <button>
+                Choose Room
+            </button>
         </div>
     </>
     );

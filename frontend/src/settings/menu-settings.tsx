@@ -8,6 +8,7 @@ import HomePage from "../pages/home/home-page";
 import ManageUser from "../pages/user/manageUser";
 import ManageHotel from "../pages/hotel/manageHotel";
 import SearchPage from "../pages/search/searchPage";
+import FlightDetail from "../pages/flight/flightDetail";
 
 export interface IMenu {
     name : string;
@@ -28,6 +29,12 @@ export const MENU_LIST: IMenu[] = [
         name : "Search",
         path : "/search/:query",
         element : <SearchPage />,
+        status : "skip"
+    },
+    {
+        name : "Flight Detail",
+        path : "/flight-detail/:id",
+        element : <FlightDetail />,
         status : "skip"
     }
 ]

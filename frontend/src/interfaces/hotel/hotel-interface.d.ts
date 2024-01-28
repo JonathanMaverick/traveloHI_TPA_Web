@@ -1,5 +1,6 @@
 import { IHotelFacilities } from "./hotel-facilities-interface";
 import { IHotelPicture } from "./hotel-picture-interface";
+import { IRoom } from "./room-interface";
 
 export interface IHotel{
     hotelID? : number;
@@ -9,4 +10,5 @@ export interface IHotel{
     hotelCity : string;
     hotelPictures?: IHotelPicture[];
     hotelFacilities?: IHotelFacilities[];
+    rooms? : IRoom[];
 }
