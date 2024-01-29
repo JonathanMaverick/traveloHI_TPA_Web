@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import "../../styles/pages/game/game.scss";
-import { Player } from './object/Player';
 import { PlayerState, getFirstPlayerAnimations, getSecondPlayerAnimations } from './object/PlayerState';
+import { Player } from './object/player';
 
 export const gamePath = "./game_asset/";
-export const characterScaleFactor = 4; 
+export const characterScaleFactor = 3; 
 
 const loadImage = (src:any) => {
   return new Promise<HTMLImageElement>((resolve, reject) => {
@@ -21,27 +21,27 @@ const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingConte
     loadImage(gamePath + 'lifebar full.png'),
   ]);
 
-  canvas.height = window.innerHeight * 0.9;
-  canvas.width = window.innerWidth * 0.7;
+  canvas.height = window.innerHeight * 0.8;
+  canvas.width = window.innerWidth * 0.9;
 
   let lifeBarX = (canvas.width - (lifeBarFull.width / 0.35)) / 2; 
   const firstPlayerSprite = await getFirstPlayerAnimations(); 
   const secondPlayerSprite = await getSecondPlayerAnimations();
-
   
   const FirstCharacterWidth = firstPlayerSprite[PlayerState.Idle][0].width * characterScaleFactor;
   const FirstCharacterHeight = firstPlayerSprite[PlayerState.Idle][0].height * characterScaleFactor;
   const firstCharacterX = (canvas!.width - FirstCharacterWidth) / 25;
+  const firstCharacterY = canvas!.height - FirstCharacterHeight;
   
   const SecondCharacterWidth = secondPlayerSprite[PlayerState.Idle][0].width * characterScaleFactor;
   const SecondCharacterHeight = secondPlayerSprite[PlayerState.Idle][0].height * characterScaleFactor;
   const secondCharacterX = (canvas!.width - SecondCharacterWidth) / 1.05;
-
+  const secondCharacterY = canvas!.height - SecondCharacterHeight;
 
   const firstPlayer = new Player(
     "sword",
     firstCharacterX,
-    480,
+    firstCharacterY,
     FirstCharacterWidth,
     FirstCharacterHeight,
     0,
@@ -56,7 +56,7 @@ const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingConte
   const secondPlayer = new Player(
     "blast",
     secondCharacterX,
-    480,
+    secondCharacterY,
     SecondCharacterWidth,
     SecondCharacterHeight,
     0,
@@ -83,8 +83,8 @@ const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingConte
     
     context.drawImage(background, 0, 0, canvas.width, canvas.height);
     context.drawImage(lifeBarFull,lifeBarX - 3.5,0,lifeBarFull.width / 0.35,lifeBarFull.height * 3);
-    firstPlayer.update(deltaTime, context);
-    secondPlayer.update(deltaTime, context);
+    firstPlayer.update(deltaTime, canvas, context);
+    secondPlayer.update(deltaTime, canvas, context);
     
     lastTimestamp = timeStamp;
     requestAnimationFrame(draw);

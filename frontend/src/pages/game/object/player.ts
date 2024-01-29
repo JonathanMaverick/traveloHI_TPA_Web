@@ -52,20 +52,20 @@ export class Player {
         }
     }
 
-    update(deltaTime: number, c: CanvasRenderingContext2D) {
+    update(deltaTime: number, canvas : HTMLCanvasElement, c: CanvasRenderingContext2D) {
         this.animateFrames(deltaTime);
         this.draw(c);
-        this.validateMove();
+        this.validateMove(canvas);
         this.x += this.xSpeed;
         this.y += this.ySpeed;
     }
 
-    validateMove() {
+    validateMove(canvas : HTMLCanvasElement) {
         if (this.x < 0) {
             this.x = 0;
         }
-        else if (this.x + this.width > 1400) {
-            this.x = 1400 - this.width;
+        else if (this.x + this.width > canvas!.width) {
+            this.x = canvas!.width - this.width;
         }
     }
 
