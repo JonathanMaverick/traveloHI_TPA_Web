@@ -6,7 +6,6 @@ import { IPlane } from "../../../interfaces/flight/plane-interface";
 import get_airport from "../../../api/flight/airport/get_airport";
 import { IAirport } from "../../../interfaces/flight/airport-interface";
 import TextField from "../../../component/text-field";
-import add_flight_schedule from "../../../api/flight/schedule/add_flight_schedule";
 import update_flight_schedule from "../../../api/flight/schedule/update_flight_schedule";
 
 export default function EditFlightSchedule({f} : {f : IFlightSchedule}) {
