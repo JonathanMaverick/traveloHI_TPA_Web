@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IFlightSchedule } from "../../../interfaces/flight/flight-schedule-interface";
 import "../../../styles/pages/flight/schedule/flight_schedule_card.scss"
 import useCurrency from "../../../contexts/currency-context";
+import EditFlightSchedule from "./editFlightSchedule";
 
 const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedule }) => {
 
@@ -27,6 +28,10 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
         day: '2-digit',
       });
     }
+    const toggleButton = () => {
+      setShowScheduleForm(!showScheduleForm);
+    };
+    const [showScheduleForm, setShowScheduleForm ] = useState(false);
 
     return (
       <div className={`flight-schedule-card ${isAccordionOpen ? 'open' : ''}`} onClick={toggleAccordion}>
@@ -59,7 +64,11 @@ const FlightScheduleCard = ({ flightSchedule }: { flightSchedule: IFlightSchedul
           </div>
           <div className="bottom-flight-schedule-content">
             <p className={`detail-flight-schedule ${isAccordionOpen ? 'accordion-open' : ''}`}>Detail</p>
-            <button>Edit</button>
+            <button onClick={toggleButton}>Edit</button>
+            <div className={`add-form ${showScheduleForm ? 'open' : ''}`}>
+                <EditFlightSchedule f={flightSchedule}/>
+            </div>
+            <div className={`overlay ${showScheduleForm ? 'open' : ''}`} onClick={() => setShowScheduleForm(false)}></div>
           </div>
         </div>
         {isAccordionOpen && (

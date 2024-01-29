@@ -7,8 +7,9 @@ import get_airport from "../../../api/flight/airport/get_airport";
 import { IAirport } from "../../../interfaces/flight/airport-interface";
 import TextField from "../../../component/text-field";
 import add_flight_schedule from "../../../api/flight/schedule/add_flight_schedule";
+import update_flight_schedule from "../../../api/flight/schedule/update_flight_schedule";
 
-export default function AddFlightSchedule() {
+export default function EditFlightSchedule({f} : {f : IFlightSchedule}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,25 +33,13 @@ export default function AddFlightSchedule() {
     fetchData();
   }, []);
 
-  const INITIAL_FLIGHT_DETAIL: IFlightSchedule = {
-    flightScheduleID: 0,
-    flightScheduleCode : "",
-    planeID: 0,
-    originAirportID: 0,
-    destinationAirportID: 0,
-    departureTime: "",
-    arrivalTime: "",
-    economyPrice: 0,
-    businessPrice: 0,
-  };
-
   const [plane, setPlane] = useState<IPlane[]>([]);
   const [airport, setAirport] = useState<IAirport[]>([]);
   const [selectedPlaneID, setSelectedPlaneID] = useState<string>("");
   const [selectedOriginAirportID, setSelectedOriginAirportID] = useState<string>("");
   const [selectedDestinationAirportID, setSelectedDestinationAirportID] = useState<string>("");
   const [flightSchedule, setFlightSchedule] = useState<IFlightSchedule>(
-    INITIAL_FLIGHT_DETAIL
+    f
   );
 
   const handleAddSchedule = async (e: FormEvent<HTMLFormElement>) => {
@@ -69,7 +58,7 @@ export default function AddFlightSchedule() {
     flightSchedule.destinationAirportID = parseInt(selectedDestinationAirportID);
 
     try {
-      const response = await add_flight_schedule(flightSchedule);
+      const response = await update_flight_schedule(flightSchedule);
       if (response == -1) {
         
         return;
@@ -78,7 +67,6 @@ export default function AddFlightSchedule() {
         window.location.reload();
       }
     } catch {
-      console.log("here!")
       alert("Flight Schedule Code must be unique!");
     }
   };

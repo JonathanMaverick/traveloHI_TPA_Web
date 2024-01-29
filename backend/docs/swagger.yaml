@@ -328,6 +328,48 @@ paths:
       summary: Get flight transaction by user id
       tags:
       - Flight Transaction
+  /flight-transaction/user/history/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get history flight transaction by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Flight Transaction found successfully!
+          schema:
+            type: string
+      summary: Get history flight transaction by user id
+      tags:
+      - Flight Transaction
+  /flight-transaction/user/ongoing/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get on going flight transaction by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Flight Transaction found successfully!
+          schema:
+            type: string
+      summary: Get on going flight transaction by user id
+      tags:
+      - Flight Transaction
   /flight-transaction/user/total/{id}:
     get:
       consumes:
@@ -402,6 +444,28 @@ paths:
           schema:
             type: string
       summary: Add flight schedule
+      tags:
+      - Flight
+  /flight/schedule/:
+    put:
+      consumes:
+      - application/json
+      description: Update flight schedule
+      parameters:
+      - description: Flight Schedule
+        in: body
+        name: flightSchedule
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Flight schedule updated successfully!
+          schema:
+            type: string
+      summary: Update flight schedule
       tags:
       - Flight
   /flight/schedule/{flightID}:

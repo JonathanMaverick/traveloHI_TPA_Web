@@ -156,6 +156,70 @@ const docTemplate = `{
                 }
             }
         },
+        "/flight-transaction/user/history/{id}": {
+            "get": {
+                "description": "Get history flight transaction by user id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight Transaction"
+                ],
+                "summary": "Get history flight transaction by user id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Flight Transaction found successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight-transaction/user/ongoing/{id}": {
+            "get": {
+                "description": "Get on going flight transaction by user id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight Transaction"
+                ],
+                "summary": "Get on going flight transaction by user id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Flight Transaction found successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/flight-transaction/user/total/{id}": {
             "get": {
                 "description": "Get total flight transaction by user id",
@@ -297,6 +361,40 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "Flight schedule created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight/schedule/": {
+            "put": {
+                "description": "Update flight schedule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight"
+                ],
+                "summary": "Update flight schedule",
+                "parameters": [
+                    {
+                        "description": "Flight Schedule",
+                        "name": "flightSchedule",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Flight schedule updated successfully!",
                         "schema": {
                             "type": "string"
                         }

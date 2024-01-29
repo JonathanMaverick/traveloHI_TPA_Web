@@ -12,6 +12,7 @@ func FlightRoute(r *gin.Engine) {
 		flight.GET("/schedule", controller.GetFlightSchedules)
 		flight.GET("/schedule/:flightID", controller.GetFlightScheduleByID)
 		flight.GET("/search/:query", controller.SearchFlightSchedule)
+		flight.PUT("/schedule/", controller.UpdateFlightSchedule)
 
 		//Airline
 		flight.POST("/airline", controller.AddAirline)

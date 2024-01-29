@@ -291,3 +291,108 @@ func SearchFlightSchedule(c *gin.Context) {
 	}
 	c.AsciiJSON(http.StatusOK, flightSchedules)
 }
+
+//Update flight schedule
+// @Summary Update flight schedule
+// @Description Update flight schedule
+// @Tags Flight
+// @Accept json
+// @Produce json
+// @Param flightSchedule body string true "Flight Schedule"
+// @Success 200 {string} string "Flight schedule updated successfully!"
+// @Router /flight/schedule/ [put]
+func UpdateFlightSchedule(c *gin.Context) {
+	var flightSchedule model.FlightSchedule
+	c.BindJSON(&flightSchedule)
+
+	if(flightSchedule.ID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Flight schedule ID can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.PlaneID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Plane ID can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.OriginAirportID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Origin airport ID can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.DestinationAirportID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Destination airport ID can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.OriginAirportID == flightSchedule.DestinationAirportID){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Origin and destination airport can't be the same!"})
+		return
+	}
+
+	if(flightSchedule.BusinessPrice == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Business seats price can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.EconomyPrice == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Economy seats price can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.ArrivalTime == ""){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Arrival time can't be empty!"})
+		return
+	}
+
+	if(flightSchedule.DepartureTime == ""){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Departure time can't be empty!"})
+		return
+	}
+
+	departureTime, err := time.Parse("2006-01-02T15:04", flightSchedule.DepartureTime)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid Date Format!"})
+		return
+	}
+	arrivalTime, err := time.Parse("2006-01-02T15:04", flightSchedule.ArrivalTime)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid Date Format!"})
+		return
+	}
+	if arrivalTime.Before(departureTime) || arrivalTime.Equal(departureTime) {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Arrival time must be after departure time!"})
+		return
+	}
+
+	var plane model.Plane
+	findPlane := config.DB.First(&plane, flightSchedule.PlaneID)
+	if findPlane.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Plane not found!"})
+		return
+	}
+
+	result := config.DB.Save(&flightSchedule)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to update flight schedule!"})
+		return
+	}
+
+	var seats []model.Seat
+	config.DB.Where("flight_schedule_id = ?", flightSchedule.ID).Find(&seats)
+	for _, seat := range seats {
+		config.DB.Delete(&seat)
+	}
+
+	seats, err = createSeatsForPlaneAndFlightSchedule(plane, flightSchedule)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Error creating seats"})
+		return
+	}
+
+	for _, seat := range seats {
+		config.DB.Create(&seat)
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Flight schedule updated successfully!"})
+}
