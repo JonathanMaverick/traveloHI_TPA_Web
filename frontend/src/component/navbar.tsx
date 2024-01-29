@@ -198,18 +198,19 @@ export default function Navbar() {
                     }}
                 />
                 <div className="search-option" ref={searchOptionRef}>
-                    {topSearch.map((item) => (
-                        <div className="search-item" key={topIndexCounter++} onClick={() => {
-                            handleOptionClick(item.search);
-                        }}>
-                            <FaFire color="#FF6921" /> {item.search}
-                        </div>
-                    ))}
-                    {searchHistory.map((item) => (
-                        <div className="search-item" key={item.id} onClick={() => handleOptionClick(item.search)}>
-                            <MdHistory /> {item.search}
-                        </div>
-                    ))}
+                {topSearch && topSearch.map((item) => (
+                    <div className="search-item" key={topIndexCounter++} onClick={() => {
+                        handleOptionClick(item.search);
+                    }}>
+                        <FaFire color="#FF6921" /> {item.search}
+                    </div>
+                ))}
+
+                {searchHistory && searchHistory.map((item) => (
+                    <div className="search-item" key={item.id} onClick={() => handleOptionClick(item.search)}>
+                        <MdHistory /> {item.search}
+                    </div>
+                ))}
                 </div>
             </div>
             {user ? (

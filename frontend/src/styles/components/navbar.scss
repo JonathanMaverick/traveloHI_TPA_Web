@@ -154,6 +154,7 @@
       top: 100%;
       right: 0;
       width: 15rem;
+      z-index: 99;
       @include border-radius;
       padding: 1rem;
       background-color: $card-background;
