@@ -6,4 +6,11 @@
     height: 100vh;
     overflow: hidden;
     @include centered;
+    position: relative;
+
+    h2{
+        position: absolute;
+        top: 8.5%;
+        color: white;
+    }
 }

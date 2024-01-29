@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import "../../styles/pages/game/game.scss";
-import { loadIdleSprites } from './object/playerState';
-import { Player } from './object/player';
+import { Player } from './object/Player';
+import { PlayerState, getFirstPlayerAnimations, getSecondPlayerAnimations } from './object/PlayerState';
 
 export const gamePath = "./game_asset/";
-const canvasRef = useRef<HTMLCanvasElement | null>(null);
+export const characterScaleFactor = 4; 
 
 const loadImage = (src:any) => {
   return new Promise<HTMLImageElement>((resolve, reject) => {
@@ -15,110 +15,106 @@ const loadImage = (src:any) => {
   });
 };
 
-const loadAssets = async () => {
-  const canvas = canvasRef.current;
-  if (!canvas) return;
-
-  const context = canvas.getContext('2d');
-  if (!context) return;
-
+const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) => {
   const [background, lifeBarFull] = await Promise.all([
-    loadImage(gamePath + "background/background.png"),
-    loadImage(gamePath + "lifebar full.png"),
+    loadImage(gamePath + 'background/background.png'),
+    loadImage(gamePath + 'lifebar full.png'),
   ]);
 
-  const frameRate = 60;
-  const frameDuration = 1000 / frameRate;
-  let lastFrameTime = performance.now();
+  canvas.height = window.innerHeight * 0.9;
+  canvas.width = window.innerWidth * 0.7;
 
-  canvas.height = window.innerHeight - 100;
-  canvas.width = window.innerWidth - 200;
+  let lifeBarX = (canvas.width - (lifeBarFull.width / 0.35)) / 2; 
+  const firstPlayerSprite = await getFirstPlayerAnimations(); 
+  const secondPlayerSprite = await getSecondPlayerAnimations();
 
-  //890 310
-  const playerStateBlastImpulse = await loadIdleSprites("blast impulse");
-  const playerStateSwordImpulse = await loadIdleSprites("sword impulse");
+  
+  const FirstCharacterWidth = firstPlayerSprite[PlayerState.Idle][0].width * characterScaleFactor;
+  const FirstCharacterHeight = firstPlayerSprite[PlayerState.Idle][0].height * characterScaleFactor;
+  const firstCharacterX = (canvas!.width - FirstCharacterWidth) / 25;
+  
+  const SecondCharacterWidth = secondPlayerSprite[PlayerState.Idle][0].width * characterScaleFactor;
+  const SecondCharacterHeight = secondPlayerSprite[PlayerState.Idle][0].height * characterScaleFactor;
+  const secondCharacterX = (canvas!.width - SecondCharacterWidth) / 1.05;
 
-  const blastImpulseCharacter = new Player(
-    100,
-    100,
-    890,
-    310,
-    0, 
+
+  const firstPlayer = new Player(
+    "sword",
+    firstCharacterX,
+    480,
+    FirstCharacterWidth,
+    FirstCharacterHeight,
     0,
-    100, 
-    false, 
-    playerStateBlastImpulse
-  );
+    0,
+    100,
+    100,
+    false,
+    firstPlayerSprite,
+    PlayerState.Idle,
+  )
 
-  const swordImpulseCharacter = new Player(
-      400, 
-      0, 
-      890,
-      310,
-      0, 
-      0,
-      100, 
-      false, 
-      playerStateSwordImpulse 
-  );
+  const secondPlayer = new Player(
+    "blast",
+    secondCharacterX,
+    480,
+    SecondCharacterWidth,
+    SecondCharacterHeight,
+    0,
+    0,
+    100,
+    100,
+    true,
+    secondPlayerSprite,
+    PlayerState.Idle,
+  )
 
-  function draw() {
-    // Draw background
-    context!.drawImage(background, 0, 0, canvas!.width, canvas!.height);
+  let lastTimestamp = performance.now();
+  const targetFrameRate = 60;
 
-    // Draw life bar
-    let lifeBarX = (canvas!.width - (lifeBarFull.width + 600)) / 2;
-    context!.drawImage(lifeBarFull, lifeBarX, 20, lifeBarFull.width + 600, lifeBarFull.height + 70);
-
-    // Draw character
-    
-
-    // context!.drawImage(
-    //   characterFrames[currentFrame],
-    //   characterX,
-    //   characterY,
-    //   characterFrames[currentFrame].width * characterScaleFactor,
-    //   characterFrames[currentFrame].height * characterScaleFactor
-    // );
-    
-    // const characterScaleFactor2 = 4;
-    // const characterX2 = (canvas!.width - characterFrames2[currentFrame].width * characterScaleFactor2) - 150;
-    // const characterY2 = canvas!.height - characterFrames2[currentFrame].height * characterScaleFactor2 - 50;
-
-    // context!.drawImage(
-    //   characterFrames2[currentFrame],
-    //   characterX2,
-    //   characterY2,
-    //   characterFrames2[currentFrame].width * characterScaleFactor2,
-    //   characterFrames2[currentFrame].height * characterScaleFactor2
-    // );
-
-    // currentFrame = (currentFrame + 1) % characterFrames.length; 
-    requestAnimationFrame(draw);
-  }
-
-  function animate() {
-    const currentTime = performance.now();
-    const elapsed = currentTime - lastFrameTime;
-
-    if (elapsed > frameDuration) {
-      lastFrameTime = currentTime - (elapsed % frameDuration);
-      draw();
+  const draw = () => {
+    const timeStamp = performance.now();
+    const deltaTime = (timeStamp - lastTimestamp); 
+    secondPlayer.handleInput();
+  
+    if (deltaTime < 1000 / targetFrameRate) {;
+      requestAnimationFrame(draw);
+      return;
     }
-    requestAnimationFrame(animate);
-  }
-  animate();
+    
+    context.drawImage(background, 0, 0, canvas.width, canvas.height);
+    context.drawImage(lifeBarFull,lifeBarX - 3.5,0,lifeBarFull.width / 0.35,lifeBarFull.height * 3);
+    firstPlayer.update(deltaTime, context);
+    secondPlayer.update(deltaTime, context);
+    
+    lastTimestamp = timeStamp;
+    requestAnimationFrame(draw);
+  };
+
+  draw();
 };
 
 export default function Game() {
-
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   useEffect(() => {
-    document.title = 'Game';
-    loadAssets();
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const context = canvas.getContext('2d');
+    if (!context) return;
+
+    initGame(canvas, context);
+    const interval = setInterval(() => {
+      setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
+    }, 1000); 
+
+    return () => clearInterval(interval);
   }, []);
+
+  const [timer, setTimer] = useState(120);
 
   return (
     <div className='game'>
+      <h2>{timer}</h2>
       <canvas ref={canvasRef} width={2000} height={850} style={{ border: '1px solid black' }} />
     </div>
   );
