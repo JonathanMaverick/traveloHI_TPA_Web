@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import PlaneContainer from "./plane-ticket-container";
 import TravelohiHeader from "./travelohiHeader";
+import HotelContainer from "./hotel-container";
 
 export default function HomePage(){
 
@@ -13,8 +14,7 @@ export default function HomePage(){
         <div>
             <TravelohiHeader />
             <PlaneContainer />
-            <div>
-            </div>
+            <HotelContainer />
         </div>
     )
 }
