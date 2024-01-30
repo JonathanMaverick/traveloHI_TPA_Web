@@ -18,7 +18,6 @@ export default function HotelDetail(){
                     return;
                 }
                 else{
-                    console.log(response.data)
                     setHotel(response.data);
                 }
             } catch (error) {
@@ -41,6 +40,7 @@ export default function HotelDetail(){
         <>
             <div className="hotel-detail">
                 <h1 className="hotel-name">{hotel.hotelName}</h1>
+                <p>{hotel.hotelDescription}</p>
                 <div className="image-container">
                     <img
                         className="main-image-detail"
@@ -50,6 +50,7 @@ export default function HotelDetail(){
                     <div className="secondary-hotel-images">
                         {[...Array(4)].map((_, index) => (
                             <img
+                                key={index}
                                 src={hotel.hotelPictures && hotel.hotelPictures.length > index ? hotel.hotelPictures[index].hotelPicture : defaultImageUrl}
                                 className="thumbnail-image"
                                 alt={`Thumbnail ${index }`}
@@ -58,7 +59,7 @@ export default function HotelDetail(){
                     </div>
                     {hotel.rooms && hotel.rooms.length > 0 ? (
                     hotel.rooms.map((room) => (
-                        <RoomCard room={room} />
+                        <RoomCard key={room.roomID} room={room} />
                     ))
                     ) : (
                         <p>No rooms available.</p>

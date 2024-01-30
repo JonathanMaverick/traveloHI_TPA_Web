@@ -20,6 +20,7 @@ func migrate(db *gorm.DB){
 	db.AutoMigrate(&model.HotelPicture{})
 	db.AutoMigrate(&model.HotelFacilities{})
 	db.AutoMigrate(&model.RoomPicture{})
+	db.AutoMigrate(&model.HotelTransaction{})
 
 	//Flight
 	db.AutoMigrate(&model.Airport{})

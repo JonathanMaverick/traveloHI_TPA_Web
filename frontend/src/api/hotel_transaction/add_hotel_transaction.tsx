@@ -1,11 +1,11 @@
 import axios from "axios";
-import { IFlightTransaction } from "../../interfaces/flight/flight-transaction-interface";
+import { IHotelTransaction } from "../../interfaces/flight/hotel-transaction-interface";
 
-const add_hotel_transaction = async(flight_transaction : IFlightTransaction) => {
+const add_hotel_transaction = async(hotel_transaction : IHotelTransaction) => {
     try{
         const response = await axios.post(
             import.meta.env.VITE_API_URL + "/hotel-transaction/"
-            , flight_transaction
+            , hotel_transaction
         );
         return response;
     }catch(error: any){

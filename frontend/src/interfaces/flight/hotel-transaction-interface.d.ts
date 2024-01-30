@@ -10,6 +10,8 @@ export interface IHotelTransaction {
     userID?: number;
     price: number;
     paymentID?: number;
+    checkInDate: string;
+    checkOutDate: string;
 
     Hotel? : IHotel;
     Room? : IRoom;
