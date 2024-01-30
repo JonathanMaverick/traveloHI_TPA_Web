@@ -14,3 +14,15 @@ type FlightTransaction struct {
 	Seat           Seat           `gorm:"foreignKey:SeatID"`
 	Payment        PaymentType    `gorm:"foreignKey:PaymentID"`
 }
+
+type FlightCart struct {
+	ID               uint    `json:"id"`
+	FlightScheduleID uint    `json:"flightScheduleID"`
+	UserID           uint    `json:"userID"`
+	SeatID           uint    `json:"seatID"`
+	Price            float64 `json:"price"`
+
+	FlightSchedule FlightSchedule `gorm:"foreignKey:FlightScheduleID"`
+	User           User           `gorm:"foreignKey:UserID"`
+	Seat           Seat           `gorm:"foreignKey:SeatID"`
+}

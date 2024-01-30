@@ -15,5 +15,8 @@ func FlightTransactionRoute(r *gin.Engine) {
 		flight.GET("/user/history/:id", controller.GetUserHistoryFlightTransaction)
 
 		flight.GET("/user/total/:id", controller.GetUserOnGoingTotalFlightTransaction)
+
+		flight.POST("/flight-cart/", controller.AddFlightCart)
+		flight.GET("/flight-cart/:id", controller.GetUserFlightCart)
 	}
 }

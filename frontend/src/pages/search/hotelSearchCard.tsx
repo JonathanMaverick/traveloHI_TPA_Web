@@ -2,6 +2,7 @@ import { FaLocationDot } from 'react-icons/fa6';
 import { IHotel } from '../../interfaces/hotel/hotel-interface';
 import '../../styles/pages/hotel-card.scss';
 import useCurrency from '../../contexts/currency-context';
+import { useNavigate } from 'react-router-dom';
 
 const HotelSearchCard = ({ hotel }: {hotel : IHotel}) => {
 
@@ -9,6 +10,11 @@ const HotelSearchCard = ({ hotel }: {hotel : IHotel}) => {
     const prices = hotel.rooms?.map((room) => room.price) || [];
     const minPrice = Math.min(...prices);
     const {currency} = useCurrency();
+    const navigate = useNavigate();
+
+    const handleViewDetail = () => {
+        navigate(`/hotel/${hotel.hotelID}`);
+    };
 
     return (
     <>
@@ -55,7 +61,7 @@ const HotelSearchCard = ({ hotel }: {hotel : IHotel}) => {
                 ) : (
                   <p>$ {(minPrice/ 14000).toFixed(4)} </p>
                 )}
-            <button>
+            <button onClick={handleViewDetail}>
                 Choose Room
             </button>
         </div>

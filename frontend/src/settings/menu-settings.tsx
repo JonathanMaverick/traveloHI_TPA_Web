@@ -13,6 +13,8 @@ import UserTransaction from "../pages/transaction/userTransaction";
 import UserHistoryTransaction from "../pages/transaction/history/userHistoryTransaction";
 import Game from "../pages/game/game";
 import CreditCard from "../pages/profile/credit-card-page";
+import UserCartTransaction from "../pages/transaction/cart/userCartTransaction";
+import HotelDetail from "../pages/hotel/hotelDetail";
 
 export interface IMenu {
     name : string;
@@ -39,6 +41,12 @@ export const MENU_LIST: IMenu[] = [
         name : "Flight Detail",
         path : "/flight-detail/:id",
         element : <FlightDetail />,
+        status : "skip"
+    },
+    {
+        name : "Hotel Detail",
+        path : "/hotel/:id",
+        element : <HotelDetail />,
         status : "skip"
     },
     {
@@ -73,7 +81,13 @@ export const USER_LIST: IMenu[] = [
         path : "/credit-card/:id",
         element : <CreditCard />,
         status : "skip"
-    }
+    },
+    {
+        name : "Flight Cart",
+        path : "/cart/:id",
+        element : <UserCartTransaction />,
+        status : "skip"
+    },
 ]
 
 export const ADMIN_LIST: IMenu[] = [

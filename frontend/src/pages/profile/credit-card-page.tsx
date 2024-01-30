@@ -56,7 +56,7 @@ export default function CreditCard(){
         <div className="credit-card-page">
             <ProfileSidebar />
             <div className="credit-container">
-                <h1>Credit Card</h1>
+                <h2>Credit Card</h2>
                 <div className="credit-content">
                     <form action="" onSubmit={addCreditCard}>
                         <TextField 

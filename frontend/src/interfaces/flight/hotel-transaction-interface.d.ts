@@ -1,19 +1,18 @@
+import { IHotel } from "../hotel/hotel-interface";
 import { IPayment } from "../transaction/payment/payment-interface";
 import { IUser } from "../user/user-interface";
 import { IFlightSchedule } from "./flight-schedule-interface";
-import { ISeat } from "./seats-interface";
 
-export interface IFlightTransaction {
+export interface IHotelTransaction {
     id? : number;
-    flightScheduleID?: number;
-    seatID?: number;
+    hotelID?: number;
+    roomID?: number;
     userID?: number;
     price: number;
     paymentID?: number;
-    addOnLuggage?: boolean;
 
-    FlightSchedule? : IFlightSchedule;
-    Seat? : ISeat;
+    Hotel? : IHotel;
+    Room? : IRoom;
     User? : IUser;
     Payment? : IPayment;
 }

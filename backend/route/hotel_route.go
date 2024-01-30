@@ -10,6 +10,7 @@ func HotelRoute(r *gin.Engine) {
 		//Hotel
 		hotel.GET("/",controller.GetHotel)
 		hotel.POST("/", controller.AddHotel)
+		hotel.GET("/:id", controller.GetHotelByID)
 
 		//Hotel Search
 		hotel.GET("/search/:query", controller.SearchHotel)

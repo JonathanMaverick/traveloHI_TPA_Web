@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { IFlightSchedule } from "../../interfaces/flight/flight-schedule-interface"
 import get_top_5_flight_schedule from "../../api/flight/schedule/get_top_5_flight_schedule";
-import FlightScheduleCard from "../flight/schedule/flightScheduleCard";
 import FlightSearchCard from "../search/flightSearchCard";
 
 export default function PlaneContainer(){

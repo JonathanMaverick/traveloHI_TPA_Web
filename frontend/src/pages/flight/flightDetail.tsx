@@ -11,6 +11,8 @@ import "../../styles/pages/flight/schedule/flight_schedule_card.scss"
 import useUser from "../../contexts/user-context";
 import { IFlightTransaction } from "../../interfaces/flight/flight-transaction-interface";
 import add_flight_transaction from "../../api/transaction/add_flight_transaction";
+import { IFlightCart } from "../../interfaces/flight/flight-cart-interface";
+import add_flight_cart from "../../api/flight/cart/add_flight_cart";
 
 export default function FlightDetail(){
     const { id } = useParams();
@@ -177,6 +179,48 @@ export default function FlightDetail(){
         setPaymentForm(!paymentForm);
     };
 
+    const addToCart = async () => {
+        if(!user){
+            alert("Please login first");
+            navigate("/login");
+            return;
+        }
+        if(selectedSeat?.seatType === "business"){
+            const flight_cart : IFlightCart = {
+                flightScheduleID: flightSchedule.flightScheduleID,
+                seatID: selectedSeat.seatID,
+                userID: user?.userID,
+                price: flightSchedule.businessPrice,
+            };
+            const response = await add_flight_cart(flight_cart);
+            if(response == -1){
+                alert("Err occured");
+                return;
+            }
+            else{
+                alert("Added to cart");
+                window.location.reload();
+            }
+        }
+        else{
+            const flight_cart : IFlightCart = {
+                flightScheduleID: flightSchedule.flightScheduleID,
+                seatID: selectedSeat?.seatID,
+                userID: user?.userID,
+                price: flightSchedule.businessPrice,
+            };
+            const response = await add_flight_cart(flight_cart);
+            if(response == -1){
+                alert("Err occured");
+                return;
+            }
+            else{
+                alert("Added to cart");
+                window.location.reload();
+            }
+        }
+    }
+
     const payButton = async (selectedPaymentOption: string) => {
         if(!user){
             alert("Please login first");
@@ -201,7 +245,6 @@ export default function FlightDetail(){
                         return;
                     }
                     else{
-                        console.log("kok sukses?")
                         alert("Payment Success");
                         navigate("/")
                     }
@@ -293,7 +336,7 @@ export default function FlightDetail(){
                                     <p>$ {(flightSchedule.economyPrice / 14000).toFixed(4)}<span className="flight-schedule-price-org">/people</span></p>
                             ))}
                             <div className="button-container">
-                                <button className="add-to-cart-button">
+                                <button className="add-to-cart-button" onClick={addToCart}>
                                     Add to Cart
                                 </button>
                                 <button className="payment-button" onClick={toggleButton}>

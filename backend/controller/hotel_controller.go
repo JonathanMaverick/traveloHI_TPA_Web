@@ -27,6 +27,27 @@ func GetHotel(c *gin.Context) {
 	c.AsciiJSON(http.StatusOK, hotels)
 }
 
+// GetHotelByID get hotel by hotel id
+// @Summary Get hotel by hotel id
+// @Description Get hotel by hotel id
+// @Tags Hotel
+// @Accept json
+// @Produce json
+// @Param id path string true "Hotel ID"
+// @Success 200 {string} string "Hotel found!"
+// @Router /hotel/{id} [get]
+func GetHotelByID(c *gin.Context) {
+	var hotel model.Hotel
+	id := c.Param("id")
+	result := config.DB.Preload("HotelPictures").Preload("HotelFacilities.Facilities").Preload("Rooms").Preload("Rooms.RoomPicture").First(&hotel, id)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No hotel found!"})
+		return
+	}
+	c.AsciiJSON(http.StatusOK, hotel)
+}
+
+
 // AddHotel creates a new hotel
 // @Summary Add hotel
 // @Description Add a new hotel

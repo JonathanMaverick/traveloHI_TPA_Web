@@ -1,4 +1,5 @@
 import { IBedType } from "./bedtype-interface";
+import { IRoomPicture } from "./room-picture-interface";
 
 export interface IRoom{
     roomName: string;
@@ -8,4 +9,5 @@ export interface IRoom{
     quantity : number;
     images : File[];
     bedType : string;
+    roomPicture : IRoomPicture[];
 }

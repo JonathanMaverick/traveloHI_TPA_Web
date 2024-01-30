@@ -43,6 +43,11 @@
             .flight-transaction-list{
                 overflow-y: scroll;
                 height: 600px;
+                .total-price{
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-right: 1rem;
+                }
             }
         }
     }

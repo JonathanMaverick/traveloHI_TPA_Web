@@ -30,9 +30,11 @@ export default function ProfileSidebar(){
                     <BsEnvelopePaper className="profile-icon"/><p>Order</p>
                 </div>
             </Link>
-            <div className="profile-information-option">
-                <FaShoppingCart className="profile-icon"/><p>Cart</p>
-            </div>
+            <Link to={`/user/cart/${user?.userID}`}>
+                <div className="profile-information-option">
+                    <FaShoppingCart className="profile-icon"/><p>Cart</p>
+                </div>
+            </Link>
             <Link to={`/user/history/${user?.userID}`}> 
                 <div className={`profile-information-option ${location.pathname === `/user/history/${user?.userID}` ? 'blue-background' : ''}`}>
                     <IoNewspaper className="profile-icon"/><p>History</p>

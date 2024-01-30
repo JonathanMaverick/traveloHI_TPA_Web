@@ -8,7 +8,7 @@ export interface IHotel{
     hotelDescription : string;
     hotelAddress : string;
     hotelCity : string;
-    hotelPictures?: IHotelPicture[];
+    hotelPictures : IHotelPicture[];
     hotelFacilities?: IHotelFacilities[];
     rooms? : IRoom[];
 }

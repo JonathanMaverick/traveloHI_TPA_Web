@@ -1,0 +1,119 @@
+@import "../../mixins.scss";
+@import "../../variables.scss";
+
+.hotel-detail {
+  .hotel-name {
+    font-size: 24px;
+  }
+
+  .image-container {
+    position: relative;
+    margin-top: 20px;
+    @include centered;
+    flex-direction: column;
+    .main-image-detail {
+      width: 95%;
+      max-height: 400px;
+      object-fit: cover;
+      @include border-radius;
+      @include box-shadow;
+    }
+
+    .secondary-hotel-images {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+
+      .thumbnail-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin: 0 8px;
+        cursor: pointer;
+        @include border-radius;
+        @include box-shadow;
+      }
+    }
+  }
+}
+
+.room-card {
+  @include border-radius;
+  @include box-shadow;
+  display: flex;
+  flex-direction: row;
+  height: 210px;
+  margin: 2rem 0rem;
+  width: 95%;
+
+  .room-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 300px;
+    margin: 0;
+
+    .rectangle-image {
+      height: 145px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .secondary-room-image {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      .square-image {
+        width: 98px;
+        height: 63px;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .room-details {
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    h3 {
+      margin: 0.5rem 0rem;
+    }
+
+    .room-occupancy{
+      width: max-content;
+      margin-top: 5px;
+      p{
+        @include centered;
+        gap: 5px;
+      }
+    }
+  }
+  .room-price {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 1rem 0.5rem;
+    width: 15rem;
+    gap: 1rem;
+    p {
+      font-size: 16px;
+      font-weight: 600;
+      color: $price-font-color;
+    }
+
+    button {
+      background-color: $price-font-color;
+      color: $white;
+      border: none;
+      font-size: 16px;
+      padding: 5px 5px;
+      @include border-radius;
+      cursor: pointer;
+    }
+  }
+}

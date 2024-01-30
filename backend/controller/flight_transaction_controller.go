@@ -226,5 +226,134 @@ func GetUserHistoryFlightTransaction(c *gin.Context){
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": historyFlight})
 }
 
+//AddFlightCart is a function to add flight cart to database
+// @Summary Add flight cart
+// @Description Add a new flight cart
+// @Tags Flight Transaction
+// @Accept json
+// @Produce json
+// @Param flightCart body string true "Flight Cart"
+// @Success 200 {string} string "Flight Cart created successfully!"
+// @Router /flight-transaction/flight-cart [post]
+func AddFlightCart(c *gin.Context){
+	var flightCart model.FlightCart
+	c.BindJSON(&flightCart)
+
+	if(flightCart.FlightScheduleID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Flight schedule ID can't be empty!"})
+		return
+	}
+
+	if(flightCart.UserID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "User ID can't be empty!"})
+		return
+	}
+
+	if(flightCart.SeatID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Seat ID can't be empty!"})
+		return
+	}
+
+	if(flightCart.Price == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Price can't be empty!"})
+		return
+	}
+
+	var seat model.Seat
+	err := config.DB.Where("id = ?", flightCart.SeatID).First(&seat).Error
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+		return
+	}
+	seat.SeatStatus = "unavailable"
+	err = config.DB.Save(&seat).Error
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+		return
+	}
+
+	err = config.DB.Create(&flightCart).Error
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Flight cart created successfully!"})
+}
+
+//GetUserFlightCart is a function to get flight cart by user id
+// @Summary Get flight cart by user id
+// @Description Get flight cart by user id
+// @Tags Flight Transaction
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {string} string "Flight Cart found successfully!"
+// @Router /flight-transaction/flight-cart/{id} [get]
+func GetUserFlightCart(c *gin.Context){
+	var flightCart []model.FlightCart
+	err := config.DB.Where("user_id = ?", c.Param("id")).Preload("FlightSchedule").Preload("FlightSchedule.Plane").
+	Preload("FlightSchedule.Plane.Airline").Preload("FlightSchedule.OriginAirport").Preload("FlightSchedule.DestinationAirport").Preload("Seat").Find(&flightCart).Error
+	
+	var onGoingFlight []model.FlightCart
+	currentTime := time.Now()
+	for _, flightCart := range flightCart {
+		departureTimeStr := flightCart.FlightSchedule.DepartureTime
+		departureTime, err := time.Parse("2006-01-02T15:04", departureTimeStr)
+		if err != nil {
+			fmt.Println("Error parsing arrival time:", err)
+			continue
+		}
+
+		departureTime = departureTime.In(currentTime.Location())
+		departureTime = departureTime.Add(time.Hour * -7)
+		if currentTime.Before(departureTime) {
+			onGoingFlight = append(onGoingFlight, flightCart)
+		}
+	}
 
 
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": onGoingFlight})
+}
+
+//GetUserFlightCartHistory is a function to get history flight cart by user id
+// @Summary Get history flight cart by user id
+// @Description Get history flight cart by user id
+// @Tags Flight Transaction
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {string} string "Flight Cart found successfully!"
+// @Router /flight-transaction/flight-cart/history/{id} [get]
+func GetUserFlightCartHistory(c *gin.Context){
+	var flightCart []model.FlightCart
+	err := config.DB.Where("user_id = ?", c.Param("id")).Preload("FlightSchedule").Preload("FlightSchedule.Plane").
+	Preload("FlightSchedule.Plane.Airline").Preload("FlightSchedule.OriginAirport").Preload("FlightSchedule.DestinationAirport").Preload("Seat").Find(&flightCart).Error
+	
+	var historyFlight []model.FlightCart
+	currentTime := time.Now()
+	for _, flightCart := range flightCart {
+		departureTimeStr := flightCart.FlightSchedule.DepartureTime
+		departureTime, err := time.Parse("2006-01-02T15:04", departureTimeStr)
+		if err != nil {
+			fmt.Println("Error parsing arrival time:", err)
+			continue
+		}
+
+		departureTime = departureTime.In(currentTime.Location())
+		departureTime = departureTime.Add(time.Hour * -7)
+		if currentTime.After(departureTime) {
+			historyFlight = append(historyFlight, flightCart)
+		}
+	}
+
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": historyFlight})
+}

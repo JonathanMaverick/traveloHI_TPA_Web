@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { IFlightTransaction } from "../../interfaces/flight/flight-transaction-interface";
+import useCurrency from "../../contexts/currency-context";
 
 export default function FlightTransactionCard({ft} : {ft : IFlightTransaction}) {
-
-
 
     const formatTime = (date:string) => {
         const newDate = new Date(date);
@@ -19,6 +18,8 @@ export default function FlightTransactionCard({ft} : {ft : IFlightTransaction}) 
         day: '2-digit',
       });
     }
+
+    const {currency} = useCurrency();
 
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
     const formattedArrivalTime = formatTime(ft?.FlightSchedule?.arrivalTime || '');
@@ -49,6 +50,11 @@ export default function FlightTransactionCard({ft} : {ft : IFlightTransaction}) 
                   </div>
                 </div>
                 <div className="flight-schedule-price">
+                      {currency == "IDR" ? (
+                        <p>Rp. {ft?.price} <span className="flight-schedule-price-org">/ruang</span></p>
+                      ) : (
+                        <p>$ {(ft.price / 14000).toFixed(4)} <span className="flight-schedule-price-org">/room</span></p>
+                      )}
                   <p>Seat : {ft.Seat?.seatNumber}</p>                
                 </div>
             </div>
