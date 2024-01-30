@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import useUser from "../../contexts/user-context";
-import FlightTransactionCard from "./flightTransactionCard";
 import { IHotelTransaction } from "../../interfaces/flight/hotel-transaction-interface";
 import get_user_ongoing_hotel_transaction from "../../api/hotel_transaction/get_user_ongoing_hotel_transaction";
 import RoomCard from "../hotel/roomCard";
