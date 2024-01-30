@@ -46,7 +46,6 @@ export class Player {
     animateFrames(deltaTime: number) {
         this.framesElapsed += deltaTime / 60;
         if (this.framesElapsed > 2) {
-            console.log(this.currentFrame);
             this.currentFrame = (this.currentFrame + 1) % this.playerAnimation[this.currentPlayerState].length;
             this.framesElapsed = 0;
         }

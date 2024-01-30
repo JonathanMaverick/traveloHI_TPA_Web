@@ -20,9 +20,11 @@ export default function ProfileSidebar(){
                     <p>{user?.email}</p>
                 </div>
             </div>
-            <div className="profile-information-option">
-                <IoMdCard className="profile-icon"/><p>My Card</p>
-            </div>
+            <Link to={`/user/credit-card/${user?.userID}`}>
+                <div className="profile-information-option">
+                    <IoMdCard className="profile-icon"/><p>My Card</p>
+                </div>
+            </Link>
             <Link to={`/user/order/${user?.userID}`}> 
                 <div className={`profile-information-option ${location.pathname === `/user/order/${user?.userID}` ? 'blue-background' : ''}`}>
                     <BsEnvelopePaper className="profile-icon"/><p>Order</p>

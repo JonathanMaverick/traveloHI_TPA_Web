@@ -1,0 +1,29 @@
+@import "../../mixins.scss";
+@import "../../variables.scss";
+
+.credit-card-page{
+    padding: 1.5rem 0rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+    .credit-container{
+        width: 100%;
+        h2{
+            margin-top: 0;
+        }
+        .credit-content{
+            background-color: $card-background;
+            display: block;
+            padding: 1rem;
+            border-radius: 8px;
+            @include box-shadow;
+
+            .text-field-detail-form{
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+            }
+        }
+    }
+}

@@ -12,6 +12,7 @@ import FlightDetail from "../pages/flight/flightDetail";
 import UserTransaction from "../pages/transaction/userTransaction";
 import UserHistoryTransaction from "../pages/transaction/history/userHistoryTransaction";
 import Game from "../pages/game/game";
+import CreditCard from "../pages/profile/credit-card-page";
 
 export interface IMenu {
     name : string;
@@ -45,7 +46,7 @@ export const MENU_LIST: IMenu[] = [
         path : "/game",
         element : <Game />,
         icon: <FaGamepad />
-    }
+    },
 ]
 
 export const USER_LIST: IMenu[] = [
@@ -66,6 +67,12 @@ export const USER_LIST: IMenu[] = [
         path: "/history/:id",
         element: <UserHistoryTransaction />,
         status: "skip"
+    },
+    {
+        name : "Credit Card",
+        path : "/credit-card/:id",
+        element : <CreditCard />,
+        status : "skip"
     }
 ]
 
