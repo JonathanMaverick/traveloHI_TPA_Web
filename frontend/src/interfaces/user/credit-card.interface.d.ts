@@ -1,6 +1,9 @@
 export interface ICreditCard{
+    creditCardID?: number;
     cardNumber: string;
-    expirationDate: string;
+    expiredDate: string;
     cvv: string;
     postalCode: string;
+    cardHolderName: string;
+    userID : number;
 }

@@ -24,6 +24,19 @@
                 flex-direction: row;
                 gap: 10px;
             }
+
+            .submit-button{
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 2rem;
+                button{
+                    @include border-radius;
+                    padding: .4rem;
+                    background-color: $button;
+                    color: white;
+                    cursor: pointer;
+                }
+            }
         }
     }
 }

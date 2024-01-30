@@ -225,3 +225,6 @@ func GetUserHistoryFlightTransaction(c *gin.Context){
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": historyFlight})
 }
+
+
+

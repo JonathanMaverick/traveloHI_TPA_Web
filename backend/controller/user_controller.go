@@ -563,3 +563,110 @@ func SendNewsletter(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Newsletter sent successfully to subscribed users"})
 }
+
+// AddCreditCard adds a credit card to a user's account
+// @Summary Add credit card
+// @Description Add a credit card to a user's account
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param userId path int true "User ID"
+// @Param creditCard body string true "Credit card details"
+// @Success 200 {string} string
+// @Router /user/credit-card/{userId} [post]
+func AddCreditCard(c *gin.Context) {
+	userIdStr := c.Param("userId")
+	userId, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid user ID"})
+		return
+	}
+	var newCreditCard model.CreditCard
+	c.ShouldBindJSON(&newCreditCard)
+
+	if newCreditCard.CardNumber == "" || newCreditCard.CardHolder == "" || newCreditCard.CVV == "" || newCreditCard.ExpiredDate == "" {
+		c.String(http.StatusBadRequest, "All Field are required")
+		return
+	}
+
+	var user model.User
+	config.DB.First(&user, userId)
+	if user.ID == 0 {
+		c.String(http.StatusBadRequest, "User not found")
+		return
+	}
+
+	newCreditCard.UserID = uint(userId)
+	result := config.DB.Create(&newCreditCard)
+	if result.Error != nil {
+		c.String(http.StatusBadRequest, "Credit card already exists")
+		return
+	}
+
+	c.String(http.StatusOK, "Success")
+}
+
+// GetUserCreditCard get user credit card
+// @Summary List credit cards for user
+// @Description Get a list of credit cards for user
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param userId path int true "User ID"
+// @Success 200 {array} string
+// @Router /user/credit-card/{userId} [get]
+func GetUserCreditCard(c *gin.Context) {
+	userIdStr := c.Param("userId")
+	userId, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid user ID"})
+		return
+	}
+	var creditCards model.CreditCard
+	result := config.DB.Where("user_id = ?", userId).First(&creditCards)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No credit cards found!"})
+		return
+	}
+	c.AsciiJSON(http.StatusOK, creditCards)
+}
+
+// UpdateCreditCard updates an existing credit card
+// @Summary Update credit card
+// @Description Update an existing credit card
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param userId path int true "User ID"
+// @Param creditCardId path int true "Credit card ID"
+// @Param creditCard body string true "Credit card details"
+// @Success 200 {string} string
+// @Router /user/credit-card/{userId} [put]
+func UpdateCreditCard(c *gin.Context) {
+	userIdStr := c.Param("userId")
+	userId, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid user ID"})
+		return
+	}
+	var updatedCreditCard model.CreditCard
+	c.ShouldBindJSON(&updatedCreditCard)
+
+	if updatedCreditCard.CardNumber == "" || updatedCreditCard.CardHolder == "" || updatedCreditCard.CVV == "" || updatedCreditCard.ExpiredDate == "" {
+		c.String(http.StatusBadRequest, "All Field are required")
+		return
+	}
+
+	if err := config.DB.Model(&model.CreditCard{}).Where("user_id = ?", userId).Updates(map[string]interface{}{
+		"card_number":  updatedCreditCard.CardNumber,
+		"card_holder":  updatedCreditCard.CardHolder,
+		"cvv":          updatedCreditCard.CVV,
+		"expired_date": updatedCreditCard.ExpiredDate,
+		"postal_code":  updatedCreditCard.PostalCode,
+	}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update credit card"})
+		return
+	}
+
+	c.String(http.StatusOK, "Success")
+}

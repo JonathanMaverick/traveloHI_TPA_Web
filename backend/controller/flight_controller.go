@@ -396,3 +396,34 @@ func UpdateFlightSchedule(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Flight schedule updated successfully!"})
 }
+
+// Get Top 5 Flight Schedule
+// @Summary Get Top 5 Flight Schedule
+// @Description Get Top 5 Flight Schedule
+// @Tags Flight Transaction
+// @Accept json
+// @Produce json
+// @Success 200 {string} string "Flight Transaction found successfully!"
+// @Router /schedule/top-5 [get]
+func GetTop5FlightSchedule(c* gin.Context){
+	var top5FlightSchedules []model.FlightSchedule
+	result := config.DB.
+		Table("flight_schedules").
+		Select("flight_schedules.*, COUNT(flight_transactions.id) AS transaction_count").
+		Joins("LEFT JOIN flight_transactions ON flight_transactions.flight_schedule_id = flight_schedules.id").
+		Group("flight_schedules.id").
+		Order("transaction_count DESC").
+		Preload("Plane").
+		Preload("Plane.Airline").
+		Preload("OriginAirport").
+		Preload("DestinationAirport").
+		Limit(5).
+		Find(&top5FlightSchedules)
+
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, top5FlightSchedules)
+}

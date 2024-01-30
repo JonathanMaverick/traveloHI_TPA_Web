@@ -34,6 +34,8 @@ func migrate(db *gorm.DB){
 	//Transaction
 	db.AutoMigrate(&model.PaymentType{})
 	db.AutoMigrate(&model.FlightTransaction{})
+
+	db.AutoMigrate(&model.CreditCard{})
 }
 
 func Connect (){

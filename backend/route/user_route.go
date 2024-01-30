@@ -31,5 +31,10 @@ func UserRoute(r *gin.Engine) {
 		user.POST("/change-password", controller.ChangePassword)
 
 		user.POST("/send-newsletter", controller.SendNewsletter)
+
+		//Credit Card
+		user.GET("/credit-card/:userId", controller.GetUserCreditCard)
+		user.POST("/credit-card/:userId", controller.AddCreditCard)
+		user.PUT("/credit-card/:userId", controller.UpdateCreditCard)
 	}
 }
