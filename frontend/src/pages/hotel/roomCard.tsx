@@ -96,15 +96,17 @@ const RoomCard = ({ room }: { room: IRoom }) => {
     return (
         <div className="room-card">
             <div className="room-image">
-                <img
-                key={0}
-                src={
-                    room.roomPicture && room.roomPicture.length > 0
-                    ? room.roomPicture[0].roomPicture
-                    : defaultImageUrl
-                }
-                className="rectangle-image"
-                />
+                <div className="main-image">
+                    <img
+                    key={0}
+                    src={
+                        room.roomPicture && room.roomPicture.length > 0
+                        ? room.roomPicture[0].roomPicture
+                        : defaultImageUrl
+                    }
+                    className="rectangle-image"
+                    />
+                </div>
                 <div className="secondary-room-image">
                 {[...Array(3)].map((_, index) => (
                     <img
