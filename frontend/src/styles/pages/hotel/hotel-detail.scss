@@ -9,7 +9,6 @@
   
   .hotel-name {
     font-size: 24px;
-    color: $font-color; 
     margin-bottom: 5px; 
   }
   
@@ -17,7 +16,7 @@
     align-items: center;
     gap: 5px;
     font-size: 16px;
-    color: $secondary-font-color; 
+    color: var(--secondary-font-color); 
     display: flex;
     align-items: center;
   }
@@ -71,7 +70,7 @@
     .hotel-description{
       @include border-radius;
       @include box-shadow;
-      background-color: $card-background;
+      background-color: var(--card-background);
       padding: .5rem;
       height: 210px;
       h3{
@@ -85,7 +84,7 @@
     .hotel-facilities-list{
       @include border-radius;
       @include box-shadow;
-      background-color: $card-background;
+      background-color: var(--card-background);
       padding: .5rem;
       min-height: 120px;
       h3{

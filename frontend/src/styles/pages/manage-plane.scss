@@ -8,7 +8,7 @@
   padding: 20px 8px;
 
   .plane-card {
-    background-color: $card-background;
+    background-color: var(--card-background);
     border-radius: 8px;
     @include box-shadow;
     overflow: hidden;

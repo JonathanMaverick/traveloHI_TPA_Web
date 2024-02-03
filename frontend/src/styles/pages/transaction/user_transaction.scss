@@ -13,7 +13,7 @@
         }
         width: 100%;
         .user-transaction-content{
-            background-color: $card-background;
+            background-color: var(--card-background);
             display: block;
             padding: 1rem;
             border-radius: 8px;

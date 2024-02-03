@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import "../../styles/pages/game/game.scss";
 import { PlayerState, getFirstPlayerAnimations, getSecondPlayerAnimations } from './object/PlayerState';
 import { Player } from './object/player';
+import useUser from '../../contexts/user-context';
+import { useNavigate } from 'react-router-dom';
+import useTheme from '../../contexts/theme-context';
 
 export const gamePath = "./game_asset/";
 export const characterScaleFactor = 3; 
@@ -93,10 +96,17 @@ const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingConte
   draw();
 };
 
+
 export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const {user} = useUser();
+  const navigate = useNavigate();
   useEffect(() => {
     const canvas = canvasRef.current;
+    if(!user){
+      navigate('/login');
+    }
+
     if (!canvas) return;
 
     const context = canvas.getContext('2d');
@@ -111,9 +121,10 @@ export default function Game() {
   }, []);
 
   const [timer, setTimer] = useState(120);
+  const {theme} = useTheme();
 
   return (
-    <div className='game'>
+    <div className={`game ${theme === 'dark' ? 'dark-mode' : ''}`}>
       <h2>{timer}</h2>
       <canvas ref={canvasRef} width={2000} height={850} style={{ border: '1px solid black' }} />
     </div>

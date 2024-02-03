@@ -72,7 +72,6 @@ export class Player {
         const speed = 5;
         let isSKeyPressed = false;
         let isDKeyPressed = false;
-        console.log(isSKeyPressed);
 
         window.addEventListener('keydown', (event) => {
             switch (event.key) {

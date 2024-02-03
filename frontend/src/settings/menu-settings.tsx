@@ -48,13 +48,7 @@ export const MENU_LIST: IMenu[] = [
         path : "/hotel/:id",
         element : <HotelDetail />,
         status : "skip"
-    },
-    {
-        name : "Game",
-        path : "/game",
-        element : <Game />,
-        icon: <FaGamepad />
-    },
+    }
 ]
 
 export const USER_LIST: IMenu[] = [
@@ -86,6 +80,13 @@ export const USER_LIST: IMenu[] = [
         name : "Flight Cart",
         path : "/cart/:id",
         element : <UserCartTransaction />,
+        status : "skip"
+    },
+    {
+        name : "Game",
+        path : "../game",
+        element : <Game />,
+        icon: <FaGamepad />,
         status : "skip"
     },
 ]

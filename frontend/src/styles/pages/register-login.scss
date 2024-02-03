@@ -1,15 +1,22 @@
 @import "../mixins.scss";
 @import "../variables.scss";
 
+.register-login-container{
+  width: 100vw;
+  min-height: 100vh;
+  background-color: var(--background-color);
+  @include centered;
+}
+
 .register-login {
-  max-width: 400px;
+  min-width: 400px;
   margin: 5rem auto;
   padding: 20px;
-  border: 1px solid #ccc;
+  @include border-radius;
+  @include box-shadow;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: $white;
-  color: $font-color;
+  background-color: var( --card-background);
+  color: var(--font-color);
   font-size: 0.8rem;
 
   p {
@@ -28,7 +35,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    color: $font-color;
+    color: var(--font-color);
 
     input,
     select {
@@ -65,7 +72,7 @@
     @include centered;
     display: flex;
     flex-wrap: wrap;
-    color: $font-color;
+    color: var(--font-color);
     margin-bottom: 16px;
 
     .gender-option {
@@ -99,8 +106,8 @@
 
   .otp {
     @include border-radius;
-    background-color: $otp-button;
-    color: $black;
+    background-color: $d-icon-color;
+    color: $white;
     border: none;
     margin: 10px 0px 5px 0px;
     padding: 14px 20px;
@@ -111,8 +118,7 @@
     width: 100%;
 
     &:hover {
-      background-color: darken($otp-button, 10%);
-      color: $black;
+      background-color: darken($d-button, 20%);
     }
   }
 
@@ -138,5 +144,10 @@
   }
   p{
     margin: 8px;
+    color: var(--font-color);
+    a{
+      color: var(--icon-color);
+      text-decoration: underline;
+    }
   }
 }

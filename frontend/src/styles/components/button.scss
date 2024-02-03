@@ -3,7 +3,7 @@
 
 .login-register-button {
   @include border-radius;
-  background-color: $button;
+  background-color: $d-button;
   color: $white;
   border: none;
   margin: 10px 0;
@@ -15,7 +15,6 @@
   width: 100%;
 
   &:hover {
-    background-color: darken($button, 10%);
-    color: $white;
+    background-color: darken($d-button, 20%);
   }
 }

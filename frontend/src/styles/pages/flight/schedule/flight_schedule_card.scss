@@ -2,7 +2,7 @@
 @import "../../../mixins.scss";
 
 .flight-schedule-card {
-  background: $card-background;
+  background: var(--card-background);
   padding: 1rem;
   border-radius: 0.5rem;
   @include box-shadow;
@@ -12,7 +12,7 @@
 
   &:hover {
     cursor: pointer;
-    border: 0.5px solid $icon-color;
+    border: 0.5px solid var(--icon-color);
   }
 
   .flight-schedule-content {
@@ -49,7 +49,7 @@
           text-align: center;
           gap: 10px;
           .flight-city-code {
-            color: $secondary-font-color;
+            color: var(--secondary-font-color);
           }
         }
         .flight-schedule-price {
@@ -58,9 +58,11 @@
             justify-content: center;
             flex-direction: column;
             align-items: flex-end;
-            color: $price-font-color;
-          .flight-schedule-price-org {
-            color: $secondary-font-color;
+            p{
+              color: $price-font-color;
+            }
+            .flight-schedule-price-org {
+            color: var(--secondary-font-color);
           }
         }
       }
@@ -72,19 +74,18 @@
 
       .detail-flight-schedule {
         font-size: $font-size-p;
-        color: $secondary-font-color;
+        color: var(--secondary-font-color);
         text-decoration: none;
         transition: color 0.3s ease, text-decoration 0.3s ease;
         
         &.accordion-open{
-            color: $icon-color;
+            color: var(--icon-color);
         }
       }
 
       button {
-        background-color: $price-font-color;
+        background-color: var(--button);
         color: $white;
-        border: none;
         padding: 5px 20px;
         @include border-radius;
         cursor: pointer;
@@ -96,7 +97,7 @@
     display: flex;
     flex-direction: column;
     padding: 10px;
-    border: 1px solid #ddd;
+    @include border-radius;
     border-radius: 8px;
     margin: 10px 0;
   
@@ -104,11 +105,11 @@
   
       .location {
         font-weight: bold;
-        color: $icon-color;
+        color: var(--icon-color);
       }
   
       .name {
-        color: $font-color;
+        color: var(--font-color);;
       }
     }
   
@@ -117,7 +118,7 @@
       .airline,
       .plane-code {
         font-weight: bold;
-        color: #2ecc71;
+        color: $color-helper;
       }
     }
   }

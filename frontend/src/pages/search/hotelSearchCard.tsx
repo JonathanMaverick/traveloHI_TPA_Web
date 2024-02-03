@@ -39,13 +39,13 @@ const HotelSearchCard = ({ hotel }: {hotel : IHotel}) => {
                 <h3>{hotel.hotelName}</h3>
             </div>
             <div className='hotel-location'>
-                <FaLocationDot />
+                <FaLocationDot className='icon-color' />
                 <p>{hotel.hotelAddress}</p>
             </div>
             <div className='hotel-facilities'>
                 {hotel.hotelFacilities?.slice(0, 3).map((facility, index) => (
                     <div key={index} className="facilities">
-                    {facility.facilities?.facilitiesName}
+                        {facility.facilities?.facilitiesName}
                     </div>
                 ))}
                 {hotel.hotelFacilities && hotel.hotelFacilities.length > 3 && (

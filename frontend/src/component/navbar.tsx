@@ -1,7 +1,7 @@
 import "../styles/components/navbar.scss"
 import useUser from "../contexts/user-context";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { FaCartPlus, FaFire, FaRegCreditCard, FaSearch, FaWallet } from "react-icons/fa";
+import { FaCartPlus, FaFire, FaGamepad, FaRegCreditCard, FaSearch, FaWallet } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -15,6 +15,7 @@ import get_search_history from "../api/search/get_search_history";
 import { MdHistory } from "react-icons/md";
 import get_top_5_search from "../api/search/get_top_5_search";
 import get_user_total_flight_transaction from "../api/transaction/get_user_total_flight_transaction";
+import ChangeTheme from "./change-theme";
 
 export default function Navbar() {
 
@@ -161,13 +162,18 @@ export default function Navbar() {
                         )
                     ))}
                     {user && (
-                        USER_LIST.map(({ path, icon, name, status }: any) => (
-                            status !== "skip" && (
-                                <div key={path} onClick={() => sidebarMenuClick(path.startsWith('/user') ? path : `/user${path}`)} className="sidebar-menu">
-                                    {icon}{name}
-                                </div>
-                            )
-                        ))
+                    <>
+                        {USER_LIST.map(({ path, icon, name, status }: any) => (
+                        status !== "skip" && (
+                            <div key={path} onClick={() => sidebarMenuClick(path.startsWith('/user') ? path : `/user${path}`)} className="sidebar-menu">
+                            {icon}{name}
+                            </div>
+                        )
+                        ))}
+                        <div key="/game" onClick={() => sidebarMenuClick("/game")} className="sidebar-menu">
+                        <FaGamepad />Game
+                        </div>
+                    </>
                     )}
                     {user?.role === 'admin' && (
                         ADMIN_LIST.map(({ path, icon, name, status }: any) => (
@@ -239,18 +245,18 @@ export default function Navbar() {
             }
             <div className="flag-container hover">
                 <img className="flag" src={currency === 'IDR' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/250px-Flag_of_Indonesia.svg.png' : 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Flag_of_the_United_States_%28Pantone%29.svg/1200px-Flag_of_the_United_States_%28Pantone%29.svg.png'} alt="" />
-                {currency}
-                <RiArrowDropDownLine size={25} />
+                <p>{currency}</p>
+                <RiArrowDropDownLine size={25} className="logo-icon"/>
                 <div className="hover-content" onClick={handleClick}>
                     <div className="flag-container hover">
                         <img className="flag" src={currency !== 'IDR' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/250px-Flag_of_Indonesia.svg.png' : 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Flag_of_the_United_States_%28Pantone%29.svg/1200px-Flag_of_the_United_States_%28Pantone%29.svg.png'} alt="" />
-                        {currency === 'IDR' ? 'USD' : 'IDR'}
+                        <p>{currency === 'IDR' ? 'USD' : 'IDR'}</p>
                     </div>
                 </div>
             </div>
             <div className="pay hover">
-                Pay
-                <RiArrowDropDownLine size={25} />
+                <p>Pay</p>
+                <RiArrowDropDownLine size={25} className="logo-icon"/>
                 <div className="pay-content">
                     <h3>Payment</h3>
                     <p>From TraveloHI</p>
@@ -279,6 +285,7 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
+            <ChangeTheme/>
             {user == null ? (
             <>
                 <div className="login hover">
