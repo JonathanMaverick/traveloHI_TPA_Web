@@ -78,6 +78,7 @@
                 background-color: ghostwhite;
                 border-radius: 10px;
                 font-size: 14px;
+                color: var(--icon-color);
             }
         }
     }
@@ -95,7 +96,7 @@
       }
 
       button {
-        background-color: $price-font-color;
+        background-color: var(--button);
         color: $white;
         border: none;
         padding: 5px 5px;

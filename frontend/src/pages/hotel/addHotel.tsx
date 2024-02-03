@@ -40,6 +40,7 @@ export default function AddHotel() {
     hotelDescription: "",
     hotelAddress: "",
     hotelCity: "",
+    hotelPictures: [],
   };
 
   const INITIAL_ROOM_DATA: IRoom = {
@@ -50,6 +51,7 @@ export default function AddHotel() {
     quantity: 0,
     images: [],
     bedType: "",
+    roomPicture: []
   };
   
   const [hotelID, setHotelID] = useState(0);
