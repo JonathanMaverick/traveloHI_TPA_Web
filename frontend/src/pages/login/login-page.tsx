@@ -11,7 +11,7 @@ import useTheme from "../../contexts/theme-context";
 
 export default function LoginPage(){
 
-    const {login, loginotp} = useUser()
+    const {login, loginotp, user} = useUser()
     const { theme } = useTheme();
     const navigate = useNavigate()
 
@@ -28,10 +28,13 @@ export default function LoginPage(){
 
     useEffect(() => {
         document.title = 'Login';
+        if(user){
+            navigate('/');
+        }
       }, []);
 
     const [captchaValue, setCaptchaValue] = useState(null);
-    const [user, setUser] = useState<IUser>(USER_INITIAL_STATE)
+    const [loginUser, setLoginUser] = useState<IUser>(USER_INITIAL_STATE)
     const [otp, setOTP] = useState<IOTP>(USER_INITIAL_STATE_OTP)
 
     const handleOnSubmit = async (e : FormEvent<HTMLFormElement>) => {
@@ -42,7 +45,7 @@ export default function LoginPage(){
         }
 
         if (!showOtp){
-            const response = await login(user, captchaValue);
+            const response = await login(loginUser, captchaValue);
             if (response == 1){
                 navigate('/');
             }
@@ -80,8 +83,8 @@ export default function LoginPage(){
                             <TextField label="OTP" name="otp" type="text" value={otp?.otpValue || ''} onChange={(e:string)=> setOTP({...otp, otpValue: e})}/>        
                         </>
                     ) || <>
-                        <TextField label="Email" name="email" type="text" value={user?.email || ''} onChange={(e:string)=> setUser({...user, email: e})}/>
-                        <TextField label="Password" name="password" type="password" value={user?.password || ''} onChange={(e:string)=> setUser({...user, password: e})}/>
+                        <TextField label="Email" name="email" type="text" value={loginUser?.email || ''} onChange={(e:string)=> setLoginUser({...loginUser, email: e})}/>
+                        <TextField label="Password" name="password" type="password" value={loginUser?.password || ''} onChange={(e:string)=> setLoginUser({...loginUser, password: e})}/>
                     </>}
                     <div className="recaptcha">
                         <ReCAPTCHA

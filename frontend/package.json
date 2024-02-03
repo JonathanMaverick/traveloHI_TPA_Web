@@ -20,7 +20,8 @@
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.21.1",
     "sass": "^1.69.7",
-    "scss": "^0.2.4"
+    "scss": "^0.2.4",
+    "socket.io-client": "^4.7.4"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",

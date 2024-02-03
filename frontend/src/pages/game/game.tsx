@@ -5,6 +5,7 @@ import { Player } from './object/player';
 import useUser from '../../contexts/user-context';
 import { useNavigate } from 'react-router-dom';
 import useTheme from '../../contexts/theme-context';
+import { io } from 'socket.io-client';
 
 export const gamePath = "./game_asset/";
 export const characterScaleFactor = 3; 
@@ -23,10 +24,10 @@ const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingConte
     loadImage(gamePath + 'background/background.png'),
     loadImage(gamePath + 'lifebar full.png'),
   ]);
-
+  
   canvas.height = window.innerHeight * 0.8;
   canvas.width = window.innerWidth * 0.9;
-
+  
   let lifeBarX = (canvas.width - (lifeBarFull.width / 0.35)) / 2; 
   const firstPlayerSprite = await getFirstPlayerAnimations(); 
   const secondPlayerSprite = await getSecondPlayerAnimations();
@@ -43,7 +44,7 @@ const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingConte
 
   const firstPlayer = new Player(
     "sword",
-    firstCharacterX,
+    firstCharacterX + 200,
     firstCharacterY,
     FirstCharacterWidth,
     FirstCharacterHeight,
@@ -58,7 +59,7 @@ const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingConte
 
   const secondPlayer = new Player(
     "blast",
-    secondCharacterX,
+    secondCharacterX - 200,
     secondCharacterY,
     SecondCharacterWidth,
     SecondCharacterHeight,
@@ -68,7 +69,7 @@ const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingConte
     100,
     true,
     secondPlayerSprite,
-    PlayerState.Idle,
+    PlayerState.IdleMirror,
   )
 
   let lastTimestamp = performance.now();
@@ -77,8 +78,8 @@ const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingConte
   const draw = () => {
     const timeStamp = performance.now();
     const deltaTime = (timeStamp - lastTimestamp); 
-    secondPlayer.handleInput();
-  
+    firstPlayer.handleInput();
+
     if (deltaTime < 1000 / targetFrameRate) {;
       requestAnimationFrame(draw);
       return;
@@ -86,8 +87,8 @@ const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingConte
     
     context.drawImage(background, 0, 0, canvas.width, canvas.height);
     context.drawImage(lifeBarFull,lifeBarX - 3.5,0,lifeBarFull.width / 0.35,lifeBarFull.height * 3);
-    firstPlayer.update(deltaTime, canvas, context);
-    secondPlayer.update(deltaTime, canvas, context);
+    firstPlayer.update(deltaTime, canvas, context, secondPlayer);
+    secondPlayer.update(deltaTime, canvas, context, firstPlayer);
     
     lastTimestamp = timeStamp;
     requestAnimationFrame(draw);
@@ -106,20 +107,21 @@ export default function Game() {
     if(!user){
       navigate('/login');
     }
-
     if (!canvas) return;
-
+    
     const context = canvas.getContext('2d');
     if (!context) return;
 
+    // const socket = io('http://localhost:3001');
+    
     initGame(canvas, context);
     const interval = setInterval(() => {
       setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
     }, 1000); 
-
+    
     return () => clearInterval(interval);
   }, []);
-
+  
   const [timer, setTimer] = useState(120);
   const {theme} = useTheme();
 

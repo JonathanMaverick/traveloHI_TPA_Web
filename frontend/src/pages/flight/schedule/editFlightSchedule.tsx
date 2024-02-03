@@ -179,7 +179,7 @@ export default function EditFlightSchedule({f} : {f : IFlightSchedule}) {
           setFlightSchedule({ ...flightSchedule, businessPrice: parseInt(e) })
         }
       />
-      <Button content="Add Flight Schedule" />
+      <Button content="Edit Flight Schedule" />
     </form>
   );
 }

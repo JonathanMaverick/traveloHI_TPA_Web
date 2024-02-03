@@ -18,6 +18,7 @@
             padding: 1rem;
             border-radius: 8px;
             @include box-shadow;
+            color: var(--font-color);
 
             .filter-hotel-flight{
                 display: flex;

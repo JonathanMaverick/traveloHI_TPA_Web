@@ -26,7 +26,7 @@ export default function PlaneContainer(){
                 <div>
                 <h2>Top 5 Flight Schedules</h2>
                     {flightSchedule.map(schedule => (
-                        <FlightSearchCard flightSchedule={schedule} status="search" />
+                        <FlightSearchCard key={schedule.flightScheduleID} flightSchedule={schedule} status="search" />
                     ))}
                 </div>
             ) : (
