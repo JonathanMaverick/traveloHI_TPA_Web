@@ -10,7 +10,6 @@ export class Player {
     xSpeed: number;
     ySpeed: number;
     health: number;
-    maxHealth: number;
     mirrored: boolean;
     framesElapsed: number = 0;
     currentPlayerState: PlayerState;
@@ -21,8 +20,9 @@ export class Player {
     gravity: number = 0.5;
     isActionLocked :boolean = false;
     lockDuration : number = 1;
+    maxHealth : number = 100;  
 
-    constructor(type : string, x : number, y : number, width : number, height : number, xSpeed : number, ySpeed : number, health : number, maxHealth : number, mirrored : boolean, playerAnimation : PlayerAnimations, currentPlayerState : PlayerState) { 
+    constructor(type : string, x : number, y : number, width : number, height : number, xSpeed : number, ySpeed : number, health : number, mirrored : boolean, playerAnimation : PlayerAnimations, currentPlayerState : PlayerState) { 
         this.type = type;
         this.x = x;
         this.y = y;
@@ -31,7 +31,6 @@ export class Player {
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.health = health;
-        this.maxHealth = maxHealth;
         this.mirrored = mirrored;
         this.currentPlayerState = currentPlayerState;
         this.playerAnimation = playerAnimation;
@@ -48,7 +47,8 @@ export class Player {
                 this.x,
                 this.y,
                 frame.width * characterScaleFactor,
-                frame.height * characterScaleFactor,
+                // frame.height * characterScaleFactor,
+                this.height
             );
         }
 
@@ -71,8 +71,23 @@ export class Player {
             if (this.lockDuration < 0) {
                 this.isActionLocked = false;
                 this.lockDuration = 1; 
+                if (
+                    this.x < enemy.x + enemy.width &&
+                    this.x + this.width > enemy.x &&
+                    this.y < enemy.y + enemy.height &&
+                    this.y + this.height > enemy.y
+                ) {
+                    if(this.currentPlayerState == PlayerState.LowKick || this.currentPlayerState == PlayerState.LowKickMirror){
+                        enemy.health -= 15; 
+                    }
+                    else if(this.currentPlayerState == PlayerState.FrontKick || this.currentPlayerState == PlayerState.FrontKickMirror){
+                        enemy.health -= 10;
+                    }
+                    console.log("Enemy health:", enemy.health);
+                }
             }
         }
+
 
         if (this.isJumping) {
             this.y += this.jumpVelocity;
