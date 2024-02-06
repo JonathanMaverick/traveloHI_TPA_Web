@@ -47,8 +47,8 @@ export class Player {
                 this.x,
                 this.y,
                 frame.width * characterScaleFactor,
-                // frame.height * characterScaleFactor,
-                this.height
+                frame.height * characterScaleFactor,
+                // this.height
             );
         }
 

@@ -5,6 +5,7 @@ import { Player } from './object/player';
 import useUser from '../../contexts/user-context';
 import { useNavigate } from 'react-router-dom';
 import useTheme from '../../contexts/theme-context';
+import { io } from 'socket.io-client';
 
 export const gamePath = "./game_asset/";
 export const characterScaleFactor = 3; 
@@ -32,6 +33,7 @@ export default function Game() {
   const maxGames = 3;
 
   useEffect(() => {
+    document.title = "Game";
     const canvas = canvasRef.current;
     if(!user){
       navigate('/login');
@@ -41,11 +43,7 @@ export default function Game() {
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    // const socket = io('http://localhost:5173');
-    // console.log(socket);
-    // socket.on('connect', () => {
-    //   console.log("A user connected");
-    // });
+    // const socket = io('http://localhost:3000');
 
     initGame(canvas, context);
     const interval = setInterval(() => {
@@ -59,7 +57,6 @@ export default function Game() {
   }, []);
 
   const reloadAfterDelay = (delay: number) => {
-    setTimer(600);
     setTimeout(() => {
       setGameCounter((prevCounter) => {
         if (prevCounter < maxGames - 1) {
@@ -67,6 +64,7 @@ export default function Game() {
           if (!canvas) return prevCounter; 
           const context = canvas.getContext('2d');
           if (!context) return prevCounter;
+          setTimer(600);
           initGame(canvas, context);
           return prevCounter + 1; 
         }
@@ -143,13 +141,15 @@ export default function Game() {
       const firstPlayerLifeBarWidth = (firstPlayerLifePercentage / 100) * (lifeBarFull.width / 0.35);
   
       context.fillStyle = 'yellow';
-      context.fillRect((lifeBarX * 1.26), 50, (firstPlayerLifeBarWidth / 3), lifeBarFull.height);
+      // context.fillRect((lifeBarX * 1.26), 50, (firstPlayerLifeBarWidth / 3), lifeBarFull.height);
+      context.fillRect((lifeBarX * 1.6), 50, (firstPlayerLifeBarWidth / 3.2), lifeBarFull.height);
   
       const secondPlayerLifePercentage = (secondPlayer.health / secondPlayer.maxHealth) * 100;
       const secondPlayerLifeBarWidth = (secondPlayerLifePercentage / 100) * (lifeBarFull.width / 0.35);
   
       context.fillStyle = 'blue';
-      context.fillRect((lifeBarX * 3.023), 50, -(secondPlayerLifeBarWidth / 3), lifeBarFull.height);
+      // context.fillRect((lifeBarX * 3.023), 50, -(secondPlayerLifeBarWidth / 3), lifeBarFull.height);
+      context.fillRect((lifeBarX * 5.3), 50, -(secondPlayerLifeBarWidth / 3.2), lifeBarFull.height);
     }
   
     const checkWinner = () => {
@@ -178,7 +178,7 @@ export default function Game() {
   
       const timeStamp = performance.now();
       const deltaTime = (timeStamp - lastTimestamp); 
-      secondPlayer.handleInput();
+      firstPlayer.handleInput();
   
       if (deltaTime < 1000 / targetFrameRate) {;
         requestAnimationFrame(draw);

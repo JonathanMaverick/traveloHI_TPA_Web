@@ -134,7 +134,10 @@ const RoomCard = ({ room }: { room: IRoom }) => {
                     ) : (
                     <p>$ {(room.price / 14000).toFixed(4)} <span className="flight-schedule-price-org">/people</span></p>
                 )}
-                <button onClick={toggleButton}>Buy</button>
+                <div className="button-container">
+                    <button className="add-to-cart-button">Add to Cart</button>
+                    <button onClick={toggleButton}>Buy</button>
+                </div>
             </div>
             <div className={`add-form ${showBuyRoomForm ? 'open' : ''}`}>
                 <h2>Buy Room</h2>

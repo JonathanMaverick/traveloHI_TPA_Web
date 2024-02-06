@@ -103,6 +103,9 @@
           border-radius: 10px;
           font-size: 14px;
           width: min-content;
+          p{
+            color: var(--icon-color);
+          }
         }
       }
     }
@@ -123,6 +126,7 @@
   height: 210px;
   @include box-shadow; 
   @include border-radius;
+  background-color: var(--card-background);
 
   .room-image {
     display: flex;
@@ -158,13 +162,26 @@
     }
   }
 
+  .button-container{
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+    .add-to-cart-button{
+      background-color: var(--secondary-font-color);
+      color: $white;
+      padding: 5px 10px;
+      @include border-radius;
+      cursor: pointer;
+    }
+  }
+
   .room-details {
     flex-grow: 1;
     padding: 0.5rem 0.5rem 0.5rem 0.5rem;
     display: flex;
     flex-direction: column;
     h3 {
-      margin: 0.5rem 0rem;
+      margin: 0rem 0rem 0.5rem 0rem;
     }
 
     .room-occupancy{
