@@ -19,6 +19,10 @@
   &.unavailable {
     color: var(--hover-color);
   }
+  
+  &.selected {
+    color: $color-helper;
+  }
 }
 
 .seat-map{
@@ -94,7 +98,9 @@
     }
     .seat-information-detail{
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      color: var(--font-color);
+      gap: 5px;
       p{
         font-size: 18px; 
         margin-top: 5px; 
@@ -164,6 +170,16 @@
       align-items: center; 
       justify-content: space-between;
       margin-top: 2rem;
+
+      .total-price{
+        display: flex;
+        flex-direction: row;
+        align-items:last baseline;
+        gap: .5rem;
+        .price{
+          color: var(--font-color);
+        }
+      }
     
       p {
         font-size: 20px;
@@ -208,7 +224,7 @@
   width: 40%;
   height: max-content;
   overflow-y: scroll;
-  background-color: $white;
+  background-color: var(--card-background);
   padding: 1rem;
   z-index: 99;
   border-radius: 10px;
@@ -222,6 +238,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+      color: var(--font-color);
     }
   }
 
@@ -232,6 +249,14 @@
     align-items: center; 
     justify-content: space-between;
     margin: 2rem 0rem;
+
+    .total-price{
+      display: flex;
+      flex-direction: row;
+      align-items:last baseline;
+      gap: .5rem;
+      color: var(--font-color);
+    }
   
     p {
       font-size: $font-size-p;

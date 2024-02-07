@@ -35,7 +35,7 @@ func AddHotelTransaction(c *gin.Context) {
 		return
 	}
 	user.Wallet = user.Wallet - hotelTransaction.Price
-	config.DB.Save(&user)
+	config.DB.Save(&user)		
 
 	result := config.DB.Create(&hotelTransaction)
 	if result.Error != nil {

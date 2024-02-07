@@ -4,7 +4,6 @@ import useUser from "../../../contexts/user-context";
 import FlightTransactionCard from "../flightTransactionCard";
 import get_flight_cart from "../../../api/flight/cart/get_flight_cart";
 import useCurrency from "../../../contexts/currency-context";
-import { documentId } from "firebase/firestore";
 
 export default function CartFlightTransaction({searchTerm}: {searchTerm:string}){
 

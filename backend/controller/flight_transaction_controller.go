@@ -43,6 +43,15 @@ func AddFlightTransaction(c *gin.Context){
 		return
 	}
 
+	if (flightTransaction.PaymentID == 2){
+		var creditCard model.CreditCard
+		err := config.DB.Where("id = ?", flightTransaction.UserID).First(&creditCard).Error
+		if err != nil{
+			c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+			return
+		}
+	}
+
 	if(flightTransaction.Price == 0){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Price can't be empty!"})
 		return
