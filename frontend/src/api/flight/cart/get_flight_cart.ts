@@ -4,6 +4,7 @@ const get_flight_cart = async(userId : string) => {
     try{
         const response = await axios.get(import.meta.env.VITE_API_URL + '/flight-transaction/flight-cart/' + userId);
         const result = response.data;
+        console.log(response)
         return result;
     }catch(error: any){
         console.log(error)

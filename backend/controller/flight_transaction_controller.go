@@ -294,6 +294,11 @@ func GetUserFlightCart(c *gin.Context){
 	var flightCart []model.FlightCart
 	err := config.DB.Where("user_id = ?", c.Param("id")).Preload("FlightSchedule").Preload("FlightSchedule.Plane").
 	Preload("FlightSchedule.Plane.Airline").Preload("FlightSchedule.OriginAirport").Preload("FlightSchedule.DestinationAirport").Preload("Seat").Find(&flightCart).Error
+
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Flight Cart not found!"})
+		return
+	}
 	
 	var onGoingFlight []model.FlightCart
 	currentTime := time.Now()
@@ -308,15 +313,11 @@ func GetUserFlightCart(c *gin.Context){
 		departureTime = departureTime.In(currentTime.Location())
 		departureTime = departureTime.Add(time.Hour * -7)
 		if currentTime.Before(departureTime) {
+			fmt.Println("Appending")
 			onGoingFlight = append(onGoingFlight, flightCart)
 		}
 	}
 
-
-	if err != nil{
-		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
-		return
-	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": onGoingFlight})
 }
 
