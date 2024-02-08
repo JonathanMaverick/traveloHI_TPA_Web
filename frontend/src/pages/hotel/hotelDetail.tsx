@@ -93,14 +93,34 @@ export default function HotelDetail(){
                             )}
                         </div>
                     </div>
-                    <div className="room-list">
-                        {hotel.rooms && hotel.rooms.length > 0 ? (
-                        hotel.rooms.map((room) => (
-                            <RoomCard key={room.roomID} room={room} />
-                        ))
-                        ) : (
-                            <p>No rooms available.</p>
-                        )}
+                    <div className="left-hotel-detail">
+                        <div className="rating">
+                            <div className="rating-container">
+                                <p>Cleanliness</p>
+                                <p className="rating-content">7/10</p>
+                            </div>
+                            <div className="rating-container">
+                                <p>Comfort</p>
+                                <p className="rating-content">6/10</p>
+                            </div>
+                            <div className="rating-container">
+                                <p>Location</p>
+                                <p className="rating-content">5/10</p>
+                            </div>
+                            <div className="rating-container">
+                                <p>Service</p>
+                                <p className="rating-content">3/10</p>
+                            </div>
+                        </div>
+                        <div className="room-list">
+                            {hotel.rooms && hotel.rooms.length > 0 ? (
+                            hotel.rooms.map((room) => (
+                                <RoomCard key={room.roomID} room={room} />
+                            ))
+                            ) : (
+                                <p>No rooms available.</p>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
