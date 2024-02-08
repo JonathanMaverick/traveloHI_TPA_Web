@@ -29,6 +29,9 @@ export default function RegisterPage(){
     };
 
     useEffect(() => {
+        if(user){
+            navigate('/');
+        }
         document.title = 'Register';
       }, []);
 

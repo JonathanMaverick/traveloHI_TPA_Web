@@ -9,7 +9,7 @@ const add_hotel_room = async(room : IRoom) => {
         );
         return response;
     }catch(error: any){
-        alert(error.response.data)
+        alert(error.response.data.message)
         return -1;
     }
 }

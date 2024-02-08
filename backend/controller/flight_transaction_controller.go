@@ -42,12 +42,13 @@ func AddFlightTransaction(c *gin.Context){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Payment ID can't be empty!"})
 		return
 	}
-
-	if (flightTransaction.PaymentID == 2){
+	fmt.Println("here?")
+	if (flightTransaction.PaymentID == 1){
+		fmt.Println("Credit Card")
 		var creditCard model.CreditCard
 		err := config.DB.Where("id = ?", flightTransaction.UserID).First(&creditCard).Error
 		if err != nil{
-			c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
+			c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Credit Card not found"})
 			return
 		}
 	}
@@ -64,9 +65,11 @@ func AddFlightTransaction(c *gin.Context){
 		return
 	}
 
-	if(user.Wallet < flightTransaction.Price){
-		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Insufficient wallet!"})
-		return
+	if (flightTransaction.PaymentID == 2){
+		if(user.Wallet < flightTransaction.Price){
+			c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Insufficient wallet!"})
+			return
+		}
 	}
 
 	user.Wallet = user.Wallet - flightTransaction.Price
@@ -322,7 +325,6 @@ func GetUserFlightCart(c *gin.Context){
 		departureTime = departureTime.In(currentTime.Location())
 		departureTime = departureTime.Add(time.Hour * -7)
 		if currentTime.Before(departureTime) {
-			fmt.Println("Appending")
 			onGoingFlight = append(onGoingFlight, flightCart)
 		}
 	}

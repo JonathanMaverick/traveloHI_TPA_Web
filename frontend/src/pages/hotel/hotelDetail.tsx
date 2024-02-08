@@ -123,6 +123,10 @@ export default function HotelDetail(){
                         </div>
                     </div>
                 </div>
+                <div className="review">
+                    <h2>Review</h2>
+                    
+                </div>
             </div>
         </>
     )

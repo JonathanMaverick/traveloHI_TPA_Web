@@ -196,7 +196,6 @@ export default function FlightDetail(){
             return;
         }
     
-    
         for (const selectedSeat of selectedSeats) {
             const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
     
@@ -209,7 +208,6 @@ export default function FlightDetail(){
     
             const response = await add_flight_cart(flight_cart);
             if (response == -1) {
-                alert("Err occurred");
                 return;
             }
         }
@@ -218,41 +216,37 @@ export default function FlightDetail(){
         window.location.reload();
     }
 
-    const payButton = async (selectedPaymentOption: string) => {
+    const payButton = async () => {
         if(!user){
             alert("Please login first");
             navigate("/login");
             return;
         }
-        if(selectedPaymentOption === "hi-wallet"){
-            for (const selectedSeat of selectedSeats) {
-                const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
-        
-                if (user?.wallet >= seatPrice) {
-                    const flight_transaction: IFlightTransaction = {
-                        flightScheduleID: flightSchedule.flightScheduleID,
-                        seatID: selectedSeat.seatID,
-                        userID: user?.userID,
-                        paymentID: 2, 
-                        price: seatPrice,
-                        addOnLuggage: addOnLuggage,
-                    };
-                    const response = await add_flight_transaction(flight_transaction);
-                    if (response == -1) {
-                        alert("Err occurred");
-                        return;
-                    }
-                } else {
-                    alert("Insufficient Balance");
+        for (const selectedSeat of selectedSeats) {
+            const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
+            const paymentId = paymentOption === "hi-wallet" ? 2 : 1;
+            if (user?.wallet >= seatPrice) {
+                const flight_transaction: IFlightTransaction = {
+                    flightScheduleID: flightSchedule.flightScheduleID,
+                    seatID: selectedSeat.seatID,
+                    userID: user?.userID,
+                    paymentID: paymentId, 
+                    price: seatPrice,
+                    addOnLuggage: addOnLuggage,
+                };
+                const response = await add_flight_transaction(flight_transaction);
+                if (response == -1) {
                     return;
                 }
+            } else {
+                alert("Insufficient Balance");
+                return;
             }
-            alert("Payment Success");
-            window.location.reload();
-            window.location.href = "/";
-        }else{
-            //Buat payment credit card
         }
+        alert("Payment Success");
+        window.location.reload();
+        window.location.href = "/";
+            
     }
 
     return (
@@ -362,7 +356,7 @@ export default function FlightDetail(){
                         </div>
                         </>
                     )}
-                    <button onClick={() => payButton(paymentOption)}>
+                    <button onClick={() => payButton()}>
                         Pay
                     </button>
                 </div>

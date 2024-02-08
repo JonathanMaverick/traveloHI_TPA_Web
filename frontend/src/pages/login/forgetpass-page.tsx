@@ -6,10 +6,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { IUser } from '../../interfaces/user/user-interface';
 import useTheme from '../../contexts/theme-context';
+import useUser from '../../contexts/user-context';
 
 const ForgetPassPage = () => {
-
+    const {user} = useUser();
     useEffect(() => {
+        if(user){
+            navigate('/');
+        }
         document.title = 'Forgot Password';
       }
     , []);

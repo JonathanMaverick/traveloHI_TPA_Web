@@ -2,7 +2,7 @@ package model
 
 type Hotel struct {
 	ID          uint   `json:"hotelID"`
-	Name        string `json:"hotelName"`
+	Name        string `json:"hotelName" gorm:"unique"`
 	Description string `json:"hotelDescription"`
 	Address     string `json:"hotelAddress"`
 	City        string `json:"hotelCity"`
