@@ -3,7 +3,7 @@ import useCurrency from "../../contexts/currency-context";
 import { IRoom } from "../../interfaces/hotel/room-interface";
 import "../../styles/pages/hotel-card.scss";
 import { IHotelTransaction } from "../../interfaces/flight/hotel-transaction-interface";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Button from "../../component/button";
 import useUser from "../../contexts/user-context";
 import { useNavigate } from "react-router-dom";
@@ -22,42 +22,30 @@ const RoomCard = ({ room }: { room: IRoom }) => {
     const {user} = useUser();
     const navigate = useNavigate();
 
-    const submitForm = async () => {
+    const submitForm = async (e : FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if(!user){
             alert("Please login first");
             navigate("/login");
         }
-        if(paymentOption == "hi-wallet"){
-            const hotelTransaction : IHotelTransaction = {
-                hotelID : room.hotelID,
-                roomID : room.roomID,
-                userID : user?.userID || 0,
-                price : totalprice,
-                checkInDate : checkInDate,
-                checkOutDate : checkOutDate,
-                paymentID : 1
-            }
-            const response = await add_hotel_transaction(hotelTransaction);
-            if(response != -1){
-                alert("Hotel Transaction Success");
-                navigate("/transaction-history");
-            }
+        const paymentID = (paymentOption == "hi-wallet") ? 2 : 1;
+        const hotelTransaction : IHotelTransaction = {
+            hotelID : room.hotelID,
+            roomID : room.roomID,
+            userID : user?.userID || 0,
+            price : totalprice,
+            checkInDate : checkInDate,
+            checkOutDate : checkOutDate,
+            paymentID : paymentID
         }
-        if(paymentOption == "credit-card"){
-            const hotelTransaction : IHotelTransaction = {
-                hotelID : room.hotelID,
-                roomID : room.roomID,
-                userID : user?.userID || 0,
-                price : totalprice,
-                checkInDate : checkInDate,
-                checkOutDate : checkOutDate,
-                paymentID : 2
-            }
-            const response = await add_hotel_transaction(hotelTransaction);
-            if(response != -1){
-                alert("Hotel Transaction Success");
-                navigate("/transaction-history");
-            }
+        const response = await add_hotel_transaction(hotelTransaction);
+        if(response != -1){
+            alert("Hotel Transaction Success");
+            window.location.reload();
+            window.location.href = "/";
+        }
+        else{
+            return;
         }
     }
 
@@ -124,6 +112,7 @@ const RoomCard = ({ room }: { room: IRoom }) => {
             <div className="room-details">
                 <h3>{room.roomName}</h3>
                 <p>{room.bedType}</p>
+                <p>{room.quantity} room left</p>
                 <div className="room-occupancy">
                     <p><IoPeopleOutline /> {room.occupancy}</p>
                 </div>

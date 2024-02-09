@@ -209,22 +209,33 @@
 
   .room-details {
     flex-grow: 1;
-    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
+    gap: 0.2rem;
     h3 {
-      margin: 0rem 0rem 0.5rem 0rem;
+      margin: 0;
+    }
+
+    .date-section{
+      font-size: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      p{
+        color: var(--font-color);
+        margin: 0;
+      }
     }
 
     .room-occupancy{
       width: max-content;
-      margin-top: 5px;
       p{
         @include centered;
         gap: 5px;
       }
     }
   }
+
   .room-price {
     display: flex;
     flex-direction: column;

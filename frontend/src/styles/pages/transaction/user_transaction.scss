@@ -57,3 +57,10 @@
     }
 }
 
+.hotel-transaction-list{
+    overflow-y: scroll;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}

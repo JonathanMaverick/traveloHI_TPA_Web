@@ -125,7 +125,6 @@ export default function HotelDetail(){
                 </div>
                 <div className="review">
                     <h2>Review</h2>
-                    
                 </div>
             </div>
         </>

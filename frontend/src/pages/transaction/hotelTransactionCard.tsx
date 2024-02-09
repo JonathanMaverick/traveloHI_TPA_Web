@@ -1,50 +1,61 @@
-import { useEffect, useState } from "react"
-import useUser from "../../contexts/user-context";
+import { IoPeopleOutline } from "react-icons/io5";
+import "../../styles/pages/hotel-card.scss";
 import { IHotelTransaction } from "../../interfaces/flight/hotel-transaction-interface";
-import get_user_ongoing_hotel_transaction from "../../api/hotel_transaction/get_user_ongoing_hotel_transaction";
-import RoomCard from "../hotel/roomCard";
+import useCurrency from "../../contexts/currency-context";
 
-export default function HotelTransactions({searchTerm}: {searchTerm:string}){
+const HotelTransactionCard = ({ transaction }: { transaction: IHotelTransaction }) => {
+  const defaultImageUrl =
+    "https://t3.ftcdn.net/jpg/04/62/93/66/360_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg";
 
-    const [hotelTransactionList, setHotelTransactionList] = useState<IHotelTransaction[]>([]);
-    const {user} = useUser();
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await get_user_ongoing_hotel_transaction(user?.userID || 0);
-                if (response == -1){
-                    return;
-                }
-                else{
-                    console.log(response.data.data)
-                    setHotelTransactionList(response.data.data);
-                }
-            } catch (error) {
-                console.error('Error fetching hotel data');
-            }
-        };
-        fetchData();
-    }, []);
-
-    const filteredHotelTransactions = (hotelTransactionList || []).filter((transaction) => {
-        const hotelName = transaction?.Hotel?.hotelName || "";
-    
-        return (
-            hotelName.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-    });
+    const {currency} = useCurrency();
 
     return (
-        <div className="flight-transaction-list">
-            {filteredHotelTransactions.length > 0 ? (
-                filteredHotelTransactions.map((f) => (
-                    <div key={f.id} className="flight-transaction-card">
-                        <RoomCard room={f.Room} />
-                    </div>
-                ))
-            ) : (
-                <p>No matching flight transactions found.</p>
-            )}
+        <div className="room-card">
+            <div className="room-image">
+                <div className="main-image">
+                    <img
+                    key={0}
+                    src={
+                        transaction.Room.roomPicture && transaction.Room.roomPicture.length > 0
+                        ? transaction.Room.roomPicture[0].roomPicture
+                        : defaultImageUrl
+                    }
+                    className="rectangle-image"
+                    />
+                </div>
+                <div className="secondary-room-image">
+                {[...Array(3)].map((_, index) => (
+                    <img
+                    key={index + 1}
+                    src={
+                        transaction.Room.roomPicture && transaction.Room.roomPicture.length > index + 1
+                        ? transaction.Room.roomPicture[index + 1].roomPicture
+                        : defaultImageUrl
+                    }
+                    className="square-image"
+                    />
+                ))}
+                </div>
+            </div>
+            <div className="room-details">
+                <h3>{transaction.Hotel?.hotelName} - {transaction.Room.roomName}</h3>
+                <div className="date-section">
+                    <p>{transaction.checkInDate} - {transaction.checkOutDate}</p>
+                </div>
+                <p>{transaction.Room.bedType}</p>
+                <div className="room-occupancy">
+                    <p><IoPeopleOutline /> {transaction.Room.occupancy}</p>
+                </div>
+            </div>
+            <div className="room-price">
+                {currency == "IDR" ? (
+                    <p>Rp. {transaction.price}</p>
+                    ) : (
+                    <p>$ {(transaction.price / 14000).toFixed(4)}</p>
+                )}
+            </div>
         </div>
     );
-}
+};
+
+export default HotelTransactionCard;

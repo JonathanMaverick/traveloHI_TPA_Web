@@ -51,7 +51,7 @@ export default function FlightTransactionCard({ft} : {ft : IFlightTransaction}) 
                 </div>
                 <div className="flight-schedule-price">
                       {currency == "IDR" ? (
-                        <p>Rp. {ft?.price} <span className="flight-schedule-price-org">/org</span></p>
+                        <p>Rp. {ft?.price}</p>
                       ) : (
                         <p>$ {(ft.price / 14000).toFixed(4)} <span className="flight-schedule-price-org">/people</span></p>
                       )}

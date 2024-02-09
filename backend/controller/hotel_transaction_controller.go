@@ -30,12 +30,70 @@ func AddHotelTransaction(c *gin.Context) {
 		return
 	}
 
-	if user.Wallet < hotelTransaction.Price {
-		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Not enough money!"})
+	if hotelTransaction.PaymentID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Payment ID is required!"})
 		return
 	}
-	user.Wallet = user.Wallet - hotelTransaction.Price
-	config.DB.Save(&user)		
+
+	currentTime := time.Now()
+	checkInDate, err := time.Parse("2006-01-02", hotelTransaction.CheckInDate)
+	if err != nil {
+		fmt.Println("Error parsing arrival time:", err)
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid check in date!"})
+		return
+	}
+
+	checkInDate = checkInDate.In(currentTime.Location())
+	checkInDate = checkInDate.Add(time.Hour * -7)
+	if currentTime.After(checkInDate) {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Check in date can't be in the past!"})
+		return
+	}
+
+	checkOutDate, err := time.Parse("2006-01-02", hotelTransaction.CheckOutDate)
+	if err != nil {
+		fmt.Println("Error parsing arrival time:", err)
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid check out date!"})
+		return
+	}
+
+	checkOutDate = checkOutDate.In(currentTime.Location())
+	checkOutDate = checkOutDate.Add(time.Hour * -7)
+	if checkOutDate.Before(checkInDate) {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Check out date can't be before check in date!"})
+		return
+	}
+
+	if hotelTransaction.PaymentID == 1{
+		var creditCard model.CreditCard
+		config.DB.Where("user_id = ?", hotelTransaction.UserID).First(&creditCard)
+		if creditCard.ID == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Credit card is required!"})
+			return
+		}	
+	}else{
+		if user.Wallet < hotelTransaction.Price {
+			c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Not enough money!"})
+			return
+		}
+		user.Wallet = user.Wallet - hotelTransaction.Price
+		config.DB.Save(&user)		
+	}
+
+	var room model.Room
+	config.DB.Where("id = ?", hotelTransaction.RoomID).First(&room)
+	if room.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Room not found!"})
+		return
+	}
+
+	if room.Quantity <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Room is not available!"})
+		return
+	}
+	room.Quantity = room.Quantity - 1
+	config.DB.Save(&room)
+
 
 	result := config.DB.Create(&hotelTransaction)
 	if result.Error != nil {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import get_user_history_flight_transaction from "../../../api/transaction/get_user_history_flight_transaction";
+import get_user_history_flight_transaction from "../../../api/flight_transaction/get_user_history_flight_transaction";
 import { IFlightTransaction } from "../../../interfaces/flight/flight-transaction-interface";
 import useUser from "../../../contexts/user-context";
 import FlightTransactionCard from "../flightTransactionCard";

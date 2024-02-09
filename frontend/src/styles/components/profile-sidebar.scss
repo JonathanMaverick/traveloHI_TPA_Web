@@ -13,7 +13,7 @@
     .profile-information-detail{
         display: flex;
         flex-direction: row;
-        @include centered;
+        align-items: center;
         gap: 1rem;
         padding: .5rem 0rem;
         border-bottom: 0.1rem solid #CDD0D1;

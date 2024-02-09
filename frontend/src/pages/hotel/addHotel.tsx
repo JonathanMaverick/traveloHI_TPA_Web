@@ -174,7 +174,6 @@ export default function AddHotel() {
       return;
     }
 
-
     roomData.hotelID = hotelID;
     setTempRooms((prevRooms) => [...prevRooms, roomData]);
     setRoomData(INITIAL_ROOM_DATA); 

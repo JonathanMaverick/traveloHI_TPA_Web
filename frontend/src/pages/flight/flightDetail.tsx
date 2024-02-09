@@ -10,7 +10,7 @@ import useCurrency from "../../contexts/currency-context";
 import "../../styles/pages/flight/schedule/flight_schedule_card.scss"
 import useUser from "../../contexts/user-context";
 import { IFlightTransaction } from "../../interfaces/flight/flight-transaction-interface";
-import add_flight_transaction from "../../api/transaction/add_flight_transaction";
+import add_flight_transaction from "../../api/flight_transaction/add_flight_transaction";
 import { IFlightCart } from "../../interfaces/flight/flight-cart-interface";
 import add_flight_cart from "../../api/flight/cart/add_flight_cart";
 
@@ -214,6 +214,7 @@ export default function FlightDetail(){
     
         alert("Added to cart");
         window.location.reload();
+        window.location.href = "/";
     }
 
     const payButton = async () => {
@@ -225,21 +226,16 @@ export default function FlightDetail(){
         for (const selectedSeat of selectedSeats) {
             const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
             const paymentId = paymentOption === "hi-wallet" ? 2 : 1;
-            if (user?.wallet >= seatPrice) {
-                const flight_transaction: IFlightTransaction = {
-                    flightScheduleID: flightSchedule.flightScheduleID,
-                    seatID: selectedSeat.seatID,
-                    userID: user?.userID,
-                    paymentID: paymentId, 
-                    price: seatPrice,
-                    addOnLuggage: addOnLuggage,
-                };
-                const response = await add_flight_transaction(flight_transaction);
-                if (response == -1) {
-                    return;
-                }
-            } else {
-                alert("Insufficient Balance");
+            const flight_transaction: IFlightTransaction = {
+                flightScheduleID: flightSchedule.flightScheduleID,
+                seatID: selectedSeat.seatID,
+                userID: user?.userID,
+                paymentID: paymentId, 
+                price: seatPrice,
+                addOnLuggage: addOnLuggage,
+            };
+            const response = await add_flight_transaction(flight_transaction);
+            if (response == -1) {
                 return;
             }
         }

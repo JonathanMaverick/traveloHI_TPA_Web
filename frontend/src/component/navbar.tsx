@@ -14,7 +14,7 @@ import add_search from "../api/search/add_search";
 import get_search_history from "../api/search/get_search_history";
 import { MdHistory } from "react-icons/md";
 import get_top_5_search from "../api/search/get_top_5_search";
-import get_user_total_flight_transaction from "../api/transaction/get_user_total_flight_transaction";
+import get_user_total_flight_transaction from "../api/flight_transaction/get_user_total_flight_transaction";
 import ChangeTheme from "./change-theme";
 
 export default function Navbar() {
