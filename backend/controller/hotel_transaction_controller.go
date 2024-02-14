@@ -265,3 +265,36 @@ func GetUserHotelCart(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": ongoingHotelCart})
 }
+
+//GetUserTotalHotelTransaction get user total hotel transaction
+// @Summary Get user total hotel transaction
+// @Description Get user total hotel transaction
+// @Tags Hotel Transaction
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {string} string "Hotel transaction created successfully!"
+// @Router /hotel-transaction/user/total/{id} [get]
+func GetUserOnGoingTotalHotelTransaction(c *gin.Context){
+	id := c.Params.ByName("id")
+	var hotelTransaction []model.HotelTransaction
+	config.DB.Where("user_id = ?", id).Preload("Room").Preload("Room.RoomPicture").Preload("Hotel").Preload("Payment").Find(&hotelTransaction)
+
+	var onGoingHotel []model.HotelTransaction
+	currentTime := time.Now()
+	for _, hotel := range hotelTransaction {
+		checkOutDateStr := hotel.CheckOutDate
+		checkOutDate, err := time.Parse("2006-01-02", checkOutDateStr)
+		if err != nil {
+			fmt.Println("Error parsing arrival time:", err)
+			continue
+		}
+
+		checkOutDate = checkOutDate.In(currentTime.Location())
+		checkOutDate = checkOutDate.Add(time.Hour * -7)
+		if currentTime.Before(checkOutDate) {
+			onGoingHotel = append(onGoingHotel, hotel)
+		}	
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": len(onGoingHotel)})
+}

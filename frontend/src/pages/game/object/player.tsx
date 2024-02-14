@@ -21,6 +21,7 @@ export class Player {
     isActionLocked :boolean = false;
     lockDuration : number = 1;
     maxHealth : number = 100;  
+    enemy : Player | null = null;
 
     constructor(type : string, x : number, y : number, width : number, height : number, xSpeed : number, ySpeed : number, health : number, mirrored : boolean, playerAnimation : PlayerAnimations, currentPlayerState : PlayerState) { 
         this.type = type;
@@ -36,6 +37,10 @@ export class Player {
         this.playerAnimation = playerAnimation;
     }
 
+    setEnemy(enemy: Player) {
+        this.enemy = enemy;
+    }
+
     draw(c: CanvasRenderingContext2D) {
         const frame = this.playerAnimation[this.currentPlayerState][this.currentFrame];
 
@@ -48,7 +53,6 @@ export class Player {
                 this.y,
                 frame.width * characterScaleFactor,
                 frame.height * characterScaleFactor,
-                // this.height
             );
         }
 

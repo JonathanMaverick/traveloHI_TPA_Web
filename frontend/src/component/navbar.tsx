@@ -16,6 +16,7 @@ import { MdHistory } from "react-icons/md";
 import get_top_5_search from "../api/search/get_top_5_search";
 import get_user_total_flight_transaction from "../api/flight_transaction/get_user_total_flight_transaction";
 import ChangeTheme from "./change-theme";
+import get_user_total_hotel_transaction from "../api/hotel_transaction/get_user_total_hotel_transaction";
 
 export default function Navbar() {
 
@@ -36,10 +37,16 @@ export default function Navbar() {
         }
         else{
             const response = await get_user_total_flight_transaction(user?.userID || 0);
+            const response2 = await get_user_total_hotel_transaction(user?.userID || 0);
             if (response == -1) {
                 return;
             }else{
                 setUserTotalTransaction(response.data.data);
+            }
+            if (response2 == -1) {
+                return;
+            }else{
+                setUserHotelTotalTransaction(response2.data.data);
             }
         }
     }
@@ -80,6 +87,7 @@ export default function Navbar() {
     const [searchHistory, setSearchHistory] = useState<ISearch[]>([]);
     const [topSearch, setTopSearch] = useState<ISearch[]>([]);
     const [showSearchOptions, setShowSearchOptions] = useState(false);
+    const [userHotelTotalTransaction, setUserHotelTotalTransaction] = useState(0);
     const [userTotalTransaction, setUserTotalTransaction] = useState(0);
 
     const logoutClick = () => {
@@ -224,9 +232,9 @@ export default function Navbar() {
                     <div className="cart hover">
                         <FaCartPlus className="logo-icon" size={25}/>
                         <p>Pesanan Saya</p>
-                        {userTotalTransaction > 0 && (
+                        {userTotalTransaction + userHotelTotalTransaction > 0 && (
                             <div className="notif-transaction">
-                                {userTotalTransaction}
+                                {userTotalTransaction + userHotelTotalTransaction}
                             </div>
                         )}
                     </div>

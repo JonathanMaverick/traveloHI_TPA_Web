@@ -6,6 +6,7 @@ import useUser from '../../contexts/user-context';
 import { useNavigate } from 'react-router-dom';
 import useTheme from '../../contexts/theme-context';
 import { io } from 'socket.io-client';
+import { playerNumber } from './server';
 
 export const gamePath = "./game_asset/";
 export const characterScaleFactor = 3; 
@@ -31,6 +32,7 @@ export default function Game() {
   const [_, setGameCounter] = useState(0);
   const gameOver = useRef(false);
   const maxGames = 3;
+  const playerNum = useRef(0);
 
   useEffect(() => {
     document.title = "Game";
@@ -43,7 +45,13 @@ export default function Game() {
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    // const socket = io('http://localhost:3000');
+    const socket = io('http://localhost:3000');
+    socket.on('connect', () => {
+      socket.on('playerNumber', (number) => {
+        console.log('Nomor pemain:', number);
+        playerNum.current = number;
+      });
+    });
 
     initGame(canvas, context);
     const interval = setInterval(() => {
@@ -131,6 +139,16 @@ export default function Game() {
       secondPlayerSprite,
       PlayerState.IdleMirror,
     )
+
+    firstPlayer.setEnemy(secondPlayer);
+    secondPlayer.setEnemy(firstPlayer);
+
+    let player = null;
+    if(playerNum.current === 0){
+      player = firstPlayer;
+    }else{
+      player = secondPlayer;
+    }
   
     let lastTimestamp = performance.now();
     const targetFrameRate = 60;
@@ -178,7 +196,8 @@ export default function Game() {
   
       const timeStamp = performance.now();
       const deltaTime = (timeStamp - lastTimestamp); 
-      firstPlayer.handleInput();
+
+      player!.handleInput();
   
       if (deltaTime < 1000 / targetFrameRate) {;
         requestAnimationFrame(draw);

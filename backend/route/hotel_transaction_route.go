@@ -13,5 +13,7 @@ func HotelTransactionRoute(r *gin.Engine) {
 
 		hotel.POST("/hotel-cart", controller.AddHotelCart)
 		hotel.GET("/hotel-cart/user/:id", controller.GetUserHotelCart)
+
+		hotel.GET("/user/total/:id", controller.GetUserOnGoingTotalHotelTransaction)
 	}
 }
