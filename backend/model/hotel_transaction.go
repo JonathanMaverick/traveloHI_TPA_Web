@@ -19,9 +19,9 @@ type HotelTransaction struct {
 
 type HotelCart struct {
 	ID               uint    `json:"id"`
-	HotelID uint    `json:"flightScheduleID"`
+	HotelID uint    `json:"hotelID"`
 	UserID           uint    `json:"userID"`
-	RoomID           uint    `json:"seatID"`
+	RoomID           uint    `json:"roomID"`
 	Price            float64 `json:"price"`
 	CheckInDate      string  `json:"checkInDate"`
 	CheckOutDate     string  `json:"checkOutDate"`

@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import add_hotel_transaction from "../../api/hotel_transaction/add_hotel_transaction";
 import { IHotelTransaction } from "../../interfaces/hotel/hotel-transaction-interface";
 import { IHotelCart } from "../../interfaces/hotel/hotel-cart-interface";
+import add_hotel_cart from "../../api/hotel_cart/add_hotel_cart";
 
 const RoomCard = ({ room }: { room: IRoom }) => {
   const defaultImageUrl =
@@ -67,6 +68,16 @@ const RoomCard = ({ room }: { room: IRoom }) => {
             price : totalprice,
             checkInDate : checkInCartDate,
             checkOutDate : checkOutCartDate,
+        }
+        console.log(hotelCart);
+        const response = await add_hotel_cart(hotelCart);
+        if(response != -1){
+            alert("Hotel Transaction Success");
+            window.location.reload();
+            window.location.href = "/";
+        }
+        else{
+            return;
         }
     }
 
@@ -156,6 +167,7 @@ const RoomCard = ({ room }: { room: IRoom }) => {
             <div className="room-details">
                 <h3>{room.roomName}</h3>
                 <p>{room.bedType}</p>
+                <p>{room.facilities}</p>
                 <p>{room.quantity} room left</p>
                 <div className="room-occupancy">
                     <p><IoPeopleOutline /> {room.occupancy}</p>

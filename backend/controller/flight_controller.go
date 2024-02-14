@@ -19,7 +19,7 @@ import (
 // @Produce json
 // @Param airline body string true "Airline"
 // @Success 200 {string} string "Airline created successfully!"
-// @Router /airline [post]
+// @Router /flight/airline [post]
 func AddAirline(c *gin.Context){
 	var airline model.Airline
 	c.BindJSON(&airline)
@@ -27,7 +27,7 @@ func AddAirline(c *gin.Context){
 	if(airline.AirlineName == ""){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Airline name can't be empty!"})
 		return
-	}
+	} 
 
 	if(airline.AirlineLogo == ""){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Airline logo can't be empty!"})
@@ -53,7 +53,7 @@ func AddAirline(c *gin.Context){
 // @Produce json
 // @Param airline body string true "Airline"
 // @Success 200 {string} string "Airline found successfully!"
-// @Router /airline [get]
+// @Router /flight/airline [get]
 func GetAirlines(c *gin.Context){
 	var airlines []model.Airline
 	config.DB.Find(&airlines)
@@ -67,7 +67,7 @@ func GetAirlines(c *gin.Context){
 // @Accept json
 // @Produce json
 // @Success 200 {array} model.Airport
-// @Router /flight/airport [get]
+// @Router /flight/airports [get]
 func GetAirports(c *gin.Context) {
 	var airports []model.Airport
 	result := config.DB.Find(&airports)
@@ -404,7 +404,7 @@ func UpdateFlightSchedule(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {string} string "Flight Transaction found successfully!"
-// @Router /schedule/top-5 [get]
+// @Router /flight/schedule/top-5 [get]
 func GetTop5FlightSchedule(c* gin.Context){
 	var top5FlightSchedules []model.FlightSchedule
 	result := config.DB.

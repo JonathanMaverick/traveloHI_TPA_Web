@@ -10,5 +10,6 @@ export interface IRoom{
     quantity : number;
     images : File[];
     bedType : string;
+    facilities : string;
     roomPicture : IRoomPicture[];
 }

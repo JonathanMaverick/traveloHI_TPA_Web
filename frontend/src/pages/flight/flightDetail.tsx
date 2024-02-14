@@ -345,8 +345,8 @@ export default function FlightDetail(){
                                     return totalPrice + seatPrice;
                                 }, 0) + (addOnLuggage ? 10000 : 0)) : (selectedSeats.reduce((totalPrice, selectedSeat) => {
                                     const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
-                                    return (totalPrice + seatPrice) / 14000;
-                                }, 0) + (addOnLuggage ? (10000 / 14000) : 0)).toFixed(4)} 
+                                    return ((totalPrice + seatPrice));
+                                }, 0) / 14000).toFixed(4)} 
                                 <span className="flight-schedule-price-org">{currency === "IDR" ? "/org" : "/person"}</span>
                             </div>
                         </div>

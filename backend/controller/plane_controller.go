@@ -16,7 +16,7 @@ import (
 // @Produce json
 // @Param plane body string true "Plane"
 // @Success 200 {string} string "Plane created successfully!"
-// @Router /plane [post]
+// @Router /flight/plane [post]
 func AddPlane(c *gin.Context){
 	var plane model.Plane
 	c.BindJSON(&plane)
@@ -79,7 +79,7 @@ func GetPlanes(c *gin.Context) {
 // @Produce json
 // @Param airlineID path int true "Airline ID"
 // @Success 200 {string} string "Plane found successfully!"
-// @Router /airline/plane/{airlineID} [get]
+// @Router /flight/airline/plane/{airlineID} [get]
 func GetPlanesByAirline(c *gin.Context) {
 	var planes []model.Plane
 	airlineID := c.Params.ByName("airlineID")
@@ -102,7 +102,7 @@ func GetPlanesByAirline(c *gin.Context) {
 // @Produce json
 // @Param planeID path int true "Plane ID"
 // @Success 200 {string} string "Plane deleted successfully!"
-// @Router /plane/{planeID} [delete]
+// @Router /flight/plane/{planeID} [delete]
 func DeletePlane(c *gin.Context) {
 	planeID := c.Params.ByName("planeID")
 

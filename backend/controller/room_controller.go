@@ -15,7 +15,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {array} model.Room
-// @Router /room [get]
+// @Router /hotel/room [get]
 func GetRooms(c *gin.Context) {
 	var rooms []model.Room
 	result := config.DB.Find(&rooms)
@@ -29,7 +29,7 @@ func GetRooms(c *gin.Context) {
 // AddHotelRoom creates a new hotel room
 // @Summary Add hotel room
 // @Description Add a new hotel room
-// @Tags Hotel
+// @Tags Room
 // @Accept json
 // @Produce json
 // @Param hotelRoom body string true "Hotel Room"

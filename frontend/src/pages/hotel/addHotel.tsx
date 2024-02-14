@@ -51,7 +51,8 @@ export default function AddHotel() {
     quantity: 0,
     images: [],
     bedType: "",
-    roomPicture: []
+    roomPicture: [],
+    facilities: "",
   };
   
   const [hotelID, setHotelID] = useState(0);
@@ -365,6 +366,13 @@ export default function AddHotel() {
                 type="text"
                 value={roomData?.bedType}
                 onChange={(e:string) => setRoomData({ ...roomData, bedType: e })}
+              />
+              <TextField
+                label="Room Facilities"
+                name="facilities"
+                type="text"
+                value={roomData?.facilities}
+                onChange={(e:string) => setRoomData({ ...roomData, facilities: e })}
               />
               <div className="text-field">
                 <label htmlFor="roomimages">Room Images</label>

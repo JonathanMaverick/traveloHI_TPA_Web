@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IHotelTransaction } from "../../interfaces/flight/hotel-transaction-interface";
+import { IHotelTransaction } from "../../interfaces/hotel/hotel-transaction-interface";
 
 const add_hotel_transaction = async(hotel_transaction : IHotelTransaction) => {
     try{

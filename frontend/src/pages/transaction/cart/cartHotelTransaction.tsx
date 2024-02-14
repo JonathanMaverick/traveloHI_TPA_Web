@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react"
-import useUser from "../../contexts/user-context";
-import get_user_ongoing_hotel_transaction from "../../api/hotel_transaction/get_user_ongoing_hotel_transaction";
-import HotelTransactionCard from "./hotelTransactionCard";
-import { IHotelTransaction } from "../../interfaces/hotel/hotel-transaction-interface";
+import get_hotel_cart from "../../../api/hotel_cart/get_hotel_cart";
+import { IHotelTransaction } from "../../../interfaces/hotel/hotel-transaction-interface";
+import useUser from "../../../contexts/user-context";
+import HotelTransactionCard from "../hotelTransactionCard";
 
-export default function HotelTransactions({searchTerm}: {searchTerm:string}){
+export default function CartHotelTransactions({searchTerm}: {searchTerm:string}){
 
     const [hotelTransactionList, setHotelTransactionList] = useState<IHotelTransaction[]>([]);
     const {user} = useUser();
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await get_user_ongoing_hotel_transaction(user?.userID || 0);
+                const response = await get_hotel_cart(user?.userID?.toString() || '');
                 if (response == -1){
                     return;
                 }
                 else{
-                    console.log(response.data.data)
-                    setHotelTransactionList(response.data.data);
+                    console.log(response.data)
+                    setHotelTransactionList(response.data);
                 }
             } catch (error) {
                 console.error('Error fetching hotel data');
