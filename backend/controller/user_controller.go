@@ -123,10 +123,17 @@ func CreateUser(c *gin.Context) {
 	newUser.Role = "user"
 	newUser.Status = "active"
 	newUser.Wallet = 0
+	
+	var user model.User
+	config.DB.First(&user, "email = ?", newUser.Email)
+	if user.ID != 0 {
+		c.String(http.StatusBadRequest, "Email duplicated")
+		return
+	}
 
 	result := config.DB.Create(&newUser)
 	if result.Error != nil {
-		c.String(http.StatusBadRequest, "Email duplicated")
+		c.String(http.StatusBadRequest, "Failed to create user")
 		return
 	}
 
