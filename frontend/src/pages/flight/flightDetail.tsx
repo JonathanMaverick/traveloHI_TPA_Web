@@ -246,7 +246,8 @@ export default function FlightDetail(){
                     }
                     else{
                         alert("Payment Success");
-                        navigate("/")
+                        window.location.reload();
+                        window.location.href = "/";
                     }
                 }
                 else{
@@ -269,7 +270,8 @@ export default function FlightDetail(){
                     }
                     else{
                         alert("Payment Success");
-                        navigate("/")
+                        window.location.reload();
+                        window.location.href = "/";
                     }
                 }
                 else{
