@@ -2,7 +2,7 @@ import ProfileSidebar from "../profile/profile-sidebar";
 import "../../styles/pages/transaction/user_transaction.scss"
 import { useState } from "react";
 import FlightTransactions from "./flightTransaction";
-import HotelTransactions from "./hotelTransactionCard";
+import HotelTransactions from "./hotelTransaction";
 
 export default function UserTransaction(){
 

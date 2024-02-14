@@ -133,23 +133,17 @@ export default function AddHotel() {
 
   const handleHotelSubmit = async (e : FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!hotelData.hotelName || !hotelData.hotelDescription || !hotelData.hotelAddress) {
-      alert('Please fill in all hotel details.');
-      return;
-    }
-
-    if (selectedFacilities.length === 0) {
-      alert('Please select at least one facility.');
-      return;
-    }
 
     if (hotelImages.length === 0) {
       alert('Please upload at least one hotel image.');
       return;
     }
+
     setLoading(true);
     const response = await add_hotel(hotelData);
-    if(response == -1)alert('Error adding hotel');
+    if(response == -1){
+      setLoading(false);
+    }
     else{
       const responseHotelID = response?.data.hotelID;
       setHotelID(responseHotelID);
@@ -170,17 +164,17 @@ export default function AddHotel() {
   }
 
   const handleRoomFormSubmit = () => {
-    if (!roomData.roomName || !roomData.price || !roomData.occupancy || !roomData.quantity || !roomData.bedType || roomData.images.length === 0) {
-      alert('Please fill in all room details.');
+    if (roomData.images.length === 0) {
+      alert('Please upload at least one room image.');
       return;
     }
 
-    if(roomData.price < 0 || roomData.occupancy < 0 || roomData.quantity < 0){
-      alert('Please fill in valid room details.');
+    if (roomData.roomName === "" || roomData.price === 0 || roomData.occupancy === 0 || roomData.quantity === 0 || roomData.bedType === "") {
+      alert('Please fill in all the room details.');
       return;
     }
+
     roomData.hotelID = hotelID;
-    console.log(hotelID)
     setTempRooms((prevRooms) => [...prevRooms, roomData]);
     setRoomData(INITIAL_ROOM_DATA); 
   };

@@ -1,4 +1,4 @@
-package model
+ package model
 
 type Room struct {
 	ID          uint          `json:"roomID"`

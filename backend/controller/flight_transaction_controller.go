@@ -42,6 +42,14 @@ func AddFlightTransaction(c *gin.Context){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Payment ID can't be empty!"})
 		return
 	}
+	if (flightTransaction.PaymentID == 1){
+		var creditCard model.CreditCard
+		err := config.DB.Where("id = ?", flightTransaction.UserID).First(&creditCard).Error
+		if err != nil{
+			c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Credit Card not found"})
+			return
+		}
+	}
 
 	if(flightTransaction.Price == 0){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Price can't be empty!"})
@@ -55,12 +63,14 @@ func AddFlightTransaction(c *gin.Context){
 		return
 	}
 
-	if(user.Wallet < flightTransaction.Price){
-		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Insufficient wallet!"})
-		return
+	if (flightTransaction.PaymentID == 2){
+		if(user.Wallet < flightTransaction.Price){
+			c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Insufficient wallet!"})
+			return
+		}
+		user.Wallet = user.Wallet - flightTransaction.Price
 	}
 
-	user.Wallet = user.Wallet - flightTransaction.Price
 	err = config.DB.Save(&user).Error
 	if err != nil{
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
@@ -294,6 +304,11 @@ func GetUserFlightCart(c *gin.Context){
 	var flightCart []model.FlightCart
 	err := config.DB.Where("user_id = ?", c.Param("id")).Preload("FlightSchedule").Preload("FlightSchedule.Plane").
 	Preload("FlightSchedule.Plane.Airline").Preload("FlightSchedule.OriginAirport").Preload("FlightSchedule.DestinationAirport").Preload("Seat").Find(&flightCart).Error
+
+	if err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Flight Cart not found!"})
+		return
+	}
 	
 	var onGoingFlight []model.FlightCart
 	currentTime := time.Now()
@@ -312,11 +327,6 @@ func GetUserFlightCart(c *gin.Context){
 		}
 	}
 
-
-	if err != nil{
-		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": err.Error()})
-		return
-	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": onGoingFlight})
 }
 

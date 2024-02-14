@@ -2,6 +2,8 @@ import ProfileSidebar from "../../profile/profile-sidebar";
 import "../../../styles/pages/transaction/user_transaction.scss"
 import { useState } from "react";
 import HistoryFlightTransaction from "./historyFlightTransaction";
+import "../../../styles/pages/transaction/user_transaction.scss"
+import HistoryHotelTransactions from "./historyHotelTransaction";
 
 export default function UserHistoryTransaction(){
 
@@ -44,7 +46,7 @@ export default function UserHistoryTransaction(){
                         />
                     </div>
                     {selectedTransaction === 'flight' && <HistoryFlightTransaction searchTerm={searchTerm} />}
-                    {/* {selectedTransaction === 'hotel' && <HotelTransactions />} */}
+                    {selectedTransaction === 'hotel' && <HistoryHotelTransactions searchTerm={searchTerm} />}
                 </div>
             </div>
         </div>

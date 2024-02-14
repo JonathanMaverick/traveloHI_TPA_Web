@@ -307,8 +307,11 @@ func LoginOTP(c *gin.Context) {
 		return
 	}
 
+	var User model.User
+	config.DB.First(&User, "email = ?", otpRequest.UserEmail)
+
 	config.DB.Delete(&otp)
-	c.String(http.StatusOK, tokenString)
+	c.JSON(http.StatusOK, gin.H{"tokenString": tokenString, "user": User})
 }
 
 func GetUserSecurityQuestion(c *gin.Context) {

@@ -47,14 +47,21 @@ export default function CartFlightTransaction({searchTerm}: {searchTerm:string})
     const {currency} = useCurrency();
 
     return (
-        <div className="flight-transaction-list">
-            {filteredFlightTransactions.length > 0 ? (
-            <>
-                {filteredFlightTransactions.map((f) => (
-                    <div key={f.id} className="flight-transaction-card">
-                        <FlightTransactionCard ft={f} />
-                    </div>
-                ))}
+        <div className="flight-transaction-list-content">
+            <div className="flight-transaction-list">
+                {filteredFlightTransactions.length > 0 ? (
+                <>
+                    {filteredFlightTransactions.map((f) => (
+                        <div key={f.id} className="flight-transaction-card">
+                            <FlightTransactionCard ft={f} />
+                        </div>
+                    ))}
+                </>
+                ) : (
+                    <p>No cart flight transactions found.</p>
+                )}
+            </div>
+            {filteredFlightTransactions.length > 0 && (
                 <div className="total-price">
                     {currency == "IDR" ? (
                         <p>Total Price: Rp{calculateTotalPrice(filteredFlightTransactions)}</p>
@@ -64,10 +71,7 @@ export default function CartFlightTransaction({searchTerm}: {searchTerm:string})
                     )
                     }
                 </div>
-            </>
-            ) : (
-                <p>No cart flight transactions found.</p>
-            )}
+            )}   
         </div>
     );
 }

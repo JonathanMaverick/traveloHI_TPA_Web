@@ -60,11 +60,26 @@ func GetHotelByID(c *gin.Context) {
 func AddHotel(c *gin.Context) {
 	var hotel model.Hotel
 	c.BindJSON(&hotel)
+
+	//Make a validation the json can't be null
+	if hotel.Name == "" || hotel.Address == "" || hotel.City == "" || hotel.Description == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "All fields are required!"})
+		return
+	}
+
+	var count int64
+	config.DB.Model(&model.Hotel{}).Where("name = ?", hotel.Name).Count(&count)
+	if count > 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Hotel name already exists!"})
+		return
+	}
+
 	result := config.DB.Create(&hotel)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to create hotel!"})
 		return
 	}
+	
 	c.JSON(http.StatusOK, gin.H{"hotelID": hotel.ID, "message": "Hotel created successfully!"})
 }
 
@@ -80,6 +95,12 @@ func AddHotel(c *gin.Context) {
 func AddHotelPicture(c *gin.Context){
 	var hotelPicture model.HotelPicture
 	c.BindJSON(&hotelPicture)
+
+	if hotelPicture.HotelID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "All fields are required!"})
+		return
+	}
+
 	result := config.DB.Create(&hotelPicture)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to create hotel picture!"})
@@ -100,6 +121,11 @@ func AddHotelPicture(c *gin.Context){
 func AddHotelFacilities(c *gin.Context){
 	var hotelFacilities model.HotelFacilities
 	c.BindJSON(&hotelFacilities)
+
+	if hotelFacilities.HotelID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "All fields are required!"})
+		return
+	}
 
 	result := config.DB.Create(&hotelFacilities)
 	if result.Error != nil {

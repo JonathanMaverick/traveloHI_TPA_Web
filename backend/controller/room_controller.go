@@ -38,6 +38,32 @@ func GetRooms(c *gin.Context) {
 func AddHotelRoom(c *gin.Context){
 	var hotelRoom model.Room
 	c.BindJSON(&hotelRoom)
+
+	if hotelRoom.RoomName == "" || hotelRoom.Occupancy == 0 || hotelRoom.Quantity == 0 || hotelRoom.BedType == "" || hotelRoom.Price == 0 || hotelRoom.HotelID == 0{
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "All fields are required!"})
+		return
+	} 
+
+	if hotelRoom.Price <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Price is required!"})
+		return
+	}
+
+	if hotelRoom.HotelID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Hotel ID is required!"})
+		return
+	}
+
+	if hotelRoom.Quantity <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Quantity is required!"})
+		return
+	}
+
+	if hotelRoom.Occupancy <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Occupancy is required!"})
+		return
+	}
+
 	result := config.DB.Create(&hotelRoom)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to create hotel room!"})

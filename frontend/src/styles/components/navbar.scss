@@ -190,10 +190,12 @@
       top: 40%;
       right: 100%;
       background-color: black;
-      color: white;
       @include border-radius;
       padding: 5px 15px;
       width: max-content;
+      p{
+        color: white;
+      }
     }
     &:hover .hi-wallet-balance{
       display: block;
@@ -221,7 +223,7 @@
   }
 
   .register:hover {
-    background-color: var(--icon-color), 10%;
+    background-color: var(--lighten-icon-color);
   }
 
   .logout {
