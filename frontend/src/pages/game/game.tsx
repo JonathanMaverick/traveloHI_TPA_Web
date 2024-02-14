@@ -6,7 +6,6 @@ import useUser from '../../contexts/user-context';
 import { useNavigate } from 'react-router-dom';
 import useTheme from '../../contexts/theme-context';
 import { io } from 'socket.io-client';
-import { playerNumber } from './server';
 
 export const gamePath = "./game_asset/";
 export const characterScaleFactor = 3; 
@@ -33,10 +32,12 @@ export default function Game() {
   const gameOver = useRef(false);
   const maxGames = 3;
   const playerNum = useRef(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     document.title = "Game";
     const canvas = canvasRef.current;
+    
     if(!user){
       navigate('/login');
     }
@@ -62,6 +63,18 @@ export default function Game() {
     }, 1000); 
     
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    const timer = setTimeout(() => {
+      if(audio){
+        // audio.play();
+      }
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   const reloadAfterDelay = (delay: number) => {
@@ -222,6 +235,7 @@ export default function Game() {
   return (
     <div className={`game ${theme === 'dark' ? 'dark-mode' : ''}`}>
       <h2>{timer}</h2>
+      <audio ref={audioRef} src={gamePath + "background music 1.mp3"}></audio>
       <canvas ref={canvasRef} width={2000} height={850} style={{ border: '1px solid black' }} />
     </div>
   );
