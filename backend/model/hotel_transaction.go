@@ -9,6 +9,7 @@ type HotelTransaction struct {
 	Price            float64 `json:"price"`
 	CheckInDate      string  `json:"checkInDate"`
 	CheckOutDate     string  `json:"checkOutDate"`
+	IsReviewed	   	bool    `json:"isReviewed"`
 
 	User           User           `gorm:"foreignKey:UserID"`
 	Hotel 		 Hotel           `gorm:"foreignKey:HotelID"`

@@ -2,12 +2,13 @@ import { IoPeopleOutline } from "react-icons/io5";
 import useCurrency from "../../contexts/currency-context";
 import { IRoom } from "../../interfaces/hotel/room-interface";
 import "../../styles/pages/hotel-card.scss";
-import { IHotelTransaction } from "../../interfaces/flight/hotel-transaction-interface";
 import { FormEvent, useEffect, useState } from "react";
 import Button from "../../component/button";
 import useUser from "../../contexts/user-context";
 import { useNavigate } from "react-router-dom";
 import add_hotel_transaction from "../../api/hotel_transaction/add_hotel_transaction";
+import { IHotelTransaction } from "../../interfaces/hotel/hotel-transaction-interface";
+import { IHotelCart } from "../../interfaces/hotel/hotel-cart-interface";
 
 const RoomCard = ({ room }: { room: IRoom }) => {
   const defaultImageUrl =
@@ -17,6 +18,8 @@ const RoomCard = ({ room }: { room: IRoom }) => {
     const [paymentOption, setPaymentOption] = useState("hi-wallet");
     const [checkInDate, setCheckInDate] = useState("");
     const [checkOutDate, setCheckOutDate] = useState("");
+    const [checkInCartDate, setCheckInCartDate] = useState("");
+    const [checkOutCartDate, setCheckOutCartDate] = useState("");
     const [totalprice, setTotalPrice] = useState(0);
 
     const {user} = useUser();
@@ -36,7 +39,8 @@ const RoomCard = ({ room }: { room: IRoom }) => {
             price : totalprice,
             checkInDate : checkInDate,
             checkOutDate : checkOutDate,
-            paymentID : paymentID
+            paymentID : paymentID,
+            isReviewed : false,
         }
         const response = await add_hotel_transaction(hotelTransaction);
         if(response != -1){
@@ -49,22 +53,51 @@ const RoomCard = ({ room }: { room: IRoom }) => {
         }
     }
 
+    const submitCartForm = async (e : FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if(!user){
+            alert("Please login first");
+            navigate("/login");
+        }
+        const hotelCart : IHotelCart = {
+            id : 0,
+            hotelID : room.hotelID,
+            roomID : room.roomID || 0,
+            userID : user?.userID || 0,
+            price : totalprice,
+            checkInDate : checkInCartDate,
+            checkOutDate : checkOutCartDate,
+        }
+    }
+
     useEffect(() => {
-        calculateTotalPrice();
+        calculateTotalPrice(checkInDate, checkOutDate);
     }, [checkInDate, checkOutDate]);
+
+    useEffect(() => {
+        calculateTotalPrice(checkInCartDate, checkOutCartDate);
+    }, [checkInCartDate, checkOutCartDate]);
 
     const handleCheckInDateChange = (e:any) => {
         setCheckInDate(e.target.value);
     };
     
-      const handleCheckOutDateChange = (e:any) => {
+    const handleCheckOutDateChange = (e:any) => {
         setCheckOutDate(e.target.value);
     };
+
+    const handleCheckInCartDateChange = (e:any) => {
+        setCheckInCartDate(e.target.value);
+    }
+
+    const handleCheckOutCartDateChange = (e:any) => {
+        setCheckOutCartDate(e.target.value);
+    }
     
-    const calculateTotalPrice = () => {
+    const calculateTotalPrice = (startDates: any, endDates : any) => {
     
-        const startDate = new Date(checkInDate).getTime();
-        const endDate = new Date(checkOutDate).getTime();
+        const startDate = new Date(startDates).getTime();
+        const endDate = new Date(endDates).getTime();
     
         if (startDate && endDate && startDate <= endDate) {
           const durationInMs = endDate - startDate;
@@ -77,9 +110,20 @@ const RoomCard = ({ room }: { room: IRoom }) => {
     };
 
     const [showBuyRoomForm, setShowBuyRoomForm] = useState(false);
+    const [showCartRoomForm, setShowCartRoomForm] = useState(false);
     const toggleButton = () => {
+        setTotalPrice(0);
+        setCheckInDate("");
+        setCheckOutDate("");
         setShowBuyRoomForm(!showBuyRoomForm);
     };
+
+    const toggleCartButton = () => {
+        setTotalPrice(0);
+        setCheckInCartDate("");
+        setCheckOutCartDate("");
+        setShowCartRoomForm(!showCartRoomForm);
+    }
 
     return (
         <div className="room-card">
@@ -124,7 +168,7 @@ const RoomCard = ({ room }: { room: IRoom }) => {
                     <p>$ {(room.price / 14000).toFixed(4)} <span className="flight-schedule-price-org">/people</span></p>
                 )}
                 <div className="button-container">
-                    <button className="add-to-cart-button">Add to Cart</button>
+                    <button onClick={toggleCartButton} className="add-to-cart-button">Add to Cart</button>
                     <button onClick={toggleButton}>Buy</button>
                 </div>
             </div>
@@ -157,7 +201,25 @@ const RoomCard = ({ room }: { room: IRoom }) => {
                     <Button content="Buy"/>
                 </form>
             </div>
+            <div className={`add-form ${showCartRoomForm ? 'open' : ''}`}>
+                <h2>Add To Cart</h2>
+                <form onSubmit={submitCartForm}>
+                    <div className="text-field">
+                        <label htmlFor="check-in-date">Check In Date</label>
+                        <input type="date" name="check-in-date" id="check-in-date" 
+                        value={checkInCartDate}
+                        onChange={handleCheckInCartDateChange}/>
+                    </div>
+                    <div className="text-field">
+                        <label htmlFor="check-in-date">Check Out Date</label>
+                        <input type="date" name="check-out-date" id="check-out-date" value={checkOutCartDate} onChange={handleCheckOutCartDateChange} />
+                    </div>
+                    <p>{totalprice}</p>
+                    <Button content="Add to Cart"/>
+                </form>
+            </div>
             <div className={`overlay ${showBuyRoomForm ? 'open' : ''}`} onClick={() => setShowBuyRoomForm(false)}></div>
+            <div className={`overlay ${showCartRoomForm ? 'open' : ''}`} onClick={() => setShowCartRoomForm(false)}></div>
         </div>
     );
 };

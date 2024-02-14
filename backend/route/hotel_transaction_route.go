@@ -9,5 +9,6 @@ func HotelTransactionRoute(r *gin.Engine) {
 	{
 		hotel.POST("/", controller.AddHotelTransaction)
 		hotel.GET("/user/ongoing/:id", controller.GetUserOngoingHotelTransaction)
+		hotel.GET("/user/history/:id", controller.GetUserHistoryHotelTransaction)
 	}
 }

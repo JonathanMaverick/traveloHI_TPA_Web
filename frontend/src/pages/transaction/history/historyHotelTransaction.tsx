@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react"
-import useUser from "../../contexts/user-context";
-import get_user_ongoing_hotel_transaction from "../../api/hotel_transaction/get_user_ongoing_hotel_transaction";
-import HotelTransactionCard from "./hotelTransactionCard";
-import { IHotelTransaction } from "../../interfaces/hotel/hotel-transaction-interface";
+import useUser from "../../../contexts/user-context";
+import get_user_history_hotel_transaction from "../../../api/hotel_transaction/get_user_history_hotel_transaction";
+import HotelTransactionCard from "../hotelTransactionCard";
+import "../../../styles/pages/transaction/user_transaction.scss"
+import { IHotelTransaction } from "../../../interfaces/hotel/hotel-transaction-interface";
 
-export default function HotelTransactions({searchTerm}: {searchTerm:string}){
+export default function HistoryHotelTransactions({searchTerm}: {searchTerm:string}){
 
     const [hotelTransactionList, setHotelTransactionList] = useState<IHotelTransaction[]>([]);
     const {user} = useUser();
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await get_user_ongoing_hotel_transaction(user?.userID || 0);
+                const response = await get_user_history_hotel_transaction(user?.userID || 0);
                 if (response == -1){
                     return;
                 }
@@ -43,7 +44,7 @@ export default function HotelTransactions({searchTerm}: {searchTerm:string}){
                     </div>
                 ))
             ) : (
-                <p>No matching flight transactions found.</p>
+                <p>No matching hotel transactions found.</p>
             )}
         </div>
     );
