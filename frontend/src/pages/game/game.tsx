@@ -33,6 +33,8 @@ export default function Game() {
   const maxGames = 3;
   const playerNum = useRef(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  let socket: any;
+  const gameStatus = useRef('');
 
   useEffect(() => {
     document.title = "Game";
@@ -46,12 +48,16 @@ export default function Game() {
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    const socket = io('http://localhost:3000');
+    socket = io('http://localhost:3000');
     socket.on('connect', () => {
-      socket.on('playerNumber', (number) => {
+      socket.on('playerNumber', (number:number) => {
         console.log('Nomor pemain:', number);
         playerNum.current = number;
       });
+
+      socket.on('gameStatus', (status:string) => {
+        gameStatus.current = status;
+      })
     });
 
     initGame(canvas, context, socket);
@@ -86,7 +92,7 @@ export default function Game() {
           const context = canvas.getContext('2d');
           if (!context) return prevCounter;
           setTimer(600);
-          initGame(canvas, context, io('http://localhost:3000'));
+          initGame(canvas, context, socket);
           return prevCounter + 1; 
         }
         else{
@@ -96,6 +102,7 @@ export default function Game() {
       });
     }, delay);
   };
+
   const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, socket : any) => {
     gameOver.current = false;
     winnerChecked.current = false;
@@ -169,38 +176,54 @@ export default function Game() {
     const targetFrameRate = 60;
     
     const updateHealth = () => {
-      let lifeBarX = (canvas.width - (lifeBarFull.width / 0.35)) / 2; 
-      const firstPlayerLifePercentage = (firstPlayer.health / firstPlayer.maxHealth) * 100;
-      const firstPlayerLifeBarWidth = (firstPlayerLifePercentage / 100) * (lifeBarFull.width / 0.35);
+        let lifeBarX = (canvas.width - (lifeBarFull.width / 0.35)) / 2; 
+        const firstPlayerLifePercentage = (firstPlayer.health / firstPlayer.maxHealth) * 100;
+        const firstPlayerLifeBarWidth = (firstPlayerLifePercentage / 100) * (lifeBarFull.width / 0.35);
+    
+        context.fillStyle = 'yellow';
+        context.fillRect((lifeBarX * 1.28), 50, (firstPlayerLifeBarWidth / 3), lifeBarFull.height);
+        // context.fillRect((lifeBarX * 1.6), 50, (firstPlayerLifeBarWidth / 3.2), lifeBarFull.height);
   
-      context.fillStyle = 'yellow';
-      // context.fillRect((lifeBarX * 1.26), 50, (firstPlayerLifeBarWidth / 3), lifeBarFull.height);
-      context.fillRect((lifeBarX * 1.6), 50, (firstPlayerLifeBarWidth / 3.2), lifeBarFull.height);
-  
-      const secondPlayerLifePercentage = (secondPlayer.health / secondPlayer.maxHealth) * 100;
-      const secondPlayerLifeBarWidth = (secondPlayerLifePercentage / 100) * (lifeBarFull.width / 0.35);
-  
-      context.fillStyle = 'blue';
-      // context.fillRect((lifeBarX * 3.023), 50, -(secondPlayerLifeBarWidth / 3), lifeBarFull.height);
-      context.fillRect((lifeBarX * 5.3), 50, -(secondPlayerLifeBarWidth / 3.2), lifeBarFull.height);
+        const secondPlayerLifePercentage = (secondPlayer.health / secondPlayer.maxHealth) * 100;
+        const secondPlayerLifeBarWidth = (secondPlayerLifePercentage / 100) * (lifeBarFull.width / 0.35);
+    
+        context.fillStyle = 'blue';
+        context.fillRect((lifeBarX * 3.475), 50, -(secondPlayerLifeBarWidth / 3), lifeBarFull.height);
+        // context.fillRect((lifeBarX * 5.3), 50, -(secondPlayerLifeBarWidth / 3.2), lifeBarFull.height);
     }
   
+    const lose = () =>{
+      context.drawImage(loseGame, canvas.width / 2.3, canvas.height / 3, winGame.width / 0.35, winGame.height * 3);
+      winnerChecked.current = true;
+      gameOver.current = true; 
+      reloadAfterDelay(2000);
+    }
+
+    const win = () =>{
+      context.drawImage(winGame, canvas.width / 2.3, canvas.height / 3, winGame.width / 0.35, winGame.height * 3);
+      winnerChecked.current = true;
+      gameOver.current = true;
+      reloadAfterDelay(2000);
+    }
+
+    const draw_status = () => {
+      context.drawImage(drawGame, canvas.width / 2.3, canvas.height / 3, drawGame.width / 0.35, drawGame.height * 3);
+      winnerChecked.current = true;
+      gameOver.current = true;
+      reloadAfterDelay(2000);
+    }
+
+
     const checkWinner = () => {
-      if (firstPlayer.health <= 0 && !winnerChecked.current) {
-        context.drawImage(loseGame, canvas.width / 2.3, canvas.height / 3, winGame.width / 0.35, winGame.height * 3);
-        winnerChecked.current = true;
-        gameOver.current = true; 
-        reloadAfterDelay(2000);
-      } else if (secondPlayer.health <= 0 && !winnerChecked.current) {
-        context.drawImage(winGame, canvas.width / 2.3, canvas.height / 3, winGame.width / 0.35, winGame.height * 3);
-        winnerChecked.current = true;
-        gameOver.current = true;
-        reloadAfterDelay(2000);
+      if (player!.health < 0 && !winnerChecked.current) {
+        socket.emit('game', 'end-lose');
+        lose();
+      } else if (player!.enemy.health < 0 && !winnerChecked.current) {
+        socket.emit('game', 'end-win');
+        win();
       } else if (timerRef.current === 0 && !winnerChecked.current) {
-        context.drawImage(drawGame, canvas.width / 2.3, canvas.height / 3, drawGame.width / 0.35, drawGame.height * 3);
-        winnerChecked.current = true;
-        gameOver.current = true;
-        reloadAfterDelay(2000);
+        socket.emit('game', 'end-draw');
+        draw_status();
       }
     };
   
@@ -221,10 +244,23 @@ export default function Game() {
       
       context.drawImage(background, 0, 0, canvas.width, canvas.height);
       updateHealth();
+      console.log(gameStatus.current);
       context.drawImage(lifeBarFull,lifeBarX - 3.5,0,lifeBarFull.width / 0.35,lifeBarFull.height * 3);
   
       player!.update(deltaTime, canvas, context);
       checkWinner();
+      if(gameStatus.current === 'end-win'){
+        lose();
+        gameStatus.current = '';
+      }
+      else if(gameStatus.current === 'end-lose'){
+        win();
+        gameStatus.current = '';
+      }
+      else if(gameStatus.current === 'end-draw'){
+        draw_status();
+        gameStatus.current = '';
+      }
       
       lastTimestamp = timeStamp;
       requestAnimationFrame(draw);

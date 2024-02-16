@@ -2,6 +2,17 @@ import { characterScaleFactor } from "../game";
 import { PlayerAnimations, PlayerState } from "./PlayerState";
 import { Socket } from "socket.io";
 
+export interface PlayerUtils {
+    state : PlayerState;
+    mirrored : boolean;
+    isJumping : boolean;
+    isActionLocked : boolean;
+    enemyHealth : number;
+    jumpVelocity: number;
+    x : number;
+    y : number;
+}
+
 export class Player {
     type: string;
     x: number;
@@ -24,8 +35,8 @@ export class Player {
     maxHealth : number = 100;  
     enemy : Player | null = null;
     socket : Socket | null = null;
-    enemyPressedKey : string = "";
-    enemyReleasedKey : string = "";
+    enemyUtils : PlayerUtils | null = null;
+    enemyDirection : string = "";
 
     constructor(type : string, x : number, y : number, width : number, height : number, xSpeed : number, ySpeed : number, health : number, mirrored : boolean, playerAnimation : PlayerAnimations, currentPlayerState : PlayerState, socket : Socket) { 
         this.type = type;
@@ -40,8 +51,11 @@ export class Player {
         this.currentPlayerState = currentPlayerState;
         this.playerAnimation = playerAnimation;
         this.socket = socket;
-        this.socket?.on('keyPressedByEnemy', (key: string) => {
-            this.enemyPressedKey = key;
+        this.socket?.on('enemyUtils', (utils : PlayerUtils) => {
+            this.enemyUtils = utils;
+        })
+        this.socket?.on('enemyDirection', (direction : string) => {
+            this.enemyDirection = direction;
         })
     }
 
@@ -76,70 +90,73 @@ export class Player {
         }
     }
 
-    handleEnemy(enemyPressedKey : string, enemyReleasedKey : string){
-        let isSKeyPressed = false;
-        let isDKeyPressed = false;
-        let isAKeyPressed = false;
-        console.log("kt,", enemyPressedKey, "sapi", enemyReleasedKey)
-        switch (enemyPressedKey) {
-            case 'a':
-                if (!this.enemy!.isActionLocked){
-                    this.enemy!.handleLeftWalk();
-                    isAKeyPressed = true;
-                }
-                break;
-            case 'd':
-                if (!this.enemy!.isActionLocked){
-                    this.enemy!.handleRightWalk();
-                    isDKeyPressed = true;
-                }
-                break;
-            case 's':
-                isSKeyPressed = true;
-                break;
-            case 'w':
-                if (!this.enemy!.isJumping) {
-                    this.enemy!.isJumping = true;
-                    this.enemy!.handleJump();
-                }
-                break;
-            case ' ':
-                if (isSKeyPressed && !this.isActionLocked) {
-                    this.enemy!.handleLowKick();
-                    this.enemy!.isActionLocked = true;
-                } else if (isDKeyPressed && !this.isActionLocked) {
-                    this.enemy!.handleFrontKick("d");
-                    this.enemy!.isActionLocked = true;
-                } else if (isAKeyPressed && !this.isActionLocked) {
-                    this.enemy!.handleFrontKick("a");
-                    this.enemy!.isActionLocked = true;
-                } else if (!this.isActionLocked) {
-                    this.enemy!.handleIdle();
-                }
-                break;
-            default:
-                break;
+    handleEnemy(state : PlayerState, direction : string){
+        if((state === PlayerState.Walk || state === PlayerState.WalkMirror || state === PlayerState.BackWard) && direction === "left"){
+            this.enemy!.handleLeftWalk();
+        }
+        else if((state === PlayerState.Walk || state === PlayerState.WalkMirror || state === PlayerState.BackWard || state == PlayerState.BackWardMirror) && direction === "right"){
+            this.enemy!.handleRightWalk();
+        }
+        else if (state === PlayerState.Idle || state === PlayerState.IdleMirror){
+            this.enemy!.handleIdle();
+        }
+        else if(state === PlayerState.LowKick || state === PlayerState.LowKickMirror){
+            this.enemy!.handleLowKick();
+        }
+        else if((state === PlayerState.FrontKick || state === PlayerState.FrontKickMirror)&& this.enemyDirection === "left"){
+            this.enemy!.handleFrontKick("a");
+        }
+        else if((state === PlayerState.FrontKick || state === PlayerState.FrontKickMirror)&& this.enemyDirection === "right"){
+            this.enemy!.handleFrontKick("d");
+        }
+        else if(state === PlayerState.Jump || state === PlayerState.JumpMirrored){
+            this.enemy!.handleJump();
         }
 
-        switch(enemyReleasedKey){
-            case 'a':
-                this.enemy!.xSpeed = 0;
+    }
+
+    enemyUtilsValidate(utils : PlayerUtils | null, deltaTime : number, canvas : HTMLCanvasElement | null){
+        if(utils?.isActionLocked){
+            this.enemy!.xSpeed = 0;
+            this.enemy!.lockDuration -= (deltaTime / 500);
+            if (this.enemy!.lockDuration < 0) {
+                this.enemy!.isActionLocked = false;
+                this.enemy!.lockDuration = 1; 
+            }
+        }
+
+        if (utils?.isJumping) {
+            this.enemy!.y += this.enemy!.jumpVelocity;
+            this.enemy!.jumpVelocity += this.gravity;
+            if (this.enemy!.y >= canvas!.height - this.enemy!.height) {
+                this.enemy!.isJumping = false;
+                this.enemy!.y = canvas!.height - this.enemy!.height; 
+                this.enemy!.jumpVelocity = -10;
                 this.enemy!.handleIdle();
-                break;
-            case 'd':
-                this.enemy!.xSpeed = 0;
-                this.enemy!.handleIdle();
-                isDKeyPressed = false;
-                break;
-            case 's':
-                this.enemy!.handleIdle();
-                isSKeyPressed = false;
-                break;                
+            }
         }
     }
 
     update(deltaTime: number, canvas : HTMLCanvasElement, c: CanvasRenderingContext2D) {
-        this.handleEnemy(this.enemyPressedKey, this.enemyReleasedKey);
+        this.socket!.emit('utils', {
+            state: this.currentPlayerState !== undefined ? this.currentPlayerState : PlayerState.Idle,
+            mirrored : this.mirrored,
+            isJumping : this.isJumping,
+            isActionLocked : this.isActionLocked,
+            lockDuration : this.lockDuration,
+            enemyHealth : this.enemy?.health,
+            jumpVelocity: this.jumpVelocity,
+            x : this.x,
+            y : this.y
+        })
+
+        if(this.enemyUtils !== null){
+            this.handleEnemy(this.enemyUtils.state, this.enemyDirection);
+            this.enemyUtilsValidate(this.enemyUtils, deltaTime, canvas);
+        }
+        this.health = this.enemyUtils?.enemyHealth || 100;
+        // console.log(this.health);
+
         if (this.isActionLocked) {
             this.lockDuration -= (deltaTime / 500);
             this.xSpeed = 0;
@@ -158,7 +175,6 @@ export class Player {
                     else if(this.currentPlayerState == PlayerState.FrontKick || this.currentPlayerState == PlayerState.FrontKickMirror){
                         this.enemy!.health -= 10;
                     }
-                    console.log("Enemy health:", this.enemy!.health);
                 }
             }
         }
@@ -209,8 +225,6 @@ export class Player {
         let isDKeyPressed = false;
         let isAKeyPressed = false;
         window.addEventListener('keydown', (event) => {
-            this.socket!.emit('keyPressed', event.key);
-            console.log('Key pressed:', event.key);
             switch (event.key) {
                 case 'a':
                     if (!this.isActionLocked){
@@ -253,8 +267,6 @@ export class Player {
         });
 
         window.addEventListener('keyup', (event) => {
-            this.socket?.emit('keyReleased', event.key);
-            console.log('Key released:', event.key);
             switch (event.key) {
                 case 'a':
                     this.xSpeed = 0;
@@ -291,6 +303,7 @@ export class Player {
     }
 
     handleIdle(){
+        this.xSpeed = 0;
         if(this.mirrored){
             this.changeState(PlayerState.IdleMirror);
         }
@@ -301,12 +314,34 @@ export class Player {
 
     handleLeftWalk(){
         this.xSpeed =-7;
+        this.socket!.emit('direction', "left")
         if(this.type == "blast"){
             if(this.mirrored){
                 this.changeState(PlayerState.WalkMirror);
             }
             else{
                 this.changeState(PlayerState.BackWard);
+            }
+        }
+        else{
+            if(this.mirrored){
+                this.changeState(PlayerState.WalkMirror);
+            }
+            else{
+                this.changeState(PlayerState.Walk);
+            }
+        }
+    }
+
+    handleRightWalk(){
+        this.xSpeed =+7;
+        this.socket!.emit('direction', "right")
+        if(this.type == "blast"){
+            if(this.mirrored){
+                this.changeState(PlayerState.BackWardMirror);
+            }
+            else{
+                this.changeState(PlayerState.Walk);
             }
         }
         else{
@@ -331,32 +366,14 @@ export class Player {
 
     handleFrontKick(char : string){
         if(char == "a"){
+            this.socket!.emit('direction', "left")
             this.changeState(PlayerState.FrontKickMirror);
             this.isActionLocked = true;
         }
         else if (char == "d"){
+            this.socket!.emit('direction', "right")
             this.changeState(PlayerState.FrontKick);
             this.isActionLocked = true;
-        }
-    }
-
-    handleRightWalk(){
-        this.xSpeed =+7;
-        if(this.type == "blast"){
-            if(this.mirrored){
-                this.changeState(PlayerState.BackWardMirror);
-            }
-            else{
-                this.changeState(PlayerState.Walk);
-            }
-        }
-        else{
-            if(this.mirrored){
-                this.changeState(PlayerState.WalkMirror);
-            }
-            else{
-                this.changeState(PlayerState.Walk);
-            }
         }
     }
 

@@ -46,14 +46,17 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('keyPressed', (key) => {
-    console.log('Key pressed:', key);
-    socket.broadcast.emit('keyPressedByEnemy',key);
+  socket.on('utils', (state) => {
+    socket.broadcast.emit('enemyUtils',state);
   });
 
-  socket.on('keyReleased', (attack) => {
-    socket.broadcast.emit('keyReleasedByEnemy', attack);
+  socket.on('direction', (direction) => {
+    socket.broadcast.emit('enemyDirection', direction);
   });
+
+  socket.on('game', (status) => (
+    socket.broadcast.emit('gameStatus', status)
+  ))
 
 });
 

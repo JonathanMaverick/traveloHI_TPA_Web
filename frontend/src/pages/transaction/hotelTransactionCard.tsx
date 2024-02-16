@@ -25,7 +25,8 @@ const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransa
         location : 0,
         service : 0,
         transactionID : transaction.id || 0,
-        isAnonymous : false
+        isAnonymous : false,
+        user: undefined
     };
 
     const addReview = async (e : FormEvent<HTMLFormElement>) => {
@@ -39,7 +40,7 @@ const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransa
                 return;
             }
             else{
-                alert(response.data);
+                alert(response.data.message);
                 window.location.reload()
             }
         }

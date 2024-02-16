@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/JonathanMaverickTPA_Web/config"
 	"github.com/JonathanMaverickTPA_Web/model"
@@ -100,4 +101,50 @@ func GetReviewByHotelID(c *gin.Context){
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": reviews})
+}
+
+//GetHotelRating returns the average rating of a hotel
+// @Summary Get hotel rating
+// @Description Get the average rating of a hotel
+// @Tags Review
+// @Accept json
+// @Produce json
+// @Param hotelID path string true "Hotel ID"
+// @Success 200 {string} string "Rating found successfully!"
+// @Router /review/rating/{hotelID} [get]
+func GetHotelRating(c *gin.Context){
+	hotelID := c.Param("hotelID")
+	hotelIDInt, err := strconv.Atoi(hotelID)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "error": "Invalid hotel ID!"})
+		return
+	}
+
+	var reviews []model.Review
+	result := config.DB.Where("hotel_id = ?", hotelID).Find(&reviews)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "error": result.Error.Error()})
+		return
+	}
+
+	var cleanliness int
+	var comfort int
+	var location int
+	var service int
+	for i := 0; i < len(reviews); i++ {
+		cleanliness += reviews[i].Cleanliness
+		comfort += reviews[i].Comfort
+		location += reviews[i].Location
+		service += reviews[i].Service
+	}
+
+	var HotelRating model.HotelRating
+	HotelRating.Cleanliness = float32(cleanliness) / float32(len(reviews))
+	HotelRating.Comfort = float32(comfort) / float32(len(reviews))
+	HotelRating.Location = float32(location) / float32(len(reviews))
+	HotelRating.Service = float32(service) / float32(len(reviews))
+	HotelRating.HotelID = hotelIDInt;
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": HotelRating})
 }

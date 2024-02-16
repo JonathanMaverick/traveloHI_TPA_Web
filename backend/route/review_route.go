@@ -11,5 +11,7 @@ func ReviewRoute(r *gin.Engine) {
 		review.POST("/", controller.AddReview)
 		
 		review.GET("/hotel/:hotelID", controller.GetReviewByHotelID)
+
+		review.GET("/rating/:hotelID", controller.GetHotelRating)
 	}
 }

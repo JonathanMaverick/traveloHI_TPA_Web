@@ -11,5 +11,5 @@ export interface IReview{
     service : number;
     isAnonymous : boolean;
     transactionID : number;
-    user : IUser;
+    user? : IUser;
 }
