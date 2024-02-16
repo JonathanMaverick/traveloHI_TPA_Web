@@ -3,16 +3,18 @@ import "../../styles/pages/hotel-card.scss";
 import useCurrency from "../../contexts/currency-context";
 import { IHotelTransaction } from "../../interfaces/hotel/hotel-transaction-interface";
 import { IReview } from "../../interfaces/review/review-interface";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import TextArea from "../../component/text-area";
 import Button from "../../component/button";
+import add_review from "../../api/review/add_review";
+import useUser from "../../contexts/user-context";
 
 const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransaction, type? : string | null }) => {
   const defaultImageUrl =
     "https://t3.ftcdn.net/jpg/04/62/93/66/360_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg";
 
     const {currency} = useCurrency();
-    // const {user} = useUser();
+    const {user} = useUser();
     const INITIAL_REVIEW_STATE : IReview = {
         reviewID: 0,
         review: "",
@@ -22,8 +24,26 @@ const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransa
         comfort : 0,
         location : 0,
         service : 0,
+        transactionID : transaction.id || 0,
         isAnonymous : false
     };
+
+    const addReview = async (e : FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if(user){
+            review.userID = user.userID || 0;
+            review.hotelID = transaction.hotelID || 0;
+            review.transactionID = transaction.id || 0;
+            const response = await add_review(review);
+            if(response == -1){
+                return;
+            }
+            else{
+                alert(response.data);
+                window.location.reload()
+            }
+        }
+    }
 
     const [review, setReview] = useState<IReview>(INITIAL_REVIEW_STATE);
     const [reviewForm, setReviewForm] = useState(false);
@@ -87,7 +107,7 @@ const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransa
             <div className={`overlay ${reviewForm ? 'open' : ''}`} onClick={() => setReviewForm(false)}></div>
             <div className={`review-add-form ${reviewForm ? 'open' : ''}`}>
                 <h2>Review</h2>
-                <form action="" className="review-form">
+                <form action="" onSubmit={addReview} className="review-form">
                     <TextArea
                         name="review"
                         value={review.review}

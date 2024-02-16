@@ -15,4 +15,6 @@ type User struct {
 	Status                 string  `json:"status"`
 	Role                   string  `json:"role"`
 	Wallet                 float64 `json:"wallet"`
+	PhoneNumber			string  `json:"phoneNumber"`
+	Address 			  string  `json:"address"`
 }

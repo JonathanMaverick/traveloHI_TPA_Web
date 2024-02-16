@@ -8,4 +8,5 @@ export interface IReview{
     location : number;
     service : number;
     isAnonymous : boolean;
+    transactionID : number;
 }

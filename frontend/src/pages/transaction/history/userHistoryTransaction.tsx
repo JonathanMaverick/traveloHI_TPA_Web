@@ -1,6 +1,6 @@
 import ProfileSidebar from "../../profile/profile-sidebar";
 import "../../../styles/pages/transaction/user_transaction.scss"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HistoryFlightTransaction from "./historyFlightTransaction";
 import "../../../styles/pages/transaction/user_transaction.scss"
 import HistoryHotelTransactions from "./historyHotelTransaction";
@@ -13,6 +13,10 @@ export default function UserHistoryTransaction(){
     const handleCheckboxChange = (transactionType:string) => {
         setSelectedTransaction(transactionType);
     };
+
+    useEffect(() => {
+        document.title = 'History';
+    }, []);
 
     return(
         <div className="user-transaction">

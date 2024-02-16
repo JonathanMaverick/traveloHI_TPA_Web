@@ -474,6 +474,17 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
+	if updatedUser.PhoneNumber == "" || updatedUser.Address == "" {
+		c.String(http.StatusBadRequest, "All Field are required")
+		return
+	}
+
+	phonePattern := regexp.MustCompile(`^[0-9]{8,15}$`)
+	if !phonePattern.MatchString(updatedUser.PhoneNumber) {
+		c.String(http.StatusBadRequest, "Invalid phone number")
+		return
+	}
+
 	if err := config.DB.Model(&model.User{}).Where("id = ?", userId).Updates(map[string]interface{}{
 		"subscribed_to_newsletter": updatedUser.SubscribedToNewsletter,
 		"first_name":               updatedUser.FirstName,
@@ -481,6 +492,8 @@ func UpdateUser(c *gin.Context) {
 		"dob":                      updatedUser.DOB,
 		"profile_picture":          updatedUser.ProfilePicture,
 		"gender":                   updatedUser.Gender,
+		"phone_number":             updatedUser.PhoneNumber,
+		"address":                  updatedUser.Address,
 	}).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user"})
 		return

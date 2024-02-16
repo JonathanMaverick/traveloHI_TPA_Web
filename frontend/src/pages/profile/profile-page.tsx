@@ -8,6 +8,7 @@ import { storage } from "../../settings/firebase";
 import { useParams } from "react-router-dom";
 import update_user from "../../api/user/update_user";
 import { IUser } from "../../interfaces/user/user-interface";
+import TextArea from "../../component/text-area";
 
 export default function ProfilePage(){
 
@@ -101,6 +102,13 @@ export default function ProfilePage(){
                             value={tempUser?.dob}
                             onChange={(e:string)=> setTempUser({...tempUser, dob: e})}
                         />
+                        <TextField
+                            label="Phone Number"
+                            name="phone"
+                            type="tel"
+                            value={tempUser?.phoneNumber}
+                            onChange={(e:string)=> setTempUser({...tempUser, phoneNumber: e})}
+                        />
                         <div className="gender-container">
                             <p>Gender</p>
                             <div className="gender-option">
@@ -128,6 +136,13 @@ export default function ProfilePage(){
                                 </div>
                             </div>
                         </div>
+                        <TextArea
+                            label="Address"
+                            name="address"
+                            value={tempUser?.address}
+                            placeholder="Address"
+                            onChange={(e:string) => setTempUser({ ...tempUser, address: e })}
+                        />
                         <div className="subscribe-container">
                             <input 
                                 type="checkbox" 

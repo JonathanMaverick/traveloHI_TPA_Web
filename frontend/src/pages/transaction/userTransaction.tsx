@@ -1,6 +1,6 @@
 import ProfileSidebar from "../profile/profile-sidebar";
 import "../../styles/pages/transaction/user_transaction.scss"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FlightTransactions from "./flightTransaction";
 import HotelTransactions from "./hotelTransaction";
 
@@ -12,6 +12,10 @@ export default function UserTransaction(){
     const handleCheckboxChange = (transactionType:string) => {
         setSelectedTransaction(transactionType);
     };
+
+    useEffect(() => {
+        document.title = 'My Order';
+    }, []);
 
     return(
         <div className="user-transaction">
