@@ -40,7 +40,7 @@ export default function HistoryHotelTransactions({searchTerm}: {searchTerm:strin
             {filteredHotelTransactions.length > 0 ? (
                 filteredHotelTransactions.map((f) => (
                     <div key={f.id} className="hotel-transaction-card">
-                        <HotelTransactionCard transaction={f} />
+                        <HotelTransactionCard type={"history"} transaction={f} />
                     </div>
                 ))
             ) : (

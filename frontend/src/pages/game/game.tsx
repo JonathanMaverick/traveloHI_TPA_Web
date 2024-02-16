@@ -227,7 +227,7 @@ export default function Game() {
       
       lastTimestamp = timeStamp;
       requestAnimationFrame(draw);
-    };
+    }
   
     draw();
   };
