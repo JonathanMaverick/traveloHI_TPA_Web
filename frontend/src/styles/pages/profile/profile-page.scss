@@ -25,6 +25,7 @@
                     flex-direction: row;
                     justify-content: space-around;
                     margin: .5rem 0rem;
+                    color: var(--font-color);
                 }
               }
 
@@ -56,6 +57,11 @@
                         background-color: var(--button);
                         color: white;
                         cursor: pointer;
+                    }
+                }
+                .subscribe-container{
+                    label{
+                        color: var(--font-color);
                     }
                 }
             }

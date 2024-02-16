@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/JonathanMaverickTPA_Web/config"
@@ -83,7 +84,7 @@ func GetReviewByHotelID(c *gin.Context){
 	var reviews []model.Review
 	hotelID := c.Param("hotelID")
 
-	result := config.DB.Where("hotel_id = ?", hotelID).Find(&reviews)
+	result := config.DB.Where("hotel_id = ?", hotelID).Preload("User").Find(&reviews)
 
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "error": result.Error.Error()})
@@ -92,6 +93,8 @@ func GetReviewByHotelID(c *gin.Context){
 
 	for i := 0; i < len(reviews); i++ {
 		if reviews[i].IsAnonymous {
+			fmt.Println("Anonymous user")
+			reviews[i].UserID = 0
 			reviews[i].User = model.User{FirstName: "Anonymous", LastName: "User"}
 		}
 	}

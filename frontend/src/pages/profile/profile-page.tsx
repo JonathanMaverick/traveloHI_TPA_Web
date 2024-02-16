@@ -106,7 +106,7 @@ export default function ProfilePage(){
                             label="Phone Number"
                             name="phone"
                             type="tel"
-                            value={tempUser?.phoneNumber}
+                            value={tempUser?.phoneNumber || ''}
                             onChange={(e:string)=> setTempUser({...tempUser, phoneNumber: e})}
                         />
                         <div className="gender-container">

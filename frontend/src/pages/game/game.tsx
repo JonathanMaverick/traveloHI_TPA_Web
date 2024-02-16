@@ -54,7 +54,7 @@ export default function Game() {
       });
     });
 
-    initGame(canvas, context);
+    initGame(canvas, context, socket);
     const interval = setInterval(() => {
       setTimer((prevTimer) => {
         timerRef.current = prevTimer; 
@@ -86,7 +86,7 @@ export default function Game() {
           const context = canvas.getContext('2d');
           if (!context) return prevCounter;
           setTimer(600);
-          initGame(canvas, context);
+          initGame(canvas, context, io('http://localhost:3000'));
           return prevCounter + 1; 
         }
         else{
@@ -96,7 +96,7 @@ export default function Game() {
       });
     }, delay);
   };
-  const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) => {
+  const initGame = async (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, socket : any) => {
     gameOver.current = false;
     winnerChecked.current = false;
 
@@ -137,6 +137,7 @@ export default function Game() {
       false,
       firstPlayerSprite,
       PlayerState.Idle,
+      socket
     )
   
     const secondPlayer = new Player(
@@ -151,6 +152,7 @@ export default function Game() {
       true,
       secondPlayerSprite,
       PlayerState.IdleMirror,
+      socket
     )
 
     firstPlayer.setEnemy(secondPlayer);
@@ -221,8 +223,7 @@ export default function Game() {
       updateHealth();
       context.drawImage(lifeBarFull,lifeBarX - 3.5,0,lifeBarFull.width / 0.35,lifeBarFull.height * 3);
   
-      firstPlayer.update(deltaTime, canvas, context, secondPlayer);
-      secondPlayer.update(deltaTime, canvas, context, firstPlayer);
+      player!.update(deltaTime, canvas, context);
       checkWinner();
       
       lastTimestamp = timeStamp;

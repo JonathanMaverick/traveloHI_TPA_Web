@@ -5,11 +5,15 @@ import get_hotel_by_id from "../../api/hotel/get_hotel_by_id";
 import "../../styles/pages/hotel/hotel-detail.scss"
 import RoomCard from "./roomCard";
 import { FaLocationDot } from "react-icons/fa6";
+import get_hotel_review from "../../api/review/get_hotel_review";
+import { IReview } from "../../interfaces/review/review-interface";
+import { FaStar } from "react-icons/fa";
 
 export default function HotelDetail(){
     const {id} = useParams();
     const defaultImageUrl = 'https://t3.ftcdn.net/jpg/04/62/93/66/360_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg';
     const [hotel, setHotel] = useState<IHotel | undefined>();
+    const [reviews, setReviews] = useState<IReview[] | undefined>([]);
     const [mainImage, setMainImage] = useState(
       hotel?.hotelPictures[0]?.hotelPicture
     );
@@ -19,12 +23,21 @@ export default function HotelDetail(){
         const fetchData = async () => {
             try {
                 const response = await get_hotel_by_id(id || '');
+                const response2 = await get_hotel_review(id || '');
                 if (response == -1){
                     return;
                 }
                 else{
                     setHotel(response.data);
                     setMainImage(response.data.hotelPictures[0].hotelPicture);
+                }
+
+                if (response2 == -1){
+                    return;
+                }
+                else{
+                    console.log(response2.data.data)
+                    setReviews(response2.data.data);
                 }
             } catch (error) {
                 console.error('Error fetching hotel data');
@@ -46,6 +59,10 @@ export default function HotelDetail(){
           setMainImage(hotel.hotelPictures[index].hotelPicture);
         }
     };
+
+    const getReview = (review : IReview) =>{
+        return ((review.cleanliness + review.comfort + review.location + review.service) / 4).toFixed(1)
+    }
 
     return(
         <>
@@ -85,8 +102,8 @@ export default function HotelDetail(){
                             {hotel.hotelFacilities && hotel.hotelFacilities.length > 0 && (
                                 <div className="facilities-list">
                                     {hotel.hotelFacilities.map((facility, index) => (
-                                        <div className="facilities">
-                                            <p key={index}>{facility.facilities?.facilitiesName}</p>
+                                        <div className="facilities" key={index}>
+                                            <p>{facility.facilities?.facilitiesName}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -125,6 +142,29 @@ export default function HotelDetail(){
                 </div>
                 <div className="review">
                     <h2>Review</h2>
+                    <div className="review-list">
+                        {reviews && reviews.length > 0 && (
+                            reviews.map((review) => (
+                                <div className="review-card" key={review.reviewID}>
+                                    <div className="review-card-content">
+                                        <div className="review-card-name">
+                                            {review.userID == 0 ? (
+                                                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" />
+                                            ): (
+                                                <img src={review.user.profilePicture} alt="" />
+                                            )}
+                                            <p>{review.user.firstName} {review.user.lastName}</p>
+                                        </div>
+                                        <div className="review-card-description">
+                                            <p>{review.review}</p>
+                                        </div>
+                                    </div>
+                                    <div className="review-card-rating">
+                                        <p><FaStar color="yellow" /> {getReview(review)} / 10.0</p>
+                                    </div>
+                                </div>    
+                        )))}
+                    </div>
                 </div>
             </div>
         </>

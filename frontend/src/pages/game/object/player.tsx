@@ -1,5 +1,6 @@
 import { characterScaleFactor } from "../game";
 import { PlayerAnimations, PlayerState } from "./PlayerState";
+import { Socket } from "socket.io";
 
 export class Player {
     type: string;
@@ -22,8 +23,10 @@ export class Player {
     lockDuration : number = 1;
     maxHealth : number = 100;  
     enemy : Player | null = null;
+    socket : Socket | null = null;
+    enemyKey : string = "";
 
-    constructor(type : string, x : number, y : number, width : number, height : number, xSpeed : number, ySpeed : number, health : number, mirrored : boolean, playerAnimation : PlayerAnimations, currentPlayerState : PlayerState) { 
+    constructor(type : string, x : number, y : number, width : number, height : number, xSpeed : number, ySpeed : number, health : number, mirrored : boolean, playerAnimation : PlayerAnimations, currentPlayerState : PlayerState, socket : Socket) { 
         this.type = type;
         this.x = x;
         this.y = y;
@@ -35,6 +38,10 @@ export class Player {
         this.mirrored = mirrored;
         this.currentPlayerState = currentPlayerState;
         this.playerAnimation = playerAnimation;
+        this.socket = socket;
+        this.socket?.on('keyPressedByEnemy', (key: string) => {
+            this.enemyKey = key;
+        })
     }
 
     setEnemy(enemy: Player) {
@@ -68,7 +75,30 @@ export class Player {
         }
     }
 
-    update(deltaTime: number, canvas : HTMLCanvasElement, c: CanvasRenderingContext2D, enemy: Player) {
+    handleEnemy(input : string){
+        console.log(input)
+        switch (input) {
+            case 'a':
+                this.enemy?.handleLeftWalk();
+                break;
+            case 'd':
+                this.enemy?.handleRightWalk();
+                break;
+            case 's':
+                this.enemy?.handleLowKick();
+                break;
+            case 'w':
+                this.enemy?.handleJump();
+                break;
+            case ' ':
+                break;
+            default:
+                break;
+        }
+    }
+
+    update(deltaTime: number, canvas : HTMLCanvasElement, c: CanvasRenderingContext2D) {
+        this.handleEnemy(this.enemyKey);
         if (this.isActionLocked) {
             this.lockDuration -= (deltaTime / 500);
             this.xSpeed = 0;
@@ -76,22 +106,21 @@ export class Player {
                 this.isActionLocked = false;
                 this.lockDuration = 1; 
                 if (
-                    this.x < enemy.x + enemy.width &&
-                    this.x + this.width > enemy.x &&
-                    this.y < enemy.y + enemy.height &&
-                    this.y + this.height > enemy.y
+                    this.x < this.enemy!.x + this.enemy!.width &&
+                    this.x + this.width > this.enemy!.x &&
+                    this.y < this.enemy!.y + this.enemy!.height &&
+                    this.y + this.height > this.enemy!.y
                 ) {
                     if(this.currentPlayerState == PlayerState.LowKick || this.currentPlayerState == PlayerState.LowKickMirror){
-                        enemy.health -= 15; 
+                        this.enemy!.health -= 15; 
                     }
                     else if(this.currentPlayerState == PlayerState.FrontKick || this.currentPlayerState == PlayerState.FrontKickMirror){
-                        enemy.health -= 10;
+                        this.enemy!.health -= 10;
                     }
-                    console.log("Enemy health:", enemy.health);
+                    console.log("Enemy health:", this.enemy!.health);
                 }
             }
         }
-
 
         if (this.isJumping) {
             this.y += this.jumpVelocity;
@@ -109,7 +138,13 @@ export class Player {
         this.animateFrames(deltaTime);
         this.draw(c);
         this.validateMove(canvas);
-        this.mirrorBasedOnEnemyPosition(enemy);
+        this.mirrorBasedOnEnemyPosition(this.enemy!);
+
+        this.enemy!.x += this.enemy!.xSpeed;
+        this.enemy!.animateFrames(deltaTime);
+        this.enemy!.draw(c)
+        this.enemy!.validateMove(canvas);
+        this.enemy!.mirrorBasedOnEnemyPosition(this);
     }
 
     validateMove(canvas : HTMLCanvasElement) {
@@ -129,22 +164,20 @@ export class Player {
     }
 
     handleInput() {
-        const speed = 7;
         let isSKeyPressed = false;
         let isDKeyPressed = false;
         let isAKeyPressed = false;
         window.addEventListener('keydown', (event) => {
+            this.socket?.emit('keyPressed', event.key);
             switch (event.key) {
                 case 'a':
                     if (!this.isActionLocked){
-                        this.xSpeed = -speed;
                         this.handleLeftWalk();
                         isAKeyPressed = true;
                     }
                     break;
                 case 'd':
                     if (!this.isActionLocked){
-                        this.xSpeed = speed;
                         this.handleRightWalk();
                         isDKeyPressed = true;
                     }
@@ -178,6 +211,7 @@ export class Player {
         });
 
         window.addEventListener('keyup', (event) => {
+            this.socket?.emit('keyReleased', event.key);
             switch (event.key) {
                 case 'a':
                     this.xSpeed = 0;
@@ -223,6 +257,7 @@ export class Player {
     }
 
     handleLeftWalk(){
+        this.xSpeed =-7;
         if(this.type == "blast"){
             if(this.mirrored){
                 this.changeState(PlayerState.WalkMirror);
@@ -263,6 +298,7 @@ export class Player {
     }
 
     handleRightWalk(){
+        this.xSpeed =+7;
         if(this.type == "blast"){
             if(this.mirrored){
                 this.changeState(PlayerState.BackWardMirror);

@@ -1,3 +1,5 @@
+import { IUser } from "../user/user-interface";
+
 export interface IReview{
     reviewID: number;
     review: string;
@@ -9,4 +11,5 @@ export interface IReview{
     service : number;
     isAnonymous : boolean;
     transactionID : number;
+    user : IUser;
 }

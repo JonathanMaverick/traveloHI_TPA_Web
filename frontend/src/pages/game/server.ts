@@ -45,6 +45,11 @@ io.on('connection', (socket) => {
       player2Connected = false;
     }
   });
+
+  socket.on('keyPressed', (key) => {
+    socket.broadcast.emit('keyPressedByEnemy',key);
+  });
+
 });
 
 const PORT = 3000;
