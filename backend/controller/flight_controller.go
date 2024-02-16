@@ -24,6 +24,13 @@ func AddAirline(c *gin.Context){
 	var airline model.Airline
 	c.BindJSON(&airline)
 
+	var existingAirline model.Airline
+	config.DB.Where("airline_name = ?", airline.AirlineName).First(&existingAirline)
+	if existingAirline.ID != 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Airline already exists!"})
+		return
+	}
+
 	if(airline.AirlineName == ""){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Airline name can't be empty!"})
 		return

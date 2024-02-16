@@ -37,23 +37,28 @@ func AddReview(c *gin.Context){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Hotel ID can't be empty!"})
 		return
 	}
+	
+	if review.Cleanliness == 0 || review.Comfort == 0 || review.Location == 0 || review.Service == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Ratings can't be empty!"})
+		return
+	}
 
-	if (review.Cleanliness < 0 || review.Cleanliness > 10){
+	if (review.Cleanliness < 1 || review.Cleanliness > 10){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Cleanliness must be between 0 and 5!"})
 		return
 	}
 
-	if (review.Comfort < 0 || review.Comfort > 10){
+	if (review.Comfort < 1 || review.Comfort > 10){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Comfort must be between 0 and 5!"})
 		return
 	}
 
-	if (review.Location < 0 || review.Location > 10){
+	if (review.Location < 1 || review.Location > 10){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Location must be between 0 and 5!"})
 		return
 	}
 
-	if (review.Service < 0 || review.Service > 10){
+	if (review.Service < 1 || review.Service > 10){
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Service must be between 0 and 5!"})
 		return
 	}

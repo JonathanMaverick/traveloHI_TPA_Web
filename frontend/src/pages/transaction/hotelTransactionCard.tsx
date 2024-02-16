@@ -122,7 +122,7 @@ const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransa
                                 name="cleanliness"
                                 value={review.cleanliness}
                                 max={10}
-                                min={0}
+                                min={1}
                                 onChange={(e) => setReview({ ...review, cleanliness: parseInt(e.target.value) })}
                             />
                             <label htmlFor="">Cleanliness</label>
@@ -133,7 +133,7 @@ const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransa
                                 name="comfort"
                                 value={review.comfort}
                                 max={10}
-                                min={0}
+                                min={1}
                                 onChange={(e) => setReview({ ...review, comfort: parseInt(e.target.value) })}
                             />
                             <label htmlFor="">Comfort</label>
@@ -144,7 +144,7 @@ const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransa
                                 name="location"
                                 value={review.location}
                                 max={10}
-                                min={0}
+                                min={1}
                                 onChange={(e) => setReview({ ...review, location: parseInt(e.target.value) })}
                             />
                             <label htmlFor="">Location</label>
@@ -155,7 +155,7 @@ const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransa
                                 name="cleanliness"
                                 value={review.service}
                                 max={10}
-                                min={0}
+                                min={1}
                                 onChange={(e) => setReview({ ...review, service: parseInt(e.target.value) })}
                             />
                             <label htmlFor="">Service</label>
