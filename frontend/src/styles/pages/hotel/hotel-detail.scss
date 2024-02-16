@@ -260,4 +260,60 @@
       cursor: pointer;
     }
   }
+
+  .review-add-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: min-content;
+    overflow-y: scroll;
+    background-color: $white;
+    padding: 1rem;
+    z-index: 99;
+    border-radius: 10px;
+    background-color: var(--card-background);
+    &.open {
+      display: block;
+    }
+  }
+
+  .review-form{
+    .anonymous-container{
+      display: flex;
+      flex-direction: row;
+      gap: .2rem;
+      padding: .5rem 0rem;
+      align-items: center;
+      input{
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+    .form-rating-container{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+
+      
+      .rating-field{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        input{
+          width: 2rem;
+          padding: .5rem;
+          background-color: var(--hover-color);
+          color: var(--font-color);
+          @include border-radius;
+          @include box-shadow;
+        }
+      }
+    }
+  }
+
 }

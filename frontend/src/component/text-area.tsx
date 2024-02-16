@@ -1,7 +1,7 @@
 import "../styles/components/text-area.scss";
 
 interface ITextArea {
-  label: string;
+  label?: string;
   name: string;
   onChange?: (value: string) => void;
   value?: string;

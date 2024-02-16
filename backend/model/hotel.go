@@ -10,4 +10,5 @@ type Hotel struct {
 	HotelPictures   []HotelPicture    `json:"hotelPictures" gorm:"foreignKey:HotelID"`
 	HotelFacilities []HotelFacilities `json:"hotelFacilities" gorm:"foreignKey:HotelID"`
 	Rooms           []Room            `json:"rooms" gorm:"foreignKey:HotelID"`
+	Reviews         []Review          `json:"reviews" gorm:"foreignKey:HotelID"`
 }

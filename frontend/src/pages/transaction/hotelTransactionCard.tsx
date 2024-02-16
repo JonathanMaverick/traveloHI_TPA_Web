@@ -2,12 +2,31 @@ import { IoPeopleOutline } from "react-icons/io5";
 import "../../styles/pages/hotel-card.scss";
 import useCurrency from "../../contexts/currency-context";
 import { IHotelTransaction } from "../../interfaces/hotel/hotel-transaction-interface";
+import { IReview } from "../../interfaces/review/review-interface";
+import { useState } from "react";
+import TextArea from "../../component/text-area";
+import Button from "../../component/button";
 
 const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransaction, type? : string | null }) => {
   const defaultImageUrl =
     "https://t3.ftcdn.net/jpg/04/62/93/66/360_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg";
 
     const {currency} = useCurrency();
+    // const {user} = useUser();
+    const INITIAL_REVIEW_STATE : IReview = {
+        reviewID: 0,
+        review: "",
+        userID : 0,
+        hotelID : 0,
+        cleanliness : 0,
+        comfort : 0,
+        location : 0,
+        service : 0,
+        isAnonymous : false
+    };
+
+    const [review, setReview] = useState<IReview>(INITIAL_REVIEW_STATE);
+    const [reviewForm, setReviewForm] = useState(false);
 
     return (
         <div className="room-card">
@@ -57,11 +76,84 @@ const HotelTransactionCard = ({ transaction , type}: { transaction: IHotelTransa
                     {
                         type === "history" && !transaction.isReviewed && (
                             <div className="button">
-                                <button>Leave Review</button>
+                                <button onClick={() => setReviewForm(!reviewForm)}>
+                                    Leave Review
+                                </button>
                             </div>
                         )
                     }
                 </div>
+            </div>
+            <div className={`overlay ${reviewForm ? 'open' : ''}`} onClick={() => setReviewForm(false)}></div>
+            <div className={`review-add-form ${reviewForm ? 'open' : ''}`}>
+                <h2>Review</h2>
+                <form action="" className="review-form">
+                    <TextArea
+                        name="review"
+                        value={review.review}
+                        placeholder="Write your review here..."
+                        onChange={(e:string) => setReview({ ...review, review: e })}
+                    />
+                    <div className="form-rating-container">
+                        <div className="rating-field">
+                            <input 
+                                type="number" 
+                                name="cleanliness"
+                                value={review.cleanliness}
+                                max={10}
+                                min={0}
+                                onChange={(e) => setReview({ ...review, cleanliness: parseInt(e.target.value) })}
+                            />
+                            <label htmlFor="">Cleanliness</label>
+                        </div>
+                        <div className="rating-field">
+                            <input 
+                                type="number" 
+                                name="comfort"
+                                value={review.comfort}
+                                max={10}
+                                min={0}
+                                onChange={(e) => setReview({ ...review, comfort: parseInt(e.target.value) })}
+                            />
+                            <label htmlFor="">Comfort</label>
+                        </div>
+                        <div className="rating-field">
+                            <input 
+                                type="number" 
+                                name="location"
+                                value={review.location}
+                                max={10}
+                                min={0}
+                                onChange={(e) => setReview({ ...review, location: parseInt(e.target.value) })}
+                            />
+                            <label htmlFor="">Location</label>
+                        </div>
+                        <div className="rating-field">
+                            <input 
+                                type="number" 
+                                name="cleanliness"
+                                value={review.service}
+                                max={10}
+                                min={0}
+                                onChange={(e) => setReview({ ...review, service: parseInt(e.target.value) })}
+                            />
+                            <label htmlFor="">Service</label>
+                        </div>
+                    </div>
+                    <div className="anonymous-container">
+                        <input 
+                            type="checkbox" 
+                            id="Anonymous" 
+                            name="Anonymous" 
+                            checked={review.isAnonymous}
+                            onChange={(e) => setReview({ ...review, isAnonymous: e.target.checked })}
+                        />
+                        <label htmlFor="anonymous"> Anonymous </label>
+                    </div>
+                    <Button
+                        content="Submit"
+                    />
+                </form>
             </div>
         </div>
     );
