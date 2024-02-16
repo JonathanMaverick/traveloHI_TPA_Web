@@ -24,7 +24,8 @@ export class Player {
     maxHealth : number = 100;  
     enemy : Player | null = null;
     socket : Socket | null = null;
-    enemyKey : string = "";
+    enemyPressedKey : string = "";
+    enemyReleasedKey : string = "";
 
     constructor(type : string, x : number, y : number, width : number, height : number, xSpeed : number, ySpeed : number, health : number, mirrored : boolean, playerAnimation : PlayerAnimations, currentPlayerState : PlayerState, socket : Socket) { 
         this.type = type;
@@ -40,7 +41,7 @@ export class Player {
         this.playerAnimation = playerAnimation;
         this.socket = socket;
         this.socket?.on('keyPressedByEnemy', (key: string) => {
-            this.enemyKey = key;
+            this.enemyPressedKey = key;
         })
     }
 
@@ -75,30 +76,70 @@ export class Player {
         }
     }
 
-    handleEnemy(input : string){
-        console.log(input)
-        switch (input) {
+    handleEnemy(enemyPressedKey : string, enemyReleasedKey : string){
+        let isSKeyPressed = false;
+        let isDKeyPressed = false;
+        let isAKeyPressed = false;
+        console.log("kt,", enemyPressedKey, "sapi", enemyReleasedKey)
+        switch (enemyPressedKey) {
             case 'a':
-                this.enemy?.handleLeftWalk();
+                if (!this.enemy!.isActionLocked){
+                    this.enemy!.handleLeftWalk();
+                    isAKeyPressed = true;
+                }
                 break;
             case 'd':
-                this.enemy?.handleRightWalk();
+                if (!this.enemy!.isActionLocked){
+                    this.enemy!.handleRightWalk();
+                    isDKeyPressed = true;
+                }
                 break;
             case 's':
-                this.enemy?.handleLowKick();
+                isSKeyPressed = true;
                 break;
             case 'w':
-                this.enemy?.handleJump();
+                if (!this.enemy!.isJumping) {
+                    this.enemy!.isJumping = true;
+                    this.enemy!.handleJump();
+                }
                 break;
             case ' ':
+                if (isSKeyPressed && !this.isActionLocked) {
+                    this.enemy!.handleLowKick();
+                    this.enemy!.isActionLocked = true;
+                } else if (isDKeyPressed && !this.isActionLocked) {
+                    this.enemy!.handleFrontKick("d");
+                    this.enemy!.isActionLocked = true;
+                } else if (isAKeyPressed && !this.isActionLocked) {
+                    this.enemy!.handleFrontKick("a");
+                    this.enemy!.isActionLocked = true;
+                } else if (!this.isActionLocked) {
+                    this.enemy!.handleIdle();
+                }
                 break;
             default:
                 break;
         }
+
+        switch(enemyReleasedKey){
+            case 'a':
+                this.enemy!.xSpeed = 0;
+                this.enemy!.handleIdle();
+                break;
+            case 'd':
+                this.enemy!.xSpeed = 0;
+                this.enemy!.handleIdle();
+                isDKeyPressed = false;
+                break;
+            case 's':
+                this.enemy!.handleIdle();
+                isSKeyPressed = false;
+                break;                
+        }
     }
 
     update(deltaTime: number, canvas : HTMLCanvasElement, c: CanvasRenderingContext2D) {
-        this.handleEnemy(this.enemyKey);
+        this.handleEnemy(this.enemyPressedKey, this.enemyReleasedKey);
         if (this.isActionLocked) {
             this.lockDuration -= (deltaTime / 500);
             this.xSpeed = 0;
@@ -168,7 +209,8 @@ export class Player {
         let isDKeyPressed = false;
         let isAKeyPressed = false;
         window.addEventListener('keydown', (event) => {
-            this.socket?.emit('keyPressed', event.key);
+            this.socket!.emit('keyPressed', event.key);
+            console.log('Key pressed:', event.key);
             switch (event.key) {
                 case 'a':
                     if (!this.isActionLocked){
@@ -212,6 +254,7 @@ export class Player {
 
         window.addEventListener('keyup', (event) => {
             this.socket?.emit('keyReleased', event.key);
+            console.log('Key released:', event.key);
             switch (event.key) {
                 case 'a':
                     this.xSpeed = 0;

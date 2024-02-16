@@ -47,7 +47,12 @@ io.on('connection', (socket) => {
   });
 
   socket.on('keyPressed', (key) => {
+    console.log('Key pressed:', key);
     socket.broadcast.emit('keyPressedByEnemy',key);
+  });
+
+  socket.on('keyReleased', (attack) => {
+    socket.broadcast.emit('keyReleasedByEnemy', attack);
   });
 
 });
