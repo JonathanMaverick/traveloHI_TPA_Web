@@ -4,7 +4,9 @@
 .footer-content{
     margin-top: 2rem;
     background-color: $footer-color;
-    color: $white;
+    h1,h3{
+        color: $white;
+    }
     @include centered;
     display: flex;
     flex-direction: row;

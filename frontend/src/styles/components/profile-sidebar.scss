@@ -2,7 +2,7 @@
 @import "../variables.scss";
 
 .profile-information{
-    background-color: $card-background;
+    background-color: var(--card-background);
     min-width: 350px;
     height: 350px;
     border-radius: 8px;
@@ -13,7 +13,7 @@
     .profile-information-detail{
         display: flex;
         flex-direction: row;
-        @include centered;
+        align-items: center;
         gap: 1rem;
         padding: .5rem 0rem;
         border-bottom: 0.1rem solid #CDD0D1;
@@ -39,20 +39,20 @@
         align-items: center;
         p{
             text-decoration: none;
-            color: $font-color;
+            color: var(--font-color);
         }
         &:hover{
             cursor: pointer;
-            background-color: $hover-color;
+            background-color: var(--hover-color);
         }
         .profile-icon{
             width: 1.5rem;
             height: 1.5rem;
-            color: $icon-color;
+            color: var(--icon-color);
         }
     }
 }
 
-.blue-background{
-    background-color: lighten($icon-color, 40%);
+.blue-background {
+    background-color: var(--lighten-icon-color);
 }

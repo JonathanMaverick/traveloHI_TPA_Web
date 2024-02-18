@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import useUser from "../../contexts/user-context";
 import { IFlightTransaction } from "../../interfaces/flight/flight-transaction-interface";
 import FlightTransactionCard from "./flightTransactionCard";
-import get_user_ongoing_flight_transaction from "../../api/transaction/get_user_ongoing_flight_transaction";
+import get_user_ongoing_flight_transaction from "../../api/flight_transaction/get_user_ongoing_flight_transaction";
 
 export default function FlightTransactions({searchTerm}: {searchTerm:string}){
 

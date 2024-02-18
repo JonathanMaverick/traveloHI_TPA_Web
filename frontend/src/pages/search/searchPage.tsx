@@ -30,6 +30,12 @@ export default function SearchPage() {
   const [selectedFacilities, setSelectedFacilities] = useState<IFacility[]>([]);
   const [sortOption, setSortOption] = useState<string>("");
   const [hotelSortOption, setHotelSortOption] = useState<string>("");
+  const [roomAvailabilitySortOption, setRoomAvilabilitySortOption] = useState<string>("");
+  const [ratingSortOption, setRatingSortOption] = useState<string>("");
+  const [reviewCountSortOption, setReviewCountSortOption] = useState<string>("");
+  const [ratingFilterOption, setRatingFilterOption] = useState<boolean>(false);
+  const [priceFilterOption, setPriceFilterOption] = useState<boolean>(false);
+
   const handleSortCheckboxChange = (option:string) => {
     setSortOption((prevSortOption) => (prevSortOption === option ? "" : option));
   };
@@ -143,7 +149,7 @@ export default function SearchPage() {
                         type="checkbox"
                         className="checkbox-input"
                         checked={hotelSortOption === 'ascending'}
-                        onChange={() => setHotelSortOption('ascending')}
+                        onChange={() => setHotelSortOption(hotelSortOption === 'ascending' ? '' : 'ascending')}
                       />
                       Ascending
                     </label>
@@ -154,16 +160,121 @@ export default function SearchPage() {
                         type="checkbox"
                         className="checkbox-input"
                         checked={hotelSortOption === 'descending'}
-                        onChange={() => setHotelSortOption('descending')}
+                        onChange={() => setHotelSortOption(hotelSortOption === 'descending' ? '' : 'descending')}
+                      />
+                      Descending
+                    </label>
+                  </div>
+                  <div className="checkbox-container">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        className="checkbox-input"
+                        checked={priceFilterOption}
+                        onChange={() => setPriceFilterOption(!priceFilterOption)}
+                      />
+                      Below 10000
+                    </label>
+                  </div>
+                </div>
+                <div className='search-sorting-container'>
+                  <h4>Room Availability :</h4>
+                  <div className="checkbox-container">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        className="checkbox-input"
+                        checked={roomAvailabilitySortOption === 'ascending'}
+                        onChange={() => setRoomAvilabilitySortOption(roomAvailabilitySortOption === 'ascending' ? '' : 'ascending')}
+                      />
+                      Ascending
+                    </label>
+                  </div>
+                  <div className="checkbox-container">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        className="checkbox-input"
+                        checked={roomAvailabilitySortOption === 'descending'}
+                        onChange={() => setRoomAvilabilitySortOption(roomAvailabilitySortOption === 'descending' ? '' : 'descending')}
                       />
                       Descending
                     </label>
                   </div>
                 </div>
+                <div className='search-sorting-container'>
+                  <h4>Rating :</h4>
+                  <div className="checkbox-container">
+                      <label className="checkbox-label">
+                          <input
+                              type="checkbox"
+                              className="checkbox-input"
+                              checked={ratingSortOption === 'ascending'}
+                              onChange={() => setRatingSortOption(ratingSortOption === 'ascending' ? '' : 'ascending')}
+                          />
+                          Ascending
+                      </label>
+                  </div>
+                  <div className="checkbox-container">
+                      <label className="checkbox-label">
+                          <input
+                              type="checkbox"
+                              className="checkbox-input"
+                              checked={ratingSortOption === 'descending'}
+                              onChange={() => setRatingSortOption(ratingSortOption === 'descending' ? '' : 'descending')}
+                          />
+                          Descending
+                      </label>
+                  </div>
+                  <div className="checkbox-container">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        className="checkbox-input"
+                        checked={ratingFilterOption}
+                        onChange={() => setRatingFilterOption(!ratingFilterOption)}
+                      />
+                      Above 5
+                    </label>
+                  </div>
+                </div>
+                <div className='search-sorting-container'>
+                  <h4>Review Count :</h4>
+                  <div className="checkbox-container">
+                      <label className="checkbox-label">
+                          <input
+                              type="checkbox"
+                              className="checkbox-input"
+                              checked={reviewCountSortOption === 'ascending'}
+                              onChange={() => setReviewCountSortOption(reviewCountSortOption === 'ascending' ? '' : 'ascending')}
+                          />
+                          Ascending
+                      </label>
+                  </div>
+                  <div className="checkbox-container">
+                      <label className="checkbox-label">
+                          <input
+                              type="checkbox"
+                              className="checkbox-input"
+                              checked={reviewCountSortOption === 'descending'}
+                              onChange={() => setReviewCountSortOption(reviewCountSortOption === 'descending' ? '' : 'descending')}
+                          />
+                          Descending
+                      </label>
+                  </div>
+                </div>
               </>
             )}
-          </div>
-        {showHotelSearch && <HotelSearch selectedFacilities={selectedFacilities} hotelSortOption={hotelSortOption}/>}
+        </div>
+        {showHotelSearch && <HotelSearch 
+        selectedFacilities={selectedFacilities} 
+        hotelSortOption={hotelSortOption} 
+        roomAvailabilitySortOption = {roomAvailabilitySortOption} 
+        ratingSortOption = {ratingSortOption}
+        ratingFilterOption = {ratingFilterOption}
+        reviewCountSortOption = {reviewCountSortOption}
+        priceFilterOption = {priceFilterOption}
+        />}
         {showFlightSearch && <FlightSearch sortOption={sortOption} />}  
       </div>
     </div>

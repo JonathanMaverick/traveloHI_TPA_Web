@@ -31,7 +31,7 @@ export default function ProfileSidebar(){
                 </div>
             </Link>
             <Link to={`/user/cart/${user?.userID}`}>
-                <div className="profile-information-option">
+                <div className={`profile-information-option ${location.pathname === `/user/cart/${user?.userID}` ? 'blue-background' : ''}`}>
                     <FaShoppingCart className="profile-icon"/><p>Cart</p>
                 </div>
             </Link>

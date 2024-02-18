@@ -8,6 +8,7 @@ type FlightTransaction struct {
 	PaymentID        uint    `json:"paymentID"`
 	Price            float64 `json:"price"`
 	AddOnLuggage     bool    `json:"addOnLuggage"`
+	PromoID          uint    `json:"promoID"`
 
 	FlightSchedule FlightSchedule `gorm:"foreignKey:FlightScheduleID"`
 	User           User           `gorm:"foreignKey:UserID"`
@@ -21,6 +22,9 @@ type FlightCart struct {
 	UserID           uint    `json:"userID"`
 	SeatID           uint    `json:"seatID"`
 	Price            float64 `json:"price"`
+	AddOnLuggage     bool    `json:"addOnLuggage"`
+	PromoCode        string  `json:"promoCode"`
+	PaymentID        uint    `json:"paymentID"`
 
 	FlightSchedule FlightSchedule `gorm:"foreignKey:FlightScheduleID"`
 	User           User           `gorm:"foreignKey:UserID"`

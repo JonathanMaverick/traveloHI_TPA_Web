@@ -3,7 +3,10 @@ export interface IFlightCart {
     flightScheduleID?: number;
     seatID?: number;
     userID?: number;
-    price?: number;
+    paymentID?: number;
+    price: number;
+    promoCode?: string;
+    addOnLuggage?: boolean;
 
     FlightSchedule? : IFlightSchedule;
     Seat? : ISeat;

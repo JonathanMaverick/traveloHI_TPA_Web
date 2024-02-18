@@ -7,10 +7,15 @@
     overflow: hidden;
     @include centered;
     position: relative;
+    background-color: var(--background-color);
 
     h2{
         position: absolute;
         top: 14%;
         color: white;
     }
+}
+
+.dark-mode {
+    @include toggle-mode(dark);
 }

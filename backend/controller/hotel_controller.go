@@ -60,11 +60,26 @@ func GetHotelByID(c *gin.Context) {
 func AddHotel(c *gin.Context) {
 	var hotel model.Hotel
 	c.BindJSON(&hotel)
+
+	//Make a validation the json can't be null
+	if hotel.Name == "" || hotel.Address == "" || hotel.City == "" || hotel.Description == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "All fields are required!"})
+		return
+	}
+
+	var count int64
+	config.DB.Model(&model.Hotel{}).Where("name = ?", hotel.Name).Count(&count)
+	if count > 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Hotel name already exists!"})
+		return
+	}
+
 	result := config.DB.Create(&hotel)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to create hotel!"})
 		return
 	}
+	
 	c.JSON(http.StatusOK, gin.H{"hotelID": hotel.ID, "message": "Hotel created successfully!"})
 }
 
@@ -80,6 +95,12 @@ func AddHotel(c *gin.Context) {
 func AddHotelPicture(c *gin.Context){
 	var hotelPicture model.HotelPicture
 	c.BindJSON(&hotelPicture)
+
+	if hotelPicture.HotelID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "All fields are required!"})
+		return
+	}
+
 	result := config.DB.Create(&hotelPicture)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to create hotel picture!"})
@@ -101,6 +122,11 @@ func AddHotelFacilities(c *gin.Context){
 	var hotelFacilities model.HotelFacilities
 	c.BindJSON(&hotelFacilities)
 
+	if hotelFacilities.HotelID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "All fields are required!"})
+		return
+	}
+
 	result := config.DB.Create(&hotelFacilities)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "Failed to create hotel facilities!"})
@@ -119,12 +145,41 @@ func AddHotelFacilities(c *gin.Context){
 // @Success 200 {string} string "Hotel found!"
 // @Router /hotel/search/{query} [get]
 func SearchHotel(c *gin.Context) {
-	var hotels []model.Hotel
-	query := c.Param("query")
-	result := config.DB.Where("LOWER(name) LIKE ?", "%"+strings.ToLower(query)+"%").Preload("HotelPictures").Preload("HotelFacilities.Facilities").Preload("Rooms").Find(&hotels)
-	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No hotel found!"})
-		return
-}
-	c.AsciiJSON(http.StatusOK, hotels)
+    var hotels []model.Hotel
+    query := c.Param("query")
+    
+    result := config.DB.Where("LOWER(name) LIKE ?", "%"+strings.ToLower(query)+"%").
+        Preload("HotelPictures").
+        Preload("HotelFacilities.Facilities").
+        Preload("Rooms").
+        Find(&hotels)
+
+    if result.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No hotel found!"})
+        return
+    }
+
+    for i := range hotels {
+        var rating float64
+        config.DB.Model(&model.Review{}).
+            Select("AVG((cleanliness + comfort + location + service) / 4)").
+            Where("hotel_id = ?", hotels[i].ID).
+            Row().
+            Scan(&rating)
+        hotels[i].Rating = rating
+    }
+
+	for i := range hotels {
+		var totalQuantity int64
+		config.DB.Model(&model.Room{}).Where("hotel_id = ?", hotels[i].ID).Select("SUM(quantity)").Row().Scan(&totalQuantity)
+		hotels[i].RoomAvailable = totalQuantity
+	}
+
+	for i := range hotels {
+		var reviewCount int64
+		config.DB.Model(&model.Review{}).Where("hotel_id = ?", hotels[i].ID).Count(&reviewCount)
+		hotels[i].ReviewCount = reviewCount
+	}
+
+    c.JSON(http.StatusOK, hotels)
 }

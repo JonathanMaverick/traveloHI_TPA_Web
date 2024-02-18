@@ -1,3 +1,5 @@
+@import 'variables';
+
 @mixin centered {
   display: flex;
   justify-content: center;
@@ -6,9 +8,31 @@
 
 @mixin border-radius {
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--hover-color);
 }
 
 @mixin box-shadow {
   box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.2);
+}
+
+@mixin toggle-mode($mode) {
+  @if $mode == light {
+    --background-color: #{$l-background-color};
+    --card-background: #{$l-card-background-color};
+    --font-color: #{$l-font-color};
+    --secondary-font-color: #{$l-secondary-font-color};
+    --button : #{$l-button};
+    --hover-color : #{$l-hover-color};
+    --icon-color : #{$l-icon-color};
+    --lighten-icon-color : #{$l-icon-color-lighten};
+  } @else if $mode == dark {
+    --background-color: #{$d-background-color};
+    --card-background: #{$d-card-background-color};
+    --font-color: #{$d-font-color};
+    --secondary-font-color: #{$d-secondary-font-color};
+    --button : #{$d-button};
+    --hover-color : #{$d-hover-color};
+    --icon-color : #{$d-icon-color};
+    --lighten-icon-color : #{$d-icon-color-lighten};
+  }
 }

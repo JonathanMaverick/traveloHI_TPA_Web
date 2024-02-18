@@ -5,10 +5,15 @@ import Button from '../../component/button';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { IUser } from '../../interfaces/user/user-interface';
+import useTheme from '../../contexts/theme-context';
+import useUser from '../../contexts/user-context';
 
 const ForgetPassPage = () => {
-
+    const {user} = useUser();
     useEffect(() => {
+        if(user){
+            navigate('/');
+        }
         document.title = 'Forgot Password';
       }
     , []);
@@ -25,6 +30,7 @@ const ForgetPassPage = () => {
         e.preventDefault();
         const payload: IUser = {
             email: email,
+            wallet: 0,
         };
         
         try{
@@ -45,6 +51,7 @@ const ForgetPassPage = () => {
         const payload: IUser = {
             email: email,
             personalSecurityAnswer: securityAnswer,
+            wallet: 0,
         };
         try{
             await axios.post(import.meta.env.VITE_API_URL + '/user/validate-security-question/', payload);
@@ -60,7 +67,8 @@ const ForgetPassPage = () => {
         e.preventDefault();
         const payload: IUser = {
             email: email,
-            password: newPassword,        
+            password: newPassword,      
+            wallet: 0,  
         };
         try{
             const respond = await axios.post(import.meta.env.VITE_API_URL + '/user/change-password/', payload)
@@ -101,12 +109,16 @@ const ForgetPassPage = () => {
         }
     };
 
+    const {theme} = useTheme();
+
     return (
-        <div className='register-login'>
-            <h1>Forgot Password</h1>
-            {renderStep()}
-            <p style={{color: "red"}}>{error}</p>
-            <p><Link to="/login">Back to login page?</Link></p>
+        <div className={`register-login-container ${theme === 'dark' ? 'dark-mode' : ''}`}>
+            <div className='register-login'>
+                <h1>Forgot Password</h1>
+                {renderStep()}
+                <p style={{color: "red"}}>{error}</p>
+                <p><Link to="/login">Back to login page?</Link></p>
+            </div>
         </div>
     );
 };

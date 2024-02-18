@@ -13,11 +13,13 @@
     resize: none;
     font-family: $global-font-family;
     height: 10rem;
+    background-color: var(--hover-color);
+    color: var(--font-color);
   }
 
   label {
     display: block;
     margin-bottom: 8px;
-    color: $font-color;
+    color: var(--font-color);
   }
 }

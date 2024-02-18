@@ -28,7 +28,7 @@ const HotelCard = ({ hotel }: {hotel : IHotel}) => {
                 <h3>{hotel.hotelName}</h3>
             </div>
             <div className='hotel-location'>
-                <FaLocationDot />
+                <FaLocationDot className='icon-color' />
                 <p>{hotel.hotelAddress}</p>
             </div>
             <div className='hotel-facilities'>

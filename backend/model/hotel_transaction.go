@@ -9,6 +9,8 @@ type HotelTransaction struct {
 	Price            float64 `json:"price"`
 	CheckInDate      string  `json:"checkInDate"`
 	CheckOutDate     string  `json:"checkOutDate"`
+	IsReviewed	   	bool    `json:"isReviewed"`
+	PromoID			uint	`json:"promoID"`
 
 	User           User           `gorm:"foreignKey:UserID"`
 	Hotel 		 Hotel           `gorm:"foreignKey:HotelID"`
@@ -18,12 +20,14 @@ type HotelTransaction struct {
 
 type HotelCart struct {
 	ID               uint    `json:"id"`
-	HotelID uint    `json:"flightScheduleID"`
+	HotelID uint    `json:"hotelID"`
 	UserID           uint    `json:"userID"`
-	RoomID           uint    `json:"seatID"`
+	RoomID           uint    `json:"roomID"`
 	Price            float64 `json:"price"`
 	CheckInDate      string  `json:"checkInDate"`
 	CheckOutDate     string  `json:"checkOutDate"`
+	PromoCode        string  `json:"promoCode"`
+	PaymentID        uint    `json:"paymentID"`
 
 	User           User           `gorm:"foreignKey:UserID"`
 	Room           Room           `gorm:"foreignKey:RoomID"`

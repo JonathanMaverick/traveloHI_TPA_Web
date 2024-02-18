@@ -6,7 +6,7 @@
     @include centered;
     gap: 5px;
     color: $white;
-    background-color: $icon-color;
+    background-color: var(--icon-color);
     border: none;
     padding: 0.5rem;
     border-radius: 5px;
@@ -15,7 +15,7 @@
     font-weight: 400;
     width: 100%;
     &:hover {
-      background-color: darken($icon-color, 10%);
+      background-color: var(--icon-color), 10%;
     }
   }
 
@@ -43,7 +43,7 @@
   .add-button {
     @include centered;
     padding: 5px;
-    background-color: $icon-color;
+    background-color: var(--icon-color);
     color: white;
     border-radius: 5px;
     border: none;
@@ -51,7 +51,8 @@
     cursor: pointer;
     font-weight: 500;
     &:hover {
-      background-color: darken($icon-color, 10%);
+      background-color: var(--lighten-icon-color);
+      transition: all 0.3s ease-in-out;
     }
   }
   .room-list {

@@ -121,6 +121,8 @@ definitions:
     properties:
       bedType:
         type: string
+      facilities:
+        type: string
       hotelID:
         type: integer
       occupancy:
@@ -221,70 +223,6 @@ info:
   title: TPA-Website
   version: "1.0"
 paths:
-  /airline:
-    get:
-      consumes:
-      - application/json
-      description: Get an airline
-      parameters:
-      - description: Airline
-        in: body
-        name: airline
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Airline found successfully!
-          schema:
-            type: string
-      summary: Get airline
-      tags:
-      - Airline
-    post:
-      consumes:
-      - application/json
-      description: Add a new airline
-      parameters:
-      - description: Airline
-        in: body
-        name: airline
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Airline created successfully!
-          schema:
-            type: string
-      summary: Add airline
-      tags:
-      - Airline
-  /airline/plane/{airlineID}:
-    get:
-      consumes:
-      - application/json
-      description: Get a plane
-      parameters:
-      - description: Airline ID
-        in: path
-        name: airlineID
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Plane found successfully!
-          schema:
-            type: string
-      summary: Get plane by airline
-      tags:
-      - Plane
   /flight-transaction:
     post:
       consumes:
@@ -307,6 +245,49 @@ paths:
       summary: Add flight transaction
       tags:
       - Flight Transaction
+  /flight-transaction/flight-cart:
+    post:
+      consumes:
+      - application/json
+      description: Add a new flight cart
+      parameters:
+      - description: Flight Cart
+        in: body
+        name: flightCart
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Flight Cart created successfully!
+          schema:
+            type: string
+      summary: Add flight cart
+      tags:
+      - Flight Cart
+  /flight-transaction/flight-cart/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get flight cart by user id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Flight Cart found successfully!
+          schema:
+            type: string
+      summary: Get flight cart by user id
+      tags:
+      - Flight Cart
   /flight-transaction/user/{id}:
     get:
       consumes:
@@ -391,7 +372,71 @@ paths:
       summary: Get total flight transaction by user id
       tags:
       - Flight Transaction
-  /flight/airport:
+  /flight/airline:
+    get:
+      consumes:
+      - application/json
+      description: Get an airline
+      parameters:
+      - description: Airline
+        in: body
+        name: airline
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Airline found successfully!
+          schema:
+            type: string
+      summary: Get airline
+      tags:
+      - Airline
+    post:
+      consumes:
+      - application/json
+      description: Add a new airline
+      parameters:
+      - description: Airline
+        in: body
+        name: airline
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Airline created successfully!
+          schema:
+            type: string
+      summary: Add airline
+      tags:
+      - Airline
+  /flight/airline/plane/{airlineID}:
+    get:
+      consumes:
+      - application/json
+      description: Get a plane
+      parameters:
+      - description: Airline ID
+        in: path
+        name: airlineID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Plane found successfully!
+          schema:
+            type: string
+      summary: Get plane by airline
+      tags:
+      - Plane
+  /flight/airports:
     get:
       consumes:
       - application/json
@@ -408,6 +453,49 @@ paths:
       summary: List airports
       tags:
       - Flight
+  /flight/plane:
+    post:
+      consumes:
+      - application/json
+      description: Add a new plane
+      parameters:
+      - description: Plane
+        in: body
+        name: plane
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Plane created successfully!
+          schema:
+            type: string
+      summary: Add plane
+      tags:
+      - Plane
+  /flight/plane/{planeID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a plane
+      parameters:
+      - description: Plane ID
+        in: path
+        name: planeID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Plane deleted successfully!
+          schema:
+            type: string
+      summary: Delete plane
+      tags:
+      - Plane
   /flight/schedule:
     get:
       consumes:
@@ -489,6 +577,21 @@ paths:
       summary: Get flight schedule by ID
       tags:
       - Flight
+  /flight/schedule/top-5:
+    get:
+      consumes:
+      - application/json
+      description: Get Top 5 Flight Schedule
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Flight Transaction found successfully!
+          schema:
+            type: string
+      summary: Get Top 5 Flight Schedule
+      tags:
+      - Flight Transaction
   /flight/search/{query}:
     get:
       consumes:
@@ -548,6 +651,113 @@ paths:
           schema:
             type: string
       summary: Add hotel
+      tags:
+      - Hotel
+  /hotel-transaction:
+    post:
+      consumes:
+      - application/json
+      description: Add new hotel transaction
+      parameters:
+      - description: Hotel Transaction Body
+        in: body
+        name: hotelTransaction
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel transaction created successfully!
+          schema:
+            type: string
+      summary: Add new hotel transaction
+      tags:
+      - Hotel Transaction
+  /hotel-transaction/hotel-cart:
+    post:
+      consumes:
+      - application/json
+      description: Add new hotel cart
+      parameters:
+      - description: Hotel Cart Body
+        in: body
+        name: hotelCart
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel cart created successfully!
+          schema:
+            type: string
+      summary: Add new hotel cart
+      tags:
+      - Hotel Cart
+  /hotel-transaction/user/history/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get user history hotel transaction
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel transaction created successfully!
+          schema:
+            type: string
+      summary: Get user history hotel transaction
+      tags:
+      - Hotel Transaction
+  /hotel-transaction/user/ongoing/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get user ongoing hotel transaction
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel transaction created successfully!
+          schema:
+            type: string
+      summary: Get user ongoing hotel transaction
+      tags:
+      - Hotel Transaction
+  /hotel/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get hotel by hotel id
+      parameters:
+      - description: Hotel ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel found!
+          schema:
+            type: string
+      summary: Get hotel by hotel id
       tags:
       - Hotel
   /hotel/add_hotel_facilities:
@@ -615,7 +825,7 @@ paths:
             type: string
       summary: Add hotel room
       tags:
-      - Hotel
+      - Room
   /hotel/facilities:
     get:
       consumes:
@@ -633,6 +843,23 @@ paths:
       summary: List hotel facilities
       tags:
       - Hotel
+  /hotel/room:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of rooms
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Room'
+            type: array
+      summary: List rooms
+      tags:
+      - Room
   /hotel/search/{query}:
     get:
       consumes:
@@ -669,65 +896,6 @@ paths:
       summary: Get planes
       tags:
       - Plane
-    post:
-      consumes:
-      - application/json
-      description: Add a new plane
-      parameters:
-      - description: Plane
-        in: body
-        name: plane
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Plane created successfully!
-          schema:
-            type: string
-      summary: Add plane
-      tags:
-      - Plane
-  /plane/{planeID}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete a plane
-      parameters:
-      - description: Plane ID
-        in: path
-        name: planeID
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Plane deleted successfully!
-          schema:
-            type: string
-      summary: Delete plane
-      tags:
-      - Plane
-  /room:
-    get:
-      consumes:
-      - application/json
-      description: Get a list of rooms
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/model.Room'
-            type: array
-      summary: List rooms
-      tags:
-      - Room
   /room/add_hotel_room_picture:
     post:
       consumes:
@@ -926,6 +1094,86 @@ paths:
           schema:
             type: string
       summary: Update user
+      tags:
+      - User
+  /user/credit-card/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of credit cards for user
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      summary: List credit cards for user
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: Add a credit card to a user's account
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: Credit card details
+        in: body
+        name: creditCard
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Add credit card
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: Update an existing credit card
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: Credit card ID
+        in: path
+        name: creditCardId
+        required: true
+        type: integer
+      - description: Credit card details
+        in: body
+        name: creditCard
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Update credit card
       tags:
       - User
   /user/login:

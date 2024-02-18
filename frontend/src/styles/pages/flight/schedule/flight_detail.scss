@@ -9,15 +9,19 @@
   height: auto;
   cursor: pointer;
   &.business {
-    color: $button;
+    color: #ff5e1f;
   }
 
   &.economy {
-    color: $icon-color;
+    color: #0094f3;
   }
 
   &.unavailable {
-    color: $hover-color;
+    color: var(--hover-color);
+  }
+  
+  &.selected {
+    color: $color-helper;
   }
 }
 
@@ -29,7 +33,7 @@
   }
   @include border-radius;
   max-width: 300px;
-  background-color: $card-background;
+  background-color: var(--card-background);
   padding: 1rem;
   .seat-row {
     display: flex;
@@ -62,15 +66,15 @@
     }
 
     .business-box{
-      background-color: $price-font-color;
+      background-color: #ff5e1f;
     }
 
     .economy-box{
-      background-color: $icon-color;
+      background-color: #0094f3;
     }
 
     .unavailable-box{
-      background-color: $hover-color;
+      background-color: var(--hover-color);
     }
   }
 }
@@ -86,7 +90,7 @@
     width: 100%;
     height: 300px;
     position: relative;
-    background-color: $card-background;
+    background-color: var(--card-background);
     padding: 1rem;
     h2, h3{
       margin: 0;
@@ -94,7 +98,9 @@
     }
     .seat-information-detail{
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      color: var(--font-color);
+      gap: 5px;
       p{
         font-size: 18px; 
         margin-top: 5px; 
@@ -137,7 +143,7 @@
     
           .route {
             font-size: 16px;
-            color: $secondary-font-color;
+            color: var(--secondary-font-color);
             margin-top: 5px; 
           }
         }
@@ -164,12 +170,22 @@
       align-items: center; 
       justify-content: space-between;
       margin-top: 2rem;
+
+      .total-price{
+        display: flex;
+        flex-direction: row;
+        align-items:last baseline;
+        gap: .5rem;
+        .price{
+          color: var(--font-color);
+        }
+      }
     
       p {
         font-size: 20px;
         color: $price-font-color; 
         .flight-schedule-price-org {
-          color: $secondary-font-color;
+          color: var(--secondary-font-color);
         }
       }
       .button-container{
@@ -186,7 +202,7 @@
         }
 
         .add-to-cart-button{
-          background-color: $secondary-font-color;
+          background-color: var(--secondary-font-color);
           color: $white;
         }
 
@@ -208,10 +224,11 @@
   width: 40%;
   height: max-content;
   overflow-y: scroll;
-  background-color: $white;
+  background-color: var(--card-background);
   padding: 1rem;
   z-index: 99;
   border-radius: 10px;
+  background-color: var(--card-background);
   &.open {
     display: block;
   }
@@ -222,6 +239,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+      color: var(--font-color);
     }
   }
 
@@ -232,12 +250,20 @@
     align-items: center; 
     justify-content: space-between;
     margin: 2rem 0rem;
+
+    .total-price{
+      display: flex;
+      flex-direction: row;
+      align-items:last baseline;
+      gap: .5rem;
+      color: var(--font-color);
+    }
   
     p {
       font-size: $font-size-p;
       color: $price-font-color; 
       .flight-schedule-price-org {
-        color: $secondary-font-color;
+        color: var(--secondary-font-color);
       }
     }
   

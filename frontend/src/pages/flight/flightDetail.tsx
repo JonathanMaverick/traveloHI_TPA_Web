@@ -10,7 +10,7 @@ import useCurrency from "../../contexts/currency-context";
 import "../../styles/pages/flight/schedule/flight_schedule_card.scss"
 import useUser from "../../contexts/user-context";
 import { IFlightTransaction } from "../../interfaces/flight/flight-transaction-interface";
-import add_flight_transaction from "../../api/transaction/add_flight_transaction";
+import add_flight_transaction from "../../api/flight_transaction/add_flight_transaction";
 import { IFlightCart } from "../../interfaces/flight/flight-cart-interface";
 import add_flight_cart from "../../api/flight/cart/add_flight_cart";
 
@@ -76,7 +76,7 @@ export default function FlightDetail(){
     }
 
     const [flightSchedule, setFlightSchedule] = useState<IFlightSchedule>(INITIAL_FLIGHT_DETAIL) 
-    const [selectedSeat, setSelectedSeat] = useState<ISeat | null>(null);
+    const [selectedSeats, setSelectedSeats] = useState<ISeat[]>([]);
     const [paymentForm, setPaymentForm] = useState(false);
     const [paymentOption, setPaymentOption] = useState("hi-wallet"); 
     const [addOnLuggage, setAddOnLuggage] = useState(false);
@@ -138,10 +138,15 @@ export default function FlightDetail(){
                             {row.slice(0, 3).map((seat) => (
                             <div
                                 key={seat.seatID}
-                                className={`available ${seat.seatType} ${seat.seatStatus === 'available' ? '' : 'unavailable'}`}
+                                className={`available ${seat.seatType} ${seat.seatStatus === 'available' ? '' : 'unavailable'} ${selectedSeats.some(selectedSeat => selectedSeat.seatID === seat.seatID) ? 'selected' : ''}`}
                                 onClick={() => {
                                     if (seat.seatStatus === 'available') {
-                                      setSelectedSeat(seat);
+                                        const isSeatSelected = selectedSeats.some(selectedSeat => selectedSeat.seatID === seat.seatID);
+                                        if (isSeatSelected) {
+                                            setSelectedSeats(selectedSeats.filter(selectedSeat => selectedSeat.seatID !== seat.seatID));
+                                        } else {
+                                            setSelectedSeats([...selectedSeats, seat]);
+                                        }
                                     }
                                 }}
                             >
@@ -153,10 +158,15 @@ export default function FlightDetail(){
                             {row.slice(3).map((seat) => (
                             <div
                                 key={seat.seatID}
-                                className={`available ${seat.seatType} ${seat.seatStatus === 'available' ? '' : 'unavailable'}`}
+                                className={`available ${seat.seatType} ${seat.seatStatus === 'available' ? '' : 'unavailable'} ${selectedSeats.some(selectedSeat => selectedSeat.seatID === seat.seatID) ? 'selected' : ''}`}
                                 onClick={() => {
                                     if (seat.seatStatus === 'available') {
-                                      setSelectedSeat(seat);
+                                        const isSeatSelected = selectedSeats.some(selectedSeat => selectedSeat.seatID === seat.seatID);
+                                        if (isSeatSelected) {
+                                            setSelectedSeats(selectedSeats.filter(selectedSeat => selectedSeat.seatID !== seat.seatID));
+                                        } else {
+                                            setSelectedSeats([...selectedSeats, seat]);
+                                        }
                                     }
                                 }}
                             >
@@ -180,105 +190,59 @@ export default function FlightDetail(){
     };
 
     const addToCart = async () => {
-        if(!user){
+        if (!user) {
             alert("Please login first");
             navigate("/login");
             return;
         }
-        if(selectedSeat?.seatType === "business"){
-            const flight_cart : IFlightCart = {
+    
+        for (const selectedSeat of selectedSeats) {
+            const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
+    
+            const flight_cart: IFlightCart = {
                 flightScheduleID: flightSchedule.flightScheduleID,
                 seatID: selectedSeat.seatID,
                 userID: user?.userID,
-                price: flightSchedule.businessPrice,
+                price: seatPrice,
             };
+    
             const response = await add_flight_cart(flight_cart);
-            if(response == -1){
-                alert("Err occured");
+            if (response == -1) {
                 return;
             }
-            else{
-                alert("Added to cart");
-                window.location.reload();
-            }
         }
-        else{
-            const flight_cart : IFlightCart = {
-                flightScheduleID: flightSchedule.flightScheduleID,
-                seatID: selectedSeat?.seatID,
-                userID: user?.userID,
-                price: flightSchedule.businessPrice,
-            };
-            const response = await add_flight_cart(flight_cart);
-            if(response == -1){
-                alert("Err occured");
-                return;
-            }
-            else{
-                alert("Added to cart");
-                window.location.reload();
-            }
-        }
+    
+        alert("Added to cart");
+        window.location.reload();
+        window.location.href = "/";
     }
 
-    const payButton = async (selectedPaymentOption: string) => {
+    const payButton = async () => {
         if(!user){
             alert("Please login first");
             navigate("/login");
             return;
         }
-        if(selectedPaymentOption === "hi-wallet"){
-            console.log("hi-wallet")
-            if (selectedSeat?.seatType === "business") {
-                if (user?.wallet >= flightSchedule.businessPrice) {
-                    const flight_transaction : IFlightTransaction = {
-                        flightScheduleID: flightSchedule.flightScheduleID,
-                        seatID: selectedSeat.seatID,
-                        userID: user?.userID,
-                        paymentID: 2,
-                        price: flightSchedule.businessPrice,
-                        addOnLuggage: addOnLuggage,
-                    };
-                    const response = await add_flight_transaction(flight_transaction);
-                    if(response == -1){
-                        alert("Err occured");
-                        return;
-                    }
-                    else{
-                        alert("Payment Success");
-                        navigate("/")
-                    }
-                }
-                else{
-                    alert("Insufficient Balance");
-                }
-            } else {
-                if (user?.wallet >= flightSchedule.businessPrice) {
-                    const flight_transaction : IFlightTransaction = {
-                        flightScheduleID: flightSchedule.flightScheduleID,
-                        seatID: selectedSeat?.seatID,
-                        userID: user?.userID,
-                        paymentID: 2,
-                        price: flightSchedule.economyPrice,
-                        addOnLuggage: addOnLuggage,
-                    };
-                    const response = await add_flight_transaction(flight_transaction);
-                    if(response == -1){
-                        alert("Err occured");
-                        return;
-                    }
-                    else{
-                        alert("Payment Success");
-                        navigate("/")
-                    }
-                }
-                else{
-                    alert("Insufficient Balance");
-                }
+        for (const selectedSeat of selectedSeats) {
+            const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
+            const paymentId = paymentOption === "hi-wallet" ? 2 : 1;
+            const flight_transaction: IFlightTransaction = {
+                flightScheduleID: flightSchedule.flightScheduleID,
+                seatID: selectedSeat.seatID,
+                userID: user?.userID,
+                paymentID: paymentId, 
+                price: seatPrice,
+                addOnLuggage: addOnLuggage,
+            };
+            const response = await add_flight_transaction(flight_transaction);
+            if (response == -1) {
+                return;
             }
-        }else{
-            //Buat payment credit card
         }
+        alert("Payment Success");
+        window.location.reload();
+        window.location.href = "/";
+            
     }
 
     return (
@@ -306,35 +270,32 @@ export default function FlightDetail(){
                             </div>
                         </div>
                     </div>
-                    {selectedSeat && (
+                    {selectedSeats.length > 0 && (
                         <>
                         <div>
                             <div className="seat-information-detail">
-                                <h2>Selected Seat: {selectedSeat.seatNumber}</h2>
-                                {selectedSeat.seatType === "business" ? (
-                                    <>
-                                        <p>Seat Type : Business</p>
-                                    </>
-                                ) : (
-                                    <>
-                                        <p>Seat Type : Economy</p>
-                                    </>
-                                )}
+                            {selectedSeats.map(selectedSeat => (
+                                <p key={selectedSeat.seatID}>{selectedSeat.seatNumber}</p>
+                            ))}
                             </div>
                         </div>
                         <div className="transaction-detail-price">
-                            {selectedSeat.seatType === "business" ? (
-                                currency === "IDR" ? (
-                                    <p>Rp. {flightSchedule.businessPrice}<span className="flight-schedule-price-org">/org</span></p>
-                                ) : (
-                                    <p>$ {(flightSchedule.businessPrice / 14000).toFixed(4)}<span className="flight-schedule-price-org">/people</span></p>
-                                )
-                            ) : (
-                                currency === "IDR" ? (
-                                    <p>Rp. {flightSchedule.economyPrice}<span className="flight-schedule-price-org">/org</span></p>
-                                ) : (
-                                    <p>$ {(flightSchedule.economyPrice / 14000).toFixed(4)}<span className="flight-schedule-price-org">/people</span></p>
-                            ))}
+                            {selectedSeats.length > 0 && (
+                            <div className="total-price">
+                                <p>Total Price:</p>
+                                <div className="price">
+                                    {currency === "IDR" ? "Rp." : "$"}
+                                    {currency === "IDR" ? (selectedSeats.reduce((totalPrice, selectedSeat) => {
+                                        const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
+                                        return totalPrice + seatPrice;
+                                    }, 0)) : (selectedSeats.reduce((totalPrice, selectedSeat) => {
+                                        const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
+                                        return ((totalPrice + seatPrice));
+                                    }, 0) / 14000).toFixed(4)} 
+                                    <span className="flight-schedule-price-org">{currency === "IDR" ? "/org" : "/person"}</span>
+                                </div>
+                            </div>
+                            )}
                             <div className="button-container">
                                 <button className="add-to-cart-button" onClick={addToCart}>
                                     Add to Cart
@@ -369,23 +330,29 @@ export default function FlightDetail(){
                         checked={addOnLuggage}
                         onChange={handleAddOnLuggageChange}
                     />
-                        Add On Luggage + Rp.10000
+                        {currency === "IDR" ? "Add On Luggage + Rp.10000" : "Add On Luggage + $" + (10000 / 14000).toFixed(4)}
                     </label>
                 </div>
                 <div className="form-payment-price">
-                    {selectedSeat?.seatType === "business" ? (
-                        currency === "IDR" ? (
-                            <p>Rp. {addOnLuggage ? (flightSchedule.businessPrice + 10000) : flightSchedule.businessPrice}<span className="flight-schedule-price-org">/org</span></p>
-                        ) : (
-                            <p>$ {addOnLuggage ? ((flightSchedule.businessPrice + 10000) / 14000).toFixed(4) : (flightSchedule.businessPrice / 14000).toFixed(4)}<span className="flight-schedule-price-org">/people</span></p>
-                        )
-                    ) : (
-                        currency === "IDR" ? (
-                            <p>Rp. {addOnLuggage ? (flightSchedule.economyPrice + 10000) : flightSchedule.economyPrice}<span className="flight-schedule-price-org">/org</span></p>
-                        ) : (
-                            <p>$ {addOnLuggage ? ((flightSchedule.economyPrice + 10000) / 14000).toFixed(4) : (flightSchedule.economyPrice / 14000).toFixed(4)}<span className="flight-schedule-price-org">/people</span></p>
-                    ))}
-                    <button onClick={() => payButton(paymentOption)}>
+                    {selectedSeats.length > 0 && (
+                        <>
+                        <div className="total-price">
+                            <p>Total Price:</p>
+                            <div className="price">
+                                {currency === "IDR" ? "Rp." : "$"}
+                                {currency === "IDR" ? (selectedSeats.reduce((totalPrice, selectedSeat) => {
+                                    const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
+                                    return totalPrice + seatPrice;
+                                }, 0) + (addOnLuggage ? 10000 : 0)) : (selectedSeats.reduce((totalPrice, selectedSeat) => {
+                                    const seatPrice = selectedSeat.seatType === "business" ? flightSchedule.businessPrice : flightSchedule.economyPrice;
+                                    return ((totalPrice + seatPrice));
+                                }, 0) / 14000).toFixed(4)} 
+                                <span className="flight-schedule-price-org">{currency === "IDR" ? "/org" : "/person"}</span>
+                            </div>
+                        </div>
+                        </>
+                    )}
+                    <button onClick={() => payButton()}>
                         Pay
                     </button>
                 </div>

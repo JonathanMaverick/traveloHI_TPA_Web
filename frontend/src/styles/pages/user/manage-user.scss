@@ -6,7 +6,7 @@
   justify-content: space-between;
   align-items: center;
   button {
-    background-color: $icon-color;
+    background-color: var(--icon-color);
     border: none;
     color: white;
     height: 2.5rem;
@@ -14,13 +14,14 @@
     border-radius: 10px;
     cursor: pointer;
     &:hover {
-      background-color: darken($icon-color, 10%);
+      background-color: var(--lighten-icon-color);
+      transition: all 0.3s ease-in-out;
     }
   }
 }
 
 .user-card {
-  background-color: $card-background;
+  background-color: var(--card-background);
   padding: 1rem;
   display: flex;
   flex-direction: row;
@@ -41,7 +42,7 @@
     width: 50px;
     height: 50px;
     @include centered;
-    border: 1px solid $background-color;
+    border: 1px solid var(--background-color);
     border-radius: 100%;
     &:hover {
       cursor: pointer;

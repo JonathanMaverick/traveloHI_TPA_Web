@@ -56,6 +56,8 @@ func main() {
 	route.SearchRoute(r)
 	route.FlightTransactionRoute(r)
 	route.HotelTransactionRoute(r)
+	route.ReviewRoute(r)
+	route.PromoRoute(r)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	http.ListenAndServe(":8080", handler)

@@ -1,19 +1,33 @@
 $global-font-family: "MarkPro", sans-serif;
-$font-color: #434343;
-$secondary-font-color: #687175;
-$price-font-color : #FE5E20;
 
-$font-size-p: 16px;
-$icon-color: #0094f3;
-$background-color: #F8F9FA;
-
-$white: #ffffff;
-$button: #ff5e1f;
-$otp-button: #f8f9fb;
-$black: #000;
-$hover-color: #dadada;
-$red: #ea3434;
-$card-background: #ffffff;
-$footer-color : #1C2930;
+// Light Theme
+$l-font-color: #434343;
+$l-secondary-font-color: #c7c7c7;
+$l-background-color: #F8F9FA;
+$l-card-background-color: #ffffff;
+$l-button: #ff5e1f;
+$l-hover-color: #e0e0e0;
+$l-icon-color: #0094f3;
+$l-icon-color-lighten : lighten($l-icon-color, 10%);
 
 // Dark Theme
+$d-background-color : #171717;
+$d-font-color : #FFFDFF;
+$d-card-background-color :#3A393A;
+$d-secondary-font-color: #cecece;
+$d-button: #FF0000;
+$d-hover-color: #2d2d2d;
+$d-icon-color : #FF0000;
+$d-icon-color-lighten : lighten($d-icon-color, 10%);
+
+
+$secondary-font-color : $l-secondary-font-color;
+$price-font-color : #FE5E20;
+$color-helper: #f2e852;
+
+$font-size-p: 16px;
+
+$white: #ffffff;
+$otp-button: #f8f9fb;
+$footer-color : #1C2930;
+

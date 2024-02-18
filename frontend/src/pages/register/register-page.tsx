@@ -8,9 +8,10 @@ import { storage } from "../../settings/firebase";
 import register from "../../api/auth/register";
 import { Link, useNavigate } from "react-router-dom";
 import { IUser } from "../../interfaces/user/user-interface";
+import useTheme from "../../contexts/theme-context";
 
 export default function RegisterPage(){
-
+    const { theme } = useTheme();
     const USER_INITIAL_STATE:IUser = {
         email: "",
         firstName: "",
@@ -28,6 +29,9 @@ export default function RegisterPage(){
     };
 
     useEffect(() => {
+        if(user){
+            navigate('/');
+        }
         document.title = 'Register';
       }, []);
 
@@ -84,6 +88,7 @@ export default function RegisterPage(){
 
     return(
         <>
+        <div className={`register-login-container ${theme === 'dark' ? 'dark-mode' : ''}`}>
             <form onSubmit={handleOnSubmit} className="register-login">
                 <h1>Register</h1>
                 <TextField 
@@ -218,6 +223,7 @@ export default function RegisterPage(){
                 <Button content="Register" isLoading={isLoading} />
                 <p>Already have an account? <Link to="/login">Login Here</Link></p>
             </form>
+        </div>
         </>
     )
 }

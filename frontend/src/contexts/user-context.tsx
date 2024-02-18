@@ -3,7 +3,6 @@ import axios from "axios";
 import setCookie from "../settings/set-cookie";
 import authenticate from "../api/auth/auth";
 import getCookie from "../settings/get_cookie";
-import { useNavigate } from "react-router-dom";
 import { IChildren } from "../interfaces/children-interface";
 import verify_recaptcha from "../api/auth/verify_recaptcha";
 import { IUser } from "../interfaces/user/user-interface";
@@ -51,7 +50,6 @@ export function UserProvider({children} : IChildren){
         validate();
     }, []);
 
-    const navigate = useNavigate();
 
     async function login(user : IUser, captchaValue : string) :  Promise<number>{
         try{
@@ -84,13 +82,14 @@ export function UserProvider({children} : IChildren){
             const response = await axios.post(
                 import.meta.env.VITE_API_URL + "/user/login-otp"
                 , otp
-            );        
+            );  
+            console.log(response)      
             localStorage.setItem("user",
             JSON.stringify(
                     response.data.user
                 )
             )
-            setCookie('token', response.data.token, 1)
+            setCookie('token', response.data.tokenString, 1)
             setUser(response.data.user)
             return 1;
         }catch(error: any){
@@ -102,7 +101,9 @@ export function UserProvider({children} : IChildren){
     function logout(){
         localStorage.removeItem("user");
         setCookie('token', '', -1);
-        navigate('/login');
+        window.location.reload();
+        console.log('Navigating to login page');
+        window.location.href = '/login';
     }
 
     const data : IUserContext = {

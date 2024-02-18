@@ -1,7 +1,8 @@
 import ProfileSidebar from "../../profile/profile-sidebar";
 import "../../../styles/pages/transaction/user_transaction.scss"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartFlightTransaction from "./cartFlightTransaction";
+import CartHotelTransactions from "./cartHotelTransaction";
 
 export default function UserCartTransaction(){
 
@@ -11,6 +12,10 @@ export default function UserCartTransaction(){
     const handleCheckboxChange = (transactionType:string) => {
         setSelectedTransaction(transactionType);
     };
+
+    useEffect(() => {
+        document.title = 'Cart';
+    }, []);
 
     return(
         <div className="user-transaction">
@@ -44,7 +49,7 @@ export default function UserCartTransaction(){
                         />
                     </div>
                     {selectedTransaction === 'flight' && <CartFlightTransaction searchTerm={searchTerm} />}
-                    {/* {selectedTransaction === 'hotel' && <HotelTransactions />} */}
+                    {selectedTransaction === 'hotel' && <CartHotelTransactions searchTerm={searchTerm}/>}
                 </div>
             </div>
         </div>

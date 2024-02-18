@@ -13,7 +13,7 @@
             margin-top: 0;
         }
         .credit-content{
-            background-color: $card-background;
+            background-color: var(--card-background);
             display: block;
             padding: 1rem;
             border-radius: 8px;
@@ -32,7 +32,7 @@
                 button{
                     @include border-radius;
                     padding: .4rem;
-                    background-color: $button;
+                    background-color: var(--button);
                     color: white;
                     cursor: pointer;
                 }

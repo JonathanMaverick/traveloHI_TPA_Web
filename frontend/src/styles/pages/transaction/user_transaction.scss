@@ -13,11 +13,12 @@
         }
         width: 100%;
         .user-transaction-content{
-            background-color: $card-background;
+            background-color: var(--card-background);
             display: block;
             padding: 1rem;
             border-radius: 8px;
             @include box-shadow;
+            color: var(--font-color);
 
             .filter-hotel-flight{
                 display: flex;
@@ -43,13 +44,58 @@
             .flight-transaction-list{
                 overflow-y: scroll;
                 height: 600px;
-                .total-price{
-                    display: flex;
-                    justify-content: flex-end;
-                    margin-right: 1rem;
+            }
+            .total-price{
+                display: flex;
+                flex-direction: space-between;
+                padding: 0.5rem;
+                p{
+                    color: $price-font-color;
                 }
             }
         }
     }
 }
 
+.hotel-transaction-list{
+    overflow-y: scroll;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.check-out-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0rem .5rem;
+    button{
+        background-color: var(--icon-color);
+        color: white;
+        @include border-radius;
+        @include box-shadow;
+        &:hover{
+            background-color: var(--lighten-icon-color);
+        }
+    }
+}
+
+.check-out-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: min-content;
+    overflow-y: scroll;
+    background-color: $white;
+    padding: 1rem;
+    z-index: 99;
+    border-radius: 10px;
+    background-color: var(--card-background);
+    &.open {
+      display: block;
+    }
+  }

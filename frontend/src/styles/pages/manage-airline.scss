@@ -6,7 +6,7 @@
   justify-content: space-between;
   align-items: center;
   button {
-    background-color: $icon-color;
+    background-color: var(--icon-color);
     border: none;
     color: white;
     height: 2.5rem;
@@ -14,7 +14,8 @@
     border-radius: 10px;
     cursor: pointer;
     &:hover {
-      background-color: darken($icon-color, 10%);
+      background-color: var(--lighten-icon-color);
+      transition: all 0.3s ease-in-out;
     }
   }
 }
@@ -32,6 +33,7 @@
   padding: 1rem;
   z-index: 99;
   border-radius: 10px;
+  background-color: var(--card-background);
   &.open {
     display: block;
   }
@@ -47,10 +49,11 @@
     width: 200px;
     margin: 10px;
     padding: 10px;
-    border: 1px solid #ddd;
+    @include border-radius;
+    @include box-shadow;
     border-radius: 8px;
     text-align: center;
-    background-color: $card-background;
+    background-color: var(--card-background);
     box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 
@@ -65,7 +68,6 @@
     }
     p {
       margin-top: 10px;
-      color: $black;
     }
   }
 }

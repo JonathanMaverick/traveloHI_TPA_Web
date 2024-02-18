@@ -13,7 +13,7 @@
             margin-top: 0;
         }
         .profile-content{
-            background-color: $card-background;
+            background-color: var(--card-background);
             display: block;
             padding: 1rem;
             border-radius: 8px;
@@ -25,6 +25,7 @@
                     flex-direction: row;
                     justify-content: space-around;
                     margin: .5rem 0rem;
+                    color: var(--font-color);
                 }
               }
 
@@ -53,9 +54,14 @@
                     button{
                         @include border-radius;
                         padding: .4rem;
-                        background-color: $button;
+                        background-color: var(--button);
                         color: white;
                         cursor: pointer;
+                    }
+                }
+                .subscribe-container{
+                    label{
+                        color: var(--font-color);
                     }
                 }
             }

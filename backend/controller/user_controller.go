@@ -123,10 +123,17 @@ func CreateUser(c *gin.Context) {
 	newUser.Role = "user"
 	newUser.Status = "active"
 	newUser.Wallet = 0
+	
+	var user model.User
+	config.DB.First(&user, "email = ?", newUser.Email)
+	if user.ID != 0 {
+		c.String(http.StatusBadRequest, "Email duplicated")
+		return
+	}
 
 	result := config.DB.Create(&newUser)
 	if result.Error != nil {
-		c.String(http.StatusBadRequest, "Email duplicated")
+		c.String(http.StatusBadRequest, "Failed to create user")
 		return
 	}
 
@@ -199,13 +206,13 @@ func Login(c *gin.Context) {
 	}
 	c.SetSameSite(http.SameSiteNoneMode)
 	c.SetCookie("token", tokenString, 3600*72, "", "", true, true)
-	fmt.Print(tokenString)
+	
 	c.JSON(
-		http.StatusOK,
-		gin.H{
+	http.StatusOK,
+	gin.H{
 			"token": tokenString,
 			"user":  user,
-		})
+	})
 }
 
 func Authenticate(c *gin.Context) {
@@ -300,8 +307,11 @@ func LoginOTP(c *gin.Context) {
 		return
 	}
 
+	var User model.User
+	config.DB.First(&User, "email = ?", otpRequest.UserEmail)
+
 	config.DB.Delete(&otp)
-	c.String(http.StatusOK, tokenString)
+	c.JSON(http.StatusOK, gin.H{"tokenString": tokenString, "user": User})
 }
 
 func GetUserSecurityQuestion(c *gin.Context) {
@@ -464,6 +474,17 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
+	if updatedUser.PhoneNumber == "" || updatedUser.Address == "" {
+		c.String(http.StatusBadRequest, "All Field are required")
+		return
+	}
+
+	phonePattern := regexp.MustCompile(`^[0-9]{8,15}$`)
+	if !phonePattern.MatchString(updatedUser.PhoneNumber) {
+		c.String(http.StatusBadRequest, "Invalid phone number")
+		return
+	}
+
 	if err := config.DB.Model(&model.User{}).Where("id = ?", userId).Updates(map[string]interface{}{
 		"subscribed_to_newsletter": updatedUser.SubscribedToNewsletter,
 		"first_name":               updatedUser.FirstName,
@@ -471,6 +492,8 @@ func UpdateUser(c *gin.Context) {
 		"dob":                      updatedUser.DOB,
 		"profile_picture":          updatedUser.ProfilePicture,
 		"gender":                   updatedUser.Gender,
+		"phone_number":             updatedUser.PhoneNumber,
+		"address":                  updatedUser.Address,
 	}).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user"})
 		return

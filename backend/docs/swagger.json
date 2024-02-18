@@ -17,104 +17,6 @@
     },
     "host": "localhost:8080",
     "paths": {
-        "/airline": {
-            "get": {
-                "description": "Get an airline",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Airline"
-                ],
-                "summary": "Get airline",
-                "parameters": [
-                    {
-                        "description": "Airline",
-                        "name": "airline",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Airline found successfully!",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Add a new airline",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Airline"
-                ],
-                "summary": "Add airline",
-                "parameters": [
-                    {
-                        "description": "Airline",
-                        "name": "airline",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Airline created successfully!",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/airline/plane/{airlineID}": {
-            "get": {
-                "description": "Get a plane",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Plane"
-                ],
-                "summary": "Get plane by airline",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Airline ID",
-                        "name": "airlineID",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Plane found successfully!",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/flight-transaction": {
             "post": {
                 "description": "Add a new flight transaction",
@@ -142,6 +44,72 @@
                 "responses": {
                     "200": {
                         "description": "Flight Transaction created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight-transaction/flight-cart": {
+            "post": {
+                "description": "Add a new flight cart",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight Cart"
+                ],
+                "summary": "Add flight cart",
+                "parameters": [
+                    {
+                        "description": "Flight Cart",
+                        "name": "flightCart",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Flight Cart created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight-transaction/flight-cart/{id}": {
+            "get": {
+                "description": "Get flight cart by user id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight Cart"
+                ],
+                "summary": "Get flight cart by user id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Flight Cart found successfully!",
                         "schema": {
                             "type": "string"
                         }
@@ -277,7 +245,105 @@
                 }
             }
         },
-        "/flight/airport": {
+        "/flight/airline": {
+            "get": {
+                "description": "Get an airline",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Airline"
+                ],
+                "summary": "Get airline",
+                "parameters": [
+                    {
+                        "description": "Airline",
+                        "name": "airline",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Airline found successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add a new airline",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Airline"
+                ],
+                "summary": "Add airline",
+                "parameters": [
+                    {
+                        "description": "Airline",
+                        "name": "airline",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Airline created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight/airline/plane/{airlineID}": {
+            "get": {
+                "description": "Get a plane",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Plane"
+                ],
+                "summary": "Get plane by airline",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Airline ID",
+                        "name": "airlineID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Plane found successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight/airports": {
             "get": {
                 "description": "Get a list of airports",
                 "consumes": [
@@ -298,6 +364,72 @@
                             "items": {
                                 "$ref": "#/definitions/model.Airport"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/flight/plane": {
+            "post": {
+                "description": "Add a new plane",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Plane"
+                ],
+                "summary": "Add plane",
+                "parameters": [
+                    {
+                        "description": "Plane",
+                        "name": "plane",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Plane created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight/plane/{planeID}": {
+            "delete": {
+                "description": "Delete a plane",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Plane"
+                ],
+                "summary": "Delete plane",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Plane ID",
+                        "name": "planeID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Plane deleted successfully!",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -388,6 +520,29 @@
                 "responses": {
                     "200": {
                         "description": "Flight schedule updated successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/flight/schedule/top-5": {
+            "get": {
+                "description": "Get Top 5 Flight Schedule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Flight Transaction"
+                ],
+                "summary": "Get Top 5 Flight Schedule",
+                "responses": {
+                    "200": {
+                        "description": "Flight Transaction found successfully!",
                         "schema": {
                             "type": "string"
                         }
@@ -520,6 +675,138 @@
                 }
             }
         },
+        "/hotel-transaction": {
+            "post": {
+                "description": "Add new hotel transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hotel Transaction"
+                ],
+                "summary": "Add new hotel transaction",
+                "parameters": [
+                    {
+                        "description": "Hotel Transaction Body",
+                        "name": "hotelTransaction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hotel transaction created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/hotel-transaction/hotel-cart": {
+            "post": {
+                "description": "Add new hotel cart",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hotel Cart"
+                ],
+                "summary": "Add new hotel cart",
+                "parameters": [
+                    {
+                        "description": "Hotel Cart Body",
+                        "name": "hotelCart",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hotel cart created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/hotel-transaction/user/history/{id}": {
+            "get": {
+                "description": "Get user history hotel transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hotel Transaction"
+                ],
+                "summary": "Get user history hotel transaction",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hotel transaction created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/hotel-transaction/user/ongoing/{id}": {
+            "get": {
+                "description": "Get user ongoing hotel transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hotel Transaction"
+                ],
+                "summary": "Get user ongoing hotel transaction",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hotel transaction created successfully!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/hotel/add_hotel_facilities": {
             "post": {
                 "description": "Add a new hotel facilities",
@@ -598,7 +885,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Hotel"
+                    "Room"
                 ],
                 "summary": "Add hotel room",
                 "parameters": [
@@ -648,6 +935,32 @@
                 }
             }
         },
+        "/hotel/room": {
+            "get": {
+                "description": "Get a list of rooms",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Room"
+                ],
+                "summary": "List rooms",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Room"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/hotel/search/{query}": {
             "get": {
                 "description": "Search hotel by name",
@@ -680,6 +993,38 @@
                 }
             }
         },
+        "/hotel/{id}": {
+            "get": {
+                "description": "Get hotel by hotel id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hotel"
+                ],
+                "summary": "Get hotel by hotel id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Hotel ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hotel found!",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/plane": {
             "get": {
                 "description": "Get all planes",
@@ -698,96 +1043,6 @@
                         "description": "Planes found successfully!",
                         "schema": {
                             "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Add a new plane",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Plane"
-                ],
-                "summary": "Add plane",
-                "parameters": [
-                    {
-                        "description": "Plane",
-                        "name": "plane",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Plane created successfully!",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/plane/{planeID}": {
-            "delete": {
-                "description": "Delete a plane",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Plane"
-                ],
-                "summary": "Delete plane",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Plane ID",
-                        "name": "planeID",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Plane deleted successfully!",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/room": {
-            "get": {
-                "description": "Get a list of rooms",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Room"
-                ],
-                "summary": "List rooms",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Room"
-                            }
                         }
                     }
                 }
@@ -1022,6 +1277,126 @@
                         "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/model.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/credit-card/{userId}": {
+            "get": {
+                "description": "Get a list of credit cards for user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "List credit cards for user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update an existing credit card",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update credit card",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Credit card ID",
+                        "name": "creditCardId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Credit card details",
+                        "name": "creditCard",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add a credit card to a user's account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Add credit card",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Credit card details",
+                        "name": "creditCard",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1342,6 +1717,9 @@
             "type": "object",
             "properties": {
                 "bedType": {
+                    "type": "string"
+                },
+                "facilities": {
                     "type": "string"
                 },
                 "hotelID": {
