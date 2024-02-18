@@ -47,6 +47,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('utils', (state) => {
+    console.log(state.state);
     socket.broadcast.emit('enemyUtils',state);
   });
 

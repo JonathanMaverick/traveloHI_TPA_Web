@@ -1,0 +1,54 @@
+@import "../../variables.scss";
+@import "../../mixins.scss";
+
+.promo-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+
+  .promo-card {
+    position: relative;
+    background-color: var(--card-background);
+    @include border-radius;
+    @include box-shadow;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+
+    .edit-button{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: $color-helper;
+        color: var(--font-color);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        @include centered;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 8px;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: var(--secondary-font-color);
+    }
+    h2 {
+      color: var(--font-color);
+      text-align: center;
+      width: 100%;
+      margin: 10px 0px;
+    }
+  }
+}
+
+.update-promo{
+    text-align: start;
+}

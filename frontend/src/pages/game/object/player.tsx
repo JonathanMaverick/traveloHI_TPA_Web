@@ -138,8 +138,9 @@ export class Player {
     }
 
     update(deltaTime: number, canvas : HTMLCanvasElement, c: CanvasRenderingContext2D) {
+        console.log(this.enemyUtils?.state)
         this.socket!.emit('utils', {
-            state: this.currentPlayerState !== undefined ? this.currentPlayerState : PlayerState.Idle,
+            state: this.currentPlayerState,
             mirrored : this.mirrored,
             isJumping : this.isJumping,
             isActionLocked : this.isActionLocked,
@@ -149,13 +150,11 @@ export class Player {
             x : this.x,
             y : this.y
         })
-
         if(this.enemyUtils !== null){
             this.handleEnemy(this.enemyUtils.state, this.enemyDirection);
             this.enemyUtilsValidate(this.enemyUtils, deltaTime, canvas);
         }
         this.health = this.enemyUtils?.enemyHealth || 100;
-        // console.log(this.health);
 
         if (this.isActionLocked) {
             this.lockDuration -= (deltaTime / 500);

@@ -181,15 +181,15 @@ export default function Game() {
         const firstPlayerLifeBarWidth = (firstPlayerLifePercentage / 100) * (lifeBarFull.width / 0.35);
     
         context.fillStyle = 'yellow';
-        context.fillRect((lifeBarX * 1.28), 50, (firstPlayerLifeBarWidth / 3), lifeBarFull.height);
-        // context.fillRect((lifeBarX * 1.6), 50, (firstPlayerLifeBarWidth / 3.2), lifeBarFull.height);
+        // context.fillRect((lifeBarX * 1.28), 50, (firstPlayerLifeBarWidth / 3), lifeBarFull.height);
+        context.fillRect((lifeBarX * 1.6), 50, (firstPlayerLifeBarWidth / 3.2), lifeBarFull.height);
   
         const secondPlayerLifePercentage = (secondPlayer.health / secondPlayer.maxHealth) * 100;
         const secondPlayerLifeBarWidth = (secondPlayerLifePercentage / 100) * (lifeBarFull.width / 0.35);
     
         context.fillStyle = 'blue';
-        context.fillRect((lifeBarX * 3.475), 50, -(secondPlayerLifeBarWidth / 3), lifeBarFull.height);
-        // context.fillRect((lifeBarX * 5.3), 50, -(secondPlayerLifeBarWidth / 3.2), lifeBarFull.height);
+        // context.fillRect((lifeBarX * 3.475), 50, -(secondPlayerLifeBarWidth / 3), lifeBarFull.height);
+        context.fillRect((lifeBarX * 5.3), 50, -(secondPlayerLifeBarWidth / 3.2), lifeBarFull.height);
     }
   
     const lose = () =>{
@@ -244,7 +244,6 @@ export default function Game() {
       
       context.drawImage(background, 0, 0, canvas.width, canvas.height);
       updateHealth();
-      console.log(gameStatus.current);
       context.drawImage(lifeBarFull,lifeBarX - 3.5,0,lifeBarFull.width / 0.35,lifeBarFull.height * 3);
   
       player!.update(deltaTime, canvas, context);

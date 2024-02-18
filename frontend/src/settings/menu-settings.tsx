@@ -15,6 +15,8 @@ import Game from "../pages/game/game";
 import CreditCard from "../pages/profile/credit-card-page";
 import UserCartTransaction from "../pages/transaction/cart/userCartTransaction";
 import HotelDetail from "../pages/hotel/hotelDetail";
+import { RiCoupon2Fill } from "react-icons/ri";
+import ManagePromo from "../pages/promo/managePromo";
 
 export interface IMenu {
     name : string;
@@ -121,6 +123,12 @@ export const ADMIN_LIST: IMenu[] = [
         path: "/manage-hotel",
         element: <ManageHotel />,
         icon: <FaHotel />
+    },
+    {
+        name: "Manage Promo",
+        path: "/manage-promo",
+        element: <ManagePromo />,
+        icon: <RiCoupon2Fill />
     },
     {
         name: "Profile",

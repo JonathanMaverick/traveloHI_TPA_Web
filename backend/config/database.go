@@ -46,6 +46,7 @@ func migrate(db *gorm.DB){
 	db.AutoMigrate(&model.HotelCart{})
 
 	db.AutoMigrate(&model.Review{})
+	db.AutoMigrate(&model.Promo{})
 }
 
 func Connect (){
