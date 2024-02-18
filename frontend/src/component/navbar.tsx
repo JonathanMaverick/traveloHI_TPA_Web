@@ -122,6 +122,7 @@ export default function Navbar() {
             searchData.userID = user.userID || 0;
         }
         await add_search(searchData);
+        setShowSearchOptions(false);
         navigate(`/search/${searchData.search}`);
         setSearchData(INITIAL_SEARCH);
     };

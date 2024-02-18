@@ -18,5 +18,7 @@ func FlightTransactionRoute(r *gin.Engine) {
 
 		flight.POST("/flight-cart/", controller.AddFlightCart)
 		flight.GET("/flight-cart/:id", controller.GetUserFlightCart)
+		flight.GET("/flight-cart/expired/:id", controller.GetUserExpiredFlightCart)
+		flight.POST("/add-flight-transaction-from-cart/", controller.AddFlightTransactionFromCart)
 	}
 }

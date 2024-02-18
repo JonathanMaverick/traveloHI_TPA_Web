@@ -99,3 +99,9 @@ func UpdatePromo(c *gin.Context){
 	config.DB.Save(&promo)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": promo})
 }
+
+func GetTop4Promos(c *gin.Context){
+	var promos []model.Promo
+	config.DB.Limit(4).Find(&promos)
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": promos})
+}

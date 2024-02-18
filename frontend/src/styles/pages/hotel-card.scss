@@ -81,27 +81,57 @@
                 color: var(--icon-color);
             }
         }
+        .extra-detail-room-information{
+          color: var(--font-color);
+          .room-available{
+            font-weight: 600;
+            margin: 0;
+            margin-bottom: 2px;
+          }
+        }
     }
-    .hotel-price{
+
+    .hotel-right{
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 1rem .5rem;
+      justify-content: space-between;
       width: 15rem;
-      gap: 1rem;
-      p{
-        font-size: 20px;
-        font-weight: 600;
-        color: $price-font-color;
-      }
+      padding: 1rem .5rem 0rem .5rem;
 
-      button {
-        background-color: var(--button);
-        color: $white;
-        border: none;
-        padding: 5px 5px;
-        @include border-radius;
-        cursor: pointer;
+      .hotel-rating{
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+        gap: .5rem;
+        align-items: center;
+        .icon-color{
+          color: var(--icon-color);
+        }
+        p{
+          color: var(--icon-color);
+        }
+      }
+      .hotel-price{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 1rem .5rem;
+        gap: 1rem;
+        width: 100%;
+        p{
+          font-size: 20px;
+          font-weight: 600;
+          color: $price-font-color;
+        }
+  
+        button {
+          background-color: var(--button);
+          color: $white;
+          border: none;
+          padding: 5px 5px;
+          @include border-radius;
+          cursor: pointer;
+        }
       }
     }
       

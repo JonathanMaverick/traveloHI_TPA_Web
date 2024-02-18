@@ -11,6 +11,9 @@ export interface IHotel{
     hotelCity : string;
     hotelPictures : IHotelPicture[];
     hotelFacilities?: IHotelFacilities[];
+    hotelRating? : number;
+    roomAvailable? : number;
+    reviewCount? : number;
     rooms? : IRoom[];
     reviews?: IReview[];
 }

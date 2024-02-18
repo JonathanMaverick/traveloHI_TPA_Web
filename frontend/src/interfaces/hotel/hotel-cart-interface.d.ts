@@ -10,6 +10,8 @@ export interface IHotelCart {
     price : number;
     checkInDate: string;
     checkOutDate: string;
+    paymentID?: number;
+    promoCode?: string;
 
     Hotel?: IHotel;
     Room?: IRoom;

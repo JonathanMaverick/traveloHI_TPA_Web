@@ -145,12 +145,41 @@ func AddHotelFacilities(c *gin.Context){
 // @Success 200 {string} string "Hotel found!"
 // @Router /hotel/search/{query} [get]
 func SearchHotel(c *gin.Context) {
-	var hotels []model.Hotel
-	query := c.Param("query")
-	result := config.DB.Where("LOWER(name) LIKE ?", "%"+strings.ToLower(query)+"%").Preload("HotelPictures").Preload("HotelFacilities.Facilities").Preload("Rooms").Find(&hotels)
-	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No hotel found!"})
-		return
-}
-	c.AsciiJSON(http.StatusOK, hotels)
+    var hotels []model.Hotel
+    query := c.Param("query")
+    
+    result := config.DB.Where("LOWER(name) LIKE ?", "%"+strings.ToLower(query)+"%").
+        Preload("HotelPictures").
+        Preload("HotelFacilities.Facilities").
+        Preload("Rooms").
+        Find(&hotels)
+
+    if result.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"status": http.StatusInternalServerError, "message": "No hotel found!"})
+        return
+    }
+
+    for i := range hotels {
+        var rating float64
+        config.DB.Model(&model.Review{}).
+            Select("AVG((cleanliness + comfort + location + service) / 4)").
+            Where("hotel_id = ?", hotels[i].ID).
+            Row().
+            Scan(&rating)
+        hotels[i].Rating = rating
+    }
+
+	for i := range hotels {
+		var totalQuantity int64
+		config.DB.Model(&model.Room{}).Where("hotel_id = ?", hotels[i].ID).Select("SUM(quantity)").Row().Scan(&totalQuantity)
+		hotels[i].RoomAvailable = totalQuantity
+	}
+
+	for i := range hotels {
+		var reviewCount int64
+		config.DB.Model(&model.Review{}).Where("hotel_id = ?", hotels[i].ID).Count(&reviewCount)
+		hotels[i].ReviewCount = reviewCount
+	}
+
+    c.JSON(http.StatusOK, hotels)
 }

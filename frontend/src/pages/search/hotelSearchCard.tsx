@@ -3,6 +3,7 @@ import { IHotel } from '../../interfaces/hotel/hotel-interface';
 import '../../styles/pages/hotel-card.scss';
 import useCurrency from '../../contexts/currency-context';
 import { useNavigate } from 'react-router-dom';
+import { LuBird } from 'react-icons/lu';
 
 const HotelSearchCard = ({ hotel }: {hotel : IHotel}) => {
 
@@ -40,7 +41,7 @@ const HotelSearchCard = ({ hotel }: {hotel : IHotel}) => {
             </div>
             <div className='hotel-location'>
                 <FaLocationDot className='icon-color' />
-                <p>{hotel.hotelAddress}</p>
+                <p>{hotel.hotelAddress} - {hotel.hotelCity}</p>
             </div>
             <div className='hotel-facilities'>
                 {hotel.hotelFacilities?.slice(0, 3).map((facility, index) => (
@@ -54,16 +55,31 @@ const HotelSearchCard = ({ hotel }: {hotel : IHotel}) => {
                     </div>
                 )}
             </div>
+            <div className='extra-detail-room-information'>
+                <h4 className='room-available'>Room Available : {hotel.roomAvailable}</h4>
+                <p>Review Count : {hotel.reviewCount}</p>
+            </div>
         </div>
-        <div className="hotel-price">
+        <div className='hotel-right'>
+            <div className='hotel-rating'>
+                {hotel.hotelRating == 0 ? (
+                    <p>No Rating</p>
+                ) : (
+                    <>
+                    <LuBird className='icon-color' size={20} /> <p>{hotel.hotelRating} / 10</p>
+                    </>
+                )}
+            </div>
+            <div className="hotel-price">
                 {currency == "IDR" ? (
                   <p>Rp. {minPrice} </p>
                 ) : (
                   <p>$ {(minPrice/ 14000).toFixed(4)} </p>
                 )}
-            <button onClick={handleViewDetail}>
-                Choose Room
-            </button>
+                <button onClick={handleViewDetail}>
+                    Choose Room
+                </button>
+            </div>
         </div>
     </>
     );

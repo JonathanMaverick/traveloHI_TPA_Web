@@ -55,6 +55,10 @@ export default function HotelDetail(){
                 console.error('Error fetching hotel data');
             }
         }
+        const scrollUp = () => {
+            window.scrollTo(0, 0);
+        };
+        scrollUp();
         fetchData();
     }
     , []);

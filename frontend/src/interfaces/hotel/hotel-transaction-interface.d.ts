@@ -13,6 +13,7 @@ export interface IHotelTransaction {
     checkInDate: string;
     checkOutDate: string;
     isReviewed: boolean;
+    promoID?: number;
 
     Hotel? : IHotel;
     Room? : IRoom;

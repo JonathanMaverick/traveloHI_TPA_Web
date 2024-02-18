@@ -124,3 +124,23 @@
   }
 
 }
+
+.check-out-button{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  button{
+      padding: .5rem;
+      background-color: var(--icon-color);
+      color: white;
+      @include border-radius;
+      @include box-shadow;
+      &:hover{
+          background-color: var(--lighten-icon-color);
+      }
+  }
+}
+
+.addon-luggage-container{
+  margin-bottom: .5rem;
+}

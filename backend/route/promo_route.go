@@ -11,5 +11,6 @@ func PromoRoute(r *gin.Engine) {
 		promo.POST("/", controller.AddPromo)
 		promo.GET("/", controller.GetPromos)
 		promo.PUT("/:id", controller.UpdatePromo)
+		promo.GET("/top", controller.GetTop4Promos)
 	}
 }

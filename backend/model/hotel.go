@@ -6,6 +6,9 @@ type Hotel struct {
 	Description string `json:"hotelDescription"`
 	Address     string `json:"hotelAddress"`
 	City        string `json:"hotelCity"`
+	Rating 		float64    `json:"hotelRating"`
+	RoomAvailable int64 `json:"roomAvailable"`
+	ReviewCount int64 `json:"reviewCount"`
 
 	HotelPictures   []HotelPicture    `json:"hotelPictures" gorm:"foreignKey:HotelID"`
 	HotelFacilities []HotelFacilities `json:"hotelFacilities" gorm:"foreignKey:HotelID"`

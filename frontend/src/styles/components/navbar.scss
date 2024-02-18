@@ -65,6 +65,7 @@
       color: var(--font-color);
       @include border-radius;
       background-color: var(--card-background);
+      z-index: 99;
       .search-item{
         padding: 5px 10px;
         display: flex;

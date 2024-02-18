@@ -7,6 +7,7 @@
 
 .hotel-search-result, 
 .flight-search-result {
+  height: 800px;
   h1{
     margin: 0;
   }
@@ -42,7 +43,8 @@
     width: 100%;
     gap: 1rem;
     width: 300px;
-    height: 600px;
+    height: 700px;
+    overflow: scroll;
     .search-sorting-container {
       h4 {
         margin: 0;

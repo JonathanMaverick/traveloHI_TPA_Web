@@ -138,22 +138,20 @@ export class Player {
     }
 
     update(deltaTime: number, canvas : HTMLCanvasElement, c: CanvasRenderingContext2D) {
-        console.log(this.enemyUtils?.state)
         this.socket!.emit('utils', {
             state: this.currentPlayerState,
-            mirrored : this.mirrored,
             isJumping : this.isJumping,
             isActionLocked : this.isActionLocked,
             lockDuration : this.lockDuration,
             enemyHealth : this.enemy?.health,
             jumpVelocity: this.jumpVelocity,
-            x : this.x,
-            y : this.y
         })
         if(this.enemyUtils !== null){
-            this.handleEnemy(this.enemyUtils.state, this.enemyDirection);
-            this.enemyUtilsValidate(this.enemyUtils, deltaTime, canvas);
+            this.handleEnemy(this.enemyUtils!.state, this.enemyDirection);
         }
+        this.enemyUtilsValidate(this.enemyUtils, deltaTime, canvas);
+        console.log(this.enemyUtils?.state)
+
         this.health = this.enemyUtils?.enemyHealth || 100;
 
         if (this.isActionLocked) {
