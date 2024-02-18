@@ -404,6 +404,11 @@ func AddHotelTransactionByCart(c *gin.Context) {
 		return
 	}
 
+	if hotelCart.PaymentID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Payment ID is required!"})
+		return
+	}
+
 	currentTime := time.Now()
 	checkInDate, err := time.Parse("2006-01-02", hotelCart.CheckInDate)
 	if err != nil {

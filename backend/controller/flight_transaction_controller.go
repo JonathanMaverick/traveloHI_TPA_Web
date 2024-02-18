@@ -382,6 +382,11 @@ func AddFlightTransactionFromCart(c *gin.Context){
 	var promo model.Promo
 	c.BindJSON(&flightCart)
 
+	if (flightCart.PaymentID == 0){
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Payment ID can't be empty!"})
+		return
+	}
+
 	if(flightCart.PromoCode != ""){
 		err := config.DB.Where("promo_code = ?", flightCart.PromoCode).First(&promo).Error
 		if err != nil{
