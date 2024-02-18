@@ -3,10 +3,10 @@ import "../../../styles/pages/hotel-card.scss";
 import { useEffect, useState } from "react";
 import useCurrency from "../../../contexts/currency-context";
 import Button from "../../../component/button";
-import update_hotel_cart from "../../../api/hotel_transaction/update_hotel_cart";
 import { IHotelCart } from "../../../interfaces/hotel/hotel-cart-interface";
 import add_hotel_transaction_from_cart from "../../../api/hotel_cart/add_hotel_transaction_from_cart";
 import TextField from "../../../component/text-field";
+import update_hotel_cart from "../../../api/hotel_transaction/update_hotel_cart";
 
 const HotelCartTransactionCard = ({ transaction}: { transaction: IHotelCart}) => {
   const defaultImageUrl =
